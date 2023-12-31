@@ -15,4 +15,9 @@ export default defineConfig({
 			},
 		},
 	},
+	server: {
+		fs: {
+			allow: ['./src', './static'],
+		},
+	},
 });
