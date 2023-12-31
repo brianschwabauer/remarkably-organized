@@ -1,0 +1,120 @@
+$breakpoints: (
+	'phone': 400px,
+	'tablet': 768px,
+	'desktop': 1024px,
+	'fullhd': 1440px,
+	'ultrahd': 2160px,
+);
+$media-expressions: (
+	'screen': 'screen',
+	'print': 'print',
+	'handheld': 'handheld',
+	'landscape': '(orientation: landscape)',
+	'portrait': '(orientation: portrait)',
+	'retina2x':
+		'(-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi), (min-resolution: 2dppx)',
+	'retina3x':
+		'(-webkit-min-device-pixel-ratio: 3), (min-resolution: 350dpi), (min-resolution: 3dppx)',
+	'motionOK': '(prefers-reduced-motion: no-preference)',
+	'motionNotOK': '(prefers-reduced-motion: reduce)',
+	'opacityOK': '(prefers-reduced-transparency: no-preference)',
+	'opacityNotOK': '(prefers-reduced-transparency: reduce)',
+	'useDataOK': '(prefers-reduced-data: no-preference)',
+	'useDataNotOK': '(prefers-reduced-data: reduce)',
+	'OSdark': '(prefers-color-scheme: dark)',
+	'OSlight': '(prefers-color-scheme: light)',
+	'highContrast': '(prefers-contrast: more)',
+	'lowContrast': '(prefers-contrast: less)',
+	'HDcolor': '(dynamic-range: high)',
+	'touch': '(hover: none) and (pointer: coarse)',
+	'stylus': '(hover: none) and (pointer: fine)',
+	'pointer': '(hover) and (pointer: coarse)',
+	'mouse': '(hover) and (pointer: fine)',
+);
+
+/**
+  * Media breadpoint mixins. Examples:
+  * @include media("height>phone", "height<=tablet") {}
+  * @include media(">tablet", "<=52em") {}
+  * @include media(">desktop", "<=1150px") {}
+  * @include media(">tablet", "motionOK", "stylus", "screen") {}
+  */
+@import 'include-media';
+
+@mixin phone {
+	@include media('<tablet') {
+		@content;
+	}
+}
+@mixin tablet {
+	@include media('>=tablet') {
+		@content;
+	}
+}
+@mixin tablet-only {
+	@include media('>=tablet', '<desktop') {
+		@content;
+	}
+}
+@mixin desktop {
+	@include media('>=desktop') {
+		@content;
+	}
+}
+@mixin desktop-only {
+	@include media('>=desktop', '<fullhd') {
+		@content;
+	}
+}
+@mixin fullhd {
+	@include media('>=fullhd') {
+		@content;
+	}
+}
+@mixin ultrahd {
+	@include media('>=ultrahd') {
+		@content;
+	}
+}
+@mixin motionOK {
+	@include media('motionOK') {
+		@content;
+	}
+}
+@mixin motionNotOK {
+	@include media('motionNotOK') {
+		@content;
+	}
+}
+@mixin landscape {
+	@include media('landscape') {
+		@content;
+	}
+}
+@mixin portrait {
+	@include media('portrait') {
+		@content;
+	}
+}
+
+@mixin scrollbar($width: 0.5rem, $color: var(--fg), $hover-color: var(--text-low)) {
+	scrollbar-color: $color transparent;
+	scrollbar-width: thin;
+	&::-webkit-scrollbar {
+		width: $width;
+		height: 100%;
+	}
+	&::-webkit-scrollbar-track {
+		box-shadow: none;
+		background-color: transparent;
+	}
+	&::-webkit-scrollbar-thumb {
+		background-color: $color;
+		border-radius: 9999px;
+		min-height: 2rem;
+		&:hover {
+			background-color: $hover-color;
+			cursor: pointer;
+		}
+	}
+}

@@ -1,0 +1,426 @@
+@import './variables';
+
+html {
+	--contrast-rgb-low: 255 255 255; // The min contrast color. Used to add transparent colors using rgb(var(--contrast-rgb-low) / 0.5))
+	--contrast-rgb-high: 0 0 0; // The max contrast color. Used to add transparent colors using rgb(var(--contrast-rgb-high) / 0.5))
+	--contrast-lightness-low: 100%; // The min contrast color. Used to mix colors like oklch(calc(var(--contrast-lightness-low) / 2) 0 0)
+	--contrast-lightness-high: 0%; // The min contrast color. Used to mix colors like oklch(calc(var(--contrast-lightness-high) / 2) 0 0)
+	--contrast-low: rgb(var(--contrast-rgb-low));
+	--contrast-high: rgb(var(--contrast-rgb-high));
+
+	--brand: #156990; // The primary/brand color of the site
+
+	--bg: #ffffff; // the default background color of the page
+	--bg-low: #ffffff; // the low contrast background color
+	--bg-high: #f2f2f2; // the higher contrast background color (for hover/focus of background)
+	--text: #464646; // default text on the bg
+	--text-low: #838383; // text on the bg in a de-emphasized state - like disabled or metadata
+	--text-high: #000000; // text on the bg in an emphasized state - like hover or focus
+
+	--fg: #ebebeb; // default background color for a foreground element - like a card
+	--fg-low: #f2f2f2; // the de-emphasized state of 'fg' - like disabled card
+	--fg-high: #e0e0e0; // the emphasized state of 'fg' - like on hover or focus
+	--fg-text: #5e5e5e; // default text on the fg
+	--fg-text-low: #b3b3b3; // text on the fg in a de-emphasized state - like disabled or metadata
+	--fg-text-high: #000000; // text on the fg in an emphasized state - like hover or focus
+
+	--panel: #ffffff; // default background color for raised panels/surfaces
+	--panel-low: #fafafa; // the de-emphasized state of 'panel' - like when disabled
+	--panel-high: #f2f2f2; // the emphasized state of 'panel' - like on hover or focus
+	--panel-text: #5e5e5e; // default text on the panel
+	--panel-text-low: #b3b3b3; // text on the panel in a de-emphasized state - like disabled or metadata
+	--panel-text-high: #000000; // text on the panel in an emphasized state - like hover or focus
+
+	--nav-bg: var(--fg-high); // background color of the main navbar
+
+	--action: #5e5e5e; // default background color of actions - like buttons, links, etc
+	--action-low: #838383; // background color of disabled actions
+	--action-high: #3d3d3d; // background color of actions with focus/hover
+	--action-text: #ebebeb; // default text color of actions - like buttons, links, etc
+	--action-text-low: #b3b3b3; // text color of disabled actions
+	--action-text-high: #ffffff; // text color of actions with focus/hover
+
+	--accent: #5e5e5e; // default background color of primary/accented actions - like buttons, links, etc
+	--accent-low: #838383; // background color of disabled primary/accented actions
+	--accent-high: #3d3d3d; // background color of primary/accented actions with focus/hover
+	--accent-text: #ebebeb; // default text color of primary/accented actions - like buttons, links, etc
+	--accent-text-low: #b3b3b3; // text color of disabled primary/accented actions
+	--accent-text-high: #ffffff; // text color of primary/accented actions with focus/hover
+
+	--outline: #dedede; // default color of outlines/borders
+	--outline-low: #ebebeb; // color of outlines/borders when disabled
+	--outline-high: #b3b3b3; // color of outlines/borders when active/hover/focus
+
+	--error: #ef6262;
+	--error-low: #b38383;
+	--error-high: #ca3030;
+	--error-text: #ffe6e6;
+	--error-text-low: #ffadad;
+	--error-text-high: #ffffff;
+
+	--success: #00b7a1;
+	--success-low: #83b3ad;
+	--success-high: #289487;
+	--success-text: #adf7ee;
+	--success-text-low: #58e0d0;
+	--success-text-high: #ffffff;
+
+	--layer-1: 1;
+	--layer-2: 2;
+	--layer-3: 3;
+	--layer-4: 4;
+	--layer-5: 5;
+	--layer-important: 2147483647;
+
+	--border-size-1: 1px;
+	--border-size-2: 2px;
+	--border-size-3: 5px;
+	--border-size-4: 10px;
+	--border-size-5: 25px;
+	--radius: 10px;
+	--radius-1: 2px;
+	--radius-2: 5px;
+	--radius-3: 10px;
+	--radius-4: 20px;
+	--radius-5: 30px;
+	--radius-6: 60px;
+	--radius-round: 1e5px;
+
+	--font-sans: Roboto, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell,
+		Noto Sans, sans-serif;
+	--font-serif: 'Playfair Display', ui-serif, serif;
+	--font-mono: Dank Mono, Operator Mono, Inconsolata, Fira Mono, ui-monospace, SF Mono,
+		Monaco, Droid Sans Mono, Source Code Pro, monospace;
+	--font-display: 'Bebas Neue', sans-serif;
+	--font: var(--font-sans);
+	--font-weight-1: 100;
+	--font-weight-2: 200;
+	--font-weight-3: 300;
+	--font-weight-4: 400;
+	--font-weight-5: 500;
+	--font-weight-6: 600;
+	--font-weight-7: 700;
+	--font-weight-8: 800;
+	--font-weight-9: 900;
+	--font-lineheight-00: 0.95;
+	--font-lineheight-0: 1.1;
+	--font-lineheight-1: 1.25;
+	--font-lineheight-2: 1.375;
+	--font-lineheight-3: 1.5;
+	--font-lineheight-4: 1.75;
+	--font-lineheight-5: 2;
+	--font-letterspacing-0: -0.05em;
+	--font-letterspacing-1: 0.025em;
+	--font-letterspacing-2: 0.05em;
+	--font-letterspacing-3: 0.075em;
+	--font-letterspacing-4: 0.15em;
+	--font-letterspacing-5: 0.5em;
+	--font-letterspacing-6: 0.75em;
+	--font-letterspacing-7: 1em;
+	--font-size-00: 0.65rem;
+	--font-size-0: 0.815rem;
+	--font-size-1: 1rem;
+	--font-size-2: 1.1rem;
+	--font-size-3: 1.25rem;
+	--font-size-4: 1.5rem;
+	--font-size-5: 2rem;
+	--font-size-6: 2.5rem;
+	--font-size-7: 3rem;
+	--font-size-8: 3.5rem;
+	--font-size-fluid-0: clamp(0.75rem, 2vw, 1rem);
+	--font-size-fluid-1: clamp(1rem, 4vw, 1.5rem);
+	--font-size-fluid-2: clamp(1.5rem, 6vw, 2.5rem);
+	--font-size-fluid-3: clamp(2rem, 9vw, 3.5rem);
+
+	--shadow-hls: 220 3% 15%;
+	--shadow-strength: 15%;
+	--shadow-color: hsl(var(--shadow-hls) / calc(var(--shadow-strength) + 9%));
+	--shadow-1: 0 1px 3px -1px hsl(var(--shadow-hls) / calc(var(--shadow-strength) + 19%));
+	--shadow-2: 0 3px 5px -2px hsl(var(--shadow-hls) / calc(var(--shadow-strength) + 3%)),
+		0 7px 14px -5px hsl(var(--shadow-hls) / calc(var(--shadow-strength) + 5%));
+	--shadow-3: 0 -1px 3px 0 hsl(var(--shadow-hls) / calc(var(--shadow-strength) + 2%)),
+		0 1px 2px -5px hsl(var(--shadow-hls) / calc(var(--shadow-strength) + 2%)),
+		0 2px 5px -5px hsl(var(--shadow-hls) / calc(var(--shadow-strength) + 4%)),
+		0 4px 12px -5px hsl(var(--shadow-hls) / calc(var(--shadow-strength) + 5%)),
+		0 12px 15px -5px hsl(var(--shadow-hls) / calc(var(--shadow-strength) + 7%));
+	--shadow-4: 0 -2px 5px 0 hsl(var(--shadow-hls) / calc(var(--shadow-strength) + 2%)),
+		0 1px 1px -2px hsl(var(--shadow-hls) / calc(var(--shadow-strength) + 3%)),
+		0 2px 2px -2px hsl(var(--shadow-hls) / calc(var(--shadow-strength) + 3%)),
+		0 5px 5px -2px hsl(var(--shadow-hls) / calc(var(--shadow-strength) + 4%)),
+		0 9px 9px -2px hsl(var(--shadow-hls) / calc(var(--shadow-strength) + 5%)),
+		0 16px 16px -2px hsl(var(--shadow-hls) / calc(var(--shadow-strength) + 6%));
+	--shadow-5: 0 -1px 2px 0 hsl(var(--shadow-hls) / calc(var(--shadow-strength) + 2%)),
+		0 2px 1px -2px hsl(var(--shadow-hls) / calc(var(--shadow-strength) + 3%)),
+		0 5px 5px -2px hsl(var(--shadow-hls) / calc(var(--shadow-strength) + 3%)),
+		0 10px 10px -2px hsl(var(--shadow-hls) / calc(var(--shadow-strength) + 4%)),
+		0 20px 20px -2px hsl(var(--shadow-hls) / calc(var(--shadow-strength) + 5%)),
+		0 40px 40px -2px hsl(var(--shadow-hls) / calc(var(--shadow-strength) + 7%));
+	--shadow-6: 0 -1px 2px 0 hsl(var(--shadow-hls) / calc(var(--shadow-strength) + 2%)),
+		0 3px 2px -2px hsl(var(--shadow-hls) / calc(var(--shadow-strength) + 3%)),
+		0 7px 5px -2px hsl(var(--shadow-hls) / calc(var(--shadow-strength) + 3%)),
+		0 12px 10px -2px hsl(var(--shadow-hls) / calc(var(--shadow-strength) + 4%)),
+		0 22px 18px -2px hsl(var(--shadow-hls) / calc(var(--shadow-strength) + 5%)),
+		0 41px 33px -2px hsl(var(--shadow-hls) / calc(var(--shadow-strength) + 6%)),
+		0 100px 80px -2px hsl(var(--shadow-hls) / calc(var(--shadow-strength) + 7%));
+
+	--size-000: -0.5rem;
+	--size-00: -0.25rem;
+	--size-1: 0.25rem;
+	--size-2: 0.5rem;
+	--size-3: 1rem;
+	--size-4: 1.25rem;
+	--size-5: 1.5rem;
+	--size-6: 1.75rem;
+	--size-7: 2rem;
+	--size-8: 3rem;
+	--size-9: 4rem;
+	--size-10: 5rem;
+	--size-11: 7.5rem;
+	--size-12: 10rem;
+	--size-13: 15rem;
+	--size-14: 20rem;
+	--size-15: 30rem;
+	--size-fluid-1: clamp(0.5rem, 1vw, 1rem);
+	--size-fluid-2: clamp(1rem, 2vw, 1.5rem);
+	--size-fluid-3: clamp(1.5rem, 3vw, 2rem);
+	--size-fluid-4: clamp(2rem, 4vw, 3rem);
+	--size-fluid-5: clamp(4rem, 5vw, 5rem);
+	--size-fluid-6: clamp(5rem, 7vw, 7.5rem);
+	--size-fluid-7: clamp(7.5rem, 10vw, 10rem);
+	--size-fluid-8: clamp(10rem, 20vw, 15rem);
+	--size-fluid-9: clamp(15rem, 30vw, 20rem);
+	--size-fluid-10: clamp(20rem, 40vw, 30rem);
+	--size-content-1: 20ch;
+	--size-content-2: 45ch;
+	--size-content-3: 60ch;
+	--size-header-1: 20ch;
+	--size-header-2: 25ch;
+	--size-header-3: 35ch;
+	--size-xxs: 240px;
+	--size-xs: 360px;
+	--size-sm: 480px;
+	--size-md: 768px;
+	--size-lg: 1024px;
+	--size-xl: 1200px;
+	--size-xxl: 1920px;
+
+	--ease-out-1: cubic-bezier(0.61, 1, 0.88, 1); // easeOutSine
+	--ease-out-2: cubic-bezier(0.5, 1, 0.89, 1); // easeOutQuad
+	--ease-out-3: cubic-bezier(0.33, 1, 0.68, 1); // easeOutCubic
+	--ease-out-4: cubic-bezier(0.25, 1, 0.5, 1); // easeOutQuart
+	--ease-out-5: cubic-bezier(0.22, 1, 0.36, 1); // easeOutQuint
+	--ease-out-6: cubic-bezier(0.16, 1, 0.3, 1); // easeOutExpo
+	--ease-in-1: cubic-bezier(0.12, 0, 0.39, 0); // easeInSine
+	--ease-in-2: cubic-bezier(0.11, 0, 0.5, 0); // easeInQuad
+	--ease-in-3: cubic-bezier(0.32, 0, 0.67, 0); // easeInCubic
+	--ease-in-4: cubic-bezier(0.5, 0, 0.75, 0); // easeInQuart
+	--ease-in-5: cubic-bezier(0.64, 0, 0.78, 0); // easeInQuint
+	--ease-in-6: cubic-bezier(0.7, 0, 0.84, 0); // easeInExpo
+	--ease-in-out-1: cubic-bezier(0.37, 0, 0.63, 1); // easeInOutSine
+	--ease-in-out-2: cubic-bezier(0.45, 0, 0.55, 1); // easeInOutQuad
+	--ease-in-out-3: cubic-bezier(0.65, 0, 0.35, 1); // easeInOutCubic
+	--ease-in-out-4: cubic-bezier(0.76, 0, 0.24, 1); // easeInOutQuart
+	--ease-in-out-5: cubic-bezier(0.83, 0, 0.17, 1); // easeInOutQuint
+	--ease-in-out-6: cubic-bezier(0.87, 0, 0.13, 1); // easeInOutExpo
+
+	--ease-in-back: cubic-bezier(0.36, 0, 0.66, -0.56); // easeInBack
+	--ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1); // easeOutBack
+	--ease-in-out-back: cubic-bezier(0.68, -0.6, 0.32, 1.6); // easeInOutBack
+
+	--ease: var(--ease-in-out-4);
+	@supports (--ease: linear(0, 1)) {
+		--ease: linear(
+			0,
+			0.002,
+			0.01 3.6%,
+			0.02 4.9%,
+			0.034 6.4%,
+			0.074 9.1%,
+			0.128 11.4%,
+			0.194 13.4%,
+			0.271 15%,
+			0.344 16.1%,
+			0.544 18.3%,
+			0.607,
+			0.66 20.6%,
+			0.717 22.4%,
+			0.765 24.6%,
+			0.808 27.3%,
+			0.845 30.4%,
+			0.865 32.6%,
+			0.883,
+			0.9 37.7%,
+			0.916 40.6%,
+			0.942 47.2%,
+			0.963 55%,
+			0.979 64%,
+			0.991 74.4%,
+			0.998 86.4%,
+			1
+		); // https://linear-easing-generator.netlify.app/?codeType=svg&code=M+0%2C0%0AC+0.05%2C+0%2C+0.133333%2C+0.06%2C+0.166666%2C+0.4%0AC+0.208333%2C+0.82%2C+0.25%2C+1%2C+1%2C+1&simplify=0.00124438508064516&round=3
+	}
+}
+
+body {
+	background-color: var(--bg);
+	color: var(--text);
+	scrollbar-color: var(--scrollthumb-color) transparent;
+	accent-color: var(--fg, var(--link));
+	caret-color: currentColor;
+	font-family: var(--font);
+	font-size: var(--font-size-1);
+	font-weight: var(--font-weight-4);
+	-webkit-print-color-adjust: exact; /* Chrome/Safari/Edge/Opera */
+	print-color-adjust: exact; /* Chrome/Safari/Edge/Opera */
+
+	@media only screen {
+		background-color: #5f6368;
+		padding: 0 0 0.5in;
+		article {
+			margin: 0.25in auto;
+			box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+		}
+	}
+}
+::selection {
+	background-color: var(--action);
+	color: var(--action-text);
+}
+
+h1,
+h2,
+h3,
+h4,
+strong {
+	font-weight: var(--font-weight-7);
+}
+
+h1 {
+	font-size: var(--font-size-5);
+	line-height: 1.25;
+}
+h2 {
+	font-size: var(--font-size-4);
+	line-height: 1.25;
+}
+h3 {
+	font-size: var(--font-size-3);
+	line-height: 1.25;
+}
+h4 {
+	font-size: var(--font-size-2);
+	line-height: 1.25;
+}
+small {
+	font-size: 0.75em;
+	color: var(--text-low);
+}
+a {
+	text-decoration: none;
+	color: var(--text);
+}
+
+*:focus-visible {
+	outline: none;
+	box-shadow: 0 0 0 1px var(--outline-high);
+}
+
+/* Box sizing rules */
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+/* Remove highlight color on tap */
+* {
+	-webkit-tap-highlight-color: transparent;
+}
+
+/* Remove default margin */
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote,
+dl,
+dd {
+	margin: 0;
+}
+
+/* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */
+ul[role='list'],
+ol[role='list'] {
+	list-style: none;
+}
+
+/* Set core root defaults */
+html:focus-within {
+	scroll-behavior: smooth;
+}
+
+/* Set core body defaults */
+body {
+	min-height: 100vh;
+	text-rendering: optimizeSpeed;
+	line-height: 1.5;
+}
+
+/* A elements that don't have a class get default styles */
+a:not([class]) {
+	text-decoration-skip-ink: auto;
+}
+
+button,
+.button {
+	border: none;
+	outline: none;
+	background: none;
+	margin: 0;
+	padding: .5rem 1rem;
+	color: var(--text);
+	border-radius: var(--radius-3);
+	cursor: pointer;
+	&:hover {
+		background-color: var(--bg-high);
+		color: var(--text-high);
+	}
+}
+
+/* Make images easier to work with */
+img,
+picture {
+	max-width: 100%;
+	display: block;
+}
+
+/* Inherit fonts for inputs and buttons */
+input,
+button,
+textarea,
+select {
+	font: inherit;
+}
+
+/** Form & Inputs styles */
+input, select {
+	border: 1px solid var(--outline);
+	border-radius: var(--radius);
+	padding: .5rem 1rem;
+	font-size: 1rem;
+	color: var(--text);
+	background-color: var(--bg);
+	transition: border-color 0.2s ease-in-out;
+	&:focus {
+		border-color: var(--outline-high);
+	}
+	&:disabled {
+		border-color: var(--outline-low);
+	}
+}
+select {
+	padding: .5rem .75rem;
+}
