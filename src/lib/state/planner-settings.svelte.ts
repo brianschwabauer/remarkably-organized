@@ -28,18 +28,18 @@ export class PlannerSettings {
 	private initialSettings: ReturnType<PlannerSettings['serialize']> | undefined =
 		undefined;
 
-	design = {
-		aspectRatio: $state(0.75),
-		width: $state(702),
-	};
+	design = new (class DesignSettings {
+		aspectRatio = $state(0.75);
+		width = $state(702);
+	})();
 
-	date = {
-		timezoneOffset: $state(new Date().getTimezoneOffset() / 60),
-		start: $state(new Date(new Date().setUTCHours(0, 0, 0, 0))),
-		end: $state(new Date(new Date().setUTCHours(0, 0, 0, 0))),
-		today: $state(new Date(new Date().setUTCHours(0, 0, 0, 0))),
-		startWeekOnSunday: $state(false),
-	};
+	date = new (class DateSettings {
+		timezoneOffset = $state(new Date().getTimezoneOffset() / 60);
+		start = $state(new Date(new Date().setUTCHours(0, 0, 0, 0)));
+		end = $state(new Date(new Date().setUTCHours(0, 0, 0, 0)));
+		today = $state(new Date(new Date().setUTCHours(0, 0, 0, 0)));
+		startWeekOnSunday = $state(false);
+	})();
 
 	years = $derived([
 		{
@@ -74,58 +74,58 @@ export class PlannerSettings {
 		},
 	]);
 
-	sideNav = {
-		disable: $state(false),
-		showCollectionLinks: $state(true),
-		width: $state(52),
-		font: $state(''),
-	};
+	sideNav = new (class SideNavSettings {
+		disable = $state(false);
+		showCollectionLinks = $state(true);
+		width = $state(52);
+		font = $state('');
+	})();
 
-	topNav = {
-		disable: $state(false),
-		showCollectionLinks: $state(true),
-		height: $state(45),
-		font: $state(''),
-	};
+	topNav = new (class TopNavSettings {
+		disable = $state(false);
+		showCollectionLinks = $state(true);
+		height = $state(45);
+		font = $state('');
+	})();
 
-	coverPage = {
-		disable: $state(false),
-		name: $state(''),
-		email: $state(''),
-		title: $state(''),
-		showCollectionLinks: $state(false),
-		font: $state(''),
-	};
+	coverPage = new (class CoverPageSettings {
+		disable = $state(false);
+		name = $state('');
+		email = $state('');
+		title = $state('');
+		showCollectionLinks = $state(false);
+		font = $state('');
+	})();
 
-	yearPage = {
-		disable: $state(false),
-		template: $state('dotted'),
-		numNotePages: $state(1),
-	};
+	yearPage = new (class YearPageSettings {
+		disable = $state(false);
+		template = $state('dotted');
+		numNotePages = $state(1);
+	})();
 
-	quarterPage = {
-		disable: $state(false),
-		template: $state('dotted'),
-		numNotePages: $state(1),
-	};
+	quarterPage = new (class QuarterPageSettings {
+		disable = $state(false);
+		template = $state('dotted');
+		numNotePages = $state(1);
+	})();
 
-	monthPage = {
-		disable: $state(false),
-		template: $state('dotted'),
-		numNotePages: $state(1),
-	};
+	monthPage = new (class MonthPageSettings {
+		disable = $state(false);
+		template = $state('dotted');
+		numNotePages = $state(1);
+	})();
 
-	weekPage = {
-		disable: $state(false),
-		template: $state('dotted'),
-		numNotePages: $state(1),
-	};
+	weekPage = new (class WeekPageSettings {
+		disable = $state(false);
+		template = $state('dotted');
+		numNotePages = $state(1);
+	})();
 
-	dayPage = {
-		disable: $state(false),
-		template: $state('dotted'),
-		numNotePages: $state(1),
-	};
+	dayPage = new (class DayPageSettings {
+		disable = $state(false);
+		template = $state('dotted');
+		numNotePages = $state(1);
+	})();
 
 	collections = $state([]);
 
