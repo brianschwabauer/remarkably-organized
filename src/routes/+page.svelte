@@ -64,11 +64,11 @@
 	}
 
 	img {
-		width: 100%;
 		max-width: 900px;
 		max-height: 90vh;
 		border-radius: 20px;
-		object-fit:  fill;
+		object-fit: contain;
+		box-shadow: var(--shadow-5);
 	}
 
 	a {
