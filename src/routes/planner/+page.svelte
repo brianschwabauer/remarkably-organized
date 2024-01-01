@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { replaceState } from '$app/navigation';
- 	import { slide } from 'svelte/transition';
+	import { slide } from 'svelte/transition';
 	import SettingsIcon from '~icons/fa/cog';
+	import LoadingIcon from '~icons/eos-icons/bubble-loading';
 	import { untrack } from 'svelte';
 	import CoverPage from './CoverPage.svelte';
 	import MonthPage from './MonthPage.svelte';
@@ -12,11 +13,11 @@
 	import { getFirstDayOfWeek } from '$lib';
 	import DayPage from './DayPage.svelte';
 	import CollectionPages from './CollectionPages.svelte';
+	import { browser } from '$app/environment';
+	import HelpModal from './HelpModal.svelte';
 	let { data } = $props();
 	const { today, aspectRatio, sidebarWidth, topbarHeight } = data;
 
-	let showMenu = $state(true);
-	let showAdvancedSettings = $state(false);
 	let showLinksOnCoverPage = $state(data.showLinksOnCoverPage);
 	let showLinksOnSideNav = $state(data.showLinksOnSideNav);
 	let showLinksOnTopNav = $state(data.showLinksOnTopNav);
@@ -39,6 +40,16 @@
 			href: `#${collection.id}`,
 		})),
 	);
+
+	let showHelp = $state($page.url.searchParams.get('help') !== '0');
+	let showMenu = $state(true);
+	let showAdvancedSettings = $state(false);
+	let loadPages = $state(!browser && $page.url.searchParams.get('help') === '0');
+	$effect(() => {
+		if (!showHelp) {
+			setTimeout(() => (loadPages = true), 180);
+		}
+	});
 
 	$effect(() => {
 		const url = new URL(untrack(() => $page.url));
@@ -84,6 +95,13 @@
 		date.setUTCHours(0, 0, 0, 0);
 		end = date;
 	}
+
+	function onHelpClose() {
+		showHelp = false;
+		const url = new URL($page.url);
+		url.searchParams.set('help', '0');
+		replaceState(url, {});
+	}
 </script>
 
 <svelte:head>
@@ -96,18 +114,12 @@
 	</style>
 </svelte:head>
 
+{#if showHelp}<HelpModal onClose={onHelpClose} />{/if}
+
 {#if showMenu}
 	<div class="menu" transition:slide={{ duration: 200 }}>
 		<h2>Settings</h2>
 		<form>
-			<fieldset>
-				<label for="name">Name</label>
-				<input type="text" placeholder="Name" id="name" bind:value={name} />
-			</fieldset>
-			<fieldset>
-				<label for="email">Contact Info</label>
-				<input type="text" placeholder="Contact Info" id="email" bind:value={email} />
-			</fieldset>
 			<fieldset>
 				<label for="start">Start Date</label>
 				<input
@@ -127,6 +139,14 @@
 					min={start.toISOString().slice(0, 10)}
 					value={end.toISOString().slice(0, 10)}
 					on:change={onEndDateChange} />
+			</fieldset>
+			<fieldset>
+				<label for="name">Name</label>
+				<input type="text" placeholder="Name" id="name" bind:value={name} />
+			</fieldset>
+			<fieldset>
+				<label for="email">Contact Info</label>
+				<input type="text" placeholder="Contact Info" id="email" bind:value={email} />
 			</fieldset>
 			{#if showAdvancedSettings}
 				<h3>Collections</h3>
@@ -253,6 +273,9 @@
 				</button>
 			{/if}
 		</form>
+		<div class="actions">
+			<button class="export" on:click={() => window.print()}>Print to PDF</button>
+		</div>
 	</div>
 {/if}
 <button on:click={() => (showMenu = !showMenu)} class="menu-trigger">
@@ -264,10 +287,17 @@
 	style:--doc-height="{702 * (1 / (aspectRatio || 1))}px"
 	style:--sidenav-width="{sidebarWidth}px"
 	style:--topnav-height="{topbarHeight}px">
-	{#if !disableCoverPage}
+	{#if !loadPages}
+		<article
+			style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+			<h1 style="margin-bottom: 2rem;">Loading...</h1>
+			<LoadingIcon font-size="3rem" />
+		</article>
+	{/if}
+	{#if !disableCoverPage && loadPages}
 		<CoverPage {name} {email} {start} {end} links={showLinksOnCoverPage ? links : []} />
 	{/if}
-	{#if !disableYears}
+	{#if !disableYears && loadPages}
 		{#each new Array(end.getUTCFullYear() - start.getUTCFullYear() + 1) as _, i}
 			{@const year = start.getUTCFullYear() + i}
 			<YearPage
@@ -281,7 +311,7 @@
 				disableTopNavLinks={!showLinksOnTopNav} />
 		{/each}
 	{/if}
-	{#if !disableQuarters}
+	{#if !disableQuarters && loadPages}
 		{#each new Array(end.getUTCFullYear() - start.getUTCFullYear() + 1) as _, i}
 			{@const year = start.getUTCFullYear() + i}
 			{@const startQuarter = i === 0 ? Math.floor(start.getUTCMonth() / 3) + 1 : 1}
@@ -306,7 +336,7 @@
 			{/each}
 		{/each}
 	{/if}
-	{#if !disableMonths}
+	{#if !disableMonths && loadPages}
 		{#each new Array(end.getUTCFullYear() - start.getUTCFullYear() + 1) as _, i}
 			{@const year = start.getUTCFullYear() + i}
 			{@const startMonth = i === 0 ? start.getUTCMonth() + 1 : 1}
@@ -330,7 +360,7 @@
 			{/each}
 		{/each}
 	{/if}
-	{#if !disableWeeks}
+	{#if !disableWeeks && loadPages}
 		{#each new Array(end.getUTCFullYear() - start.getUTCFullYear() + 1) as _, i}
 			{@const year = start.getUTCFullYear() + i}
 			{@const firstDay =
@@ -361,7 +391,7 @@
 			{/each}
 		{/each}
 	{/if}
-	{#if !disableDays}
+	{#if !disableDays && loadPages}
 		{#each new Array(end.getUTCFullYear() - start.getUTCFullYear() + 1) as _, i}
 			{@const year = start.getUTCFullYear() + i}
 			{@const startDay = i === 0 ? start.getTime() : new Date(`${year}-01-01`).getTime()}
@@ -389,19 +419,21 @@
 			{/each}
 		{/each}
 	{/if}
-	{#each collections as collection (collection.id)}
-		<CollectionPages
-			{start}
-			{end}
-			{disableCoverPage}
-			{disableYears}
-			{disableMonths}
-			disableSideNavLinks={!showLinksOnSideNav}
-			disableTopNavLinks={!showLinksOnTopNav}
-			{collection}
-			{startWeekOnSunday}
-			{links} />
-	{/each}
+	{#if loadPages}
+		{#each collections as collection (collection.id)}
+			<CollectionPages
+				{start}
+				{end}
+				{disableCoverPage}
+				{disableYears}
+				{disableMonths}
+				disableSideNavLinks={!showLinksOnSideNav}
+				disableTopNavLinks={!showLinksOnTopNav}
+				{collection}
+				{startWeekOnSunday}
+				{links} />
+		{/each}
+	{/if}
 </main>
 
 <style lang="scss">
@@ -446,7 +478,7 @@
 		max-height: 80vh;
 		border-radius: var(--radius-5);
 		box-shadow: var(--shadow-4);
-		padding: 0 2rem 2rem;
+		padding: 0 2rem 1rem;
 		overflow-y: auto;
 		overflow-x: hidden;
 		@include scrollbar;
@@ -485,6 +517,25 @@
 				font-weight: 300;
 				margin: 0 0 0.1rem 0.25rem;
 			}
+		}
+	}
+	.actions {
+		position: sticky;
+		bottom: -1rem;
+		background-color: white;
+		width: 100%;
+		padding: 1rem 0;
+	}
+	button.export {
+		background-color: var(--action);
+		color: var(--action-text);
+		width: 100%;
+		border-radius: 999px;
+		padding: 0.75rem 1rem;
+		font-size: 1.25rem;
+		&:hover {
+			background-color: var(--action-high);
+			color: var(--action-text-high);
 		}
 	}
 	.collections {
