@@ -28,6 +28,28 @@
 		align-items: center;
 		justify-content: center;
 		flex-wrap: wrap;
+		background-image: linear-gradient(
+			180deg,
+			hsl(227deg 87% 9%) 0%,
+			hsl(217deg 83% 16%) 29%,
+			hsl(208deg 80% 24%) 46%,
+			hsl(197deg 76% 31%) 60%,
+			hsl(188deg 72% 38%) 74%,
+			hsl(178deg 68% 45%) 87%,
+			hsl(168deg 64% 52%) 100%
+		);
+		@include desktop {
+			background-image: linear-gradient(
+				60deg,
+				hsl(227deg 87% 9%) 0%,
+				hsl(217deg 83% 16%) 29%,
+				hsl(208deg 80% 24%) 46%,
+				hsl(197deg 76% 31%) 60%,
+				hsl(188deg 72% 38%) 74%,
+				hsl(178deg 68% 45%) 87%,
+				hsl(168deg 64% 52%) 100%
+			); // https://www.joshwcomeau.com/gradient-generator?colors=030c2c|37d3b4&angle=180&colorMode=hsl&precision=5&easingCurve=0.2413793103448276|1.0002020474137931|0.6853448275862069|0.40106411637931033
+		}
 	}
 	section {
 		display: flex;
@@ -53,12 +75,18 @@
 		justify-content: center;
 		line-height: 1;
 		font-size: 5rem;
+		margin: 2rem 0 0;
 		@include tablet {
 			font-size: 8rem;
+		}
+		@include desktop {
+			margin: 0;
 		}
 		small {
 			line-height: 1;
 			font-size: 1.5rem;
+			color: white;
+			opacity: .65;
 			@include tablet {
 				font-size: 2rem;
 			}
@@ -66,7 +94,7 @@
 	}
 
 	img {
-		max-width: 900px;
+		max-width: min(100%, 900px);
 		max-height: 90vh;
 		border-radius: 20px;
 		object-fit: contain;
@@ -92,7 +120,8 @@
 	}
 	p {
 		max-width: 450px;
-		color: #cccccc;
+		color: white;
+		opacity: .8;
 		text-align: center;
 		font-size: 1.2rem;
 		margin: 1rem auto 0;
