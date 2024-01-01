@@ -24,10 +24,110 @@ export class PlannerSettings {
 		new Date(new Date().setUTCHours(0, 0, 0, 0) + this.timezoneOffset * 60 * 60 * 1000),
 	);
 	end = $state(new Date());
-	collections = $state([]);
 
 	private initialSettings: ReturnType<PlannerSettings['serialize']> | undefined =
 		undefined;
+
+	design = {
+		aspectRatio: $state(0.75),
+		width: $state(702),
+	};
+
+	date = {
+		timezoneOffset: $state(new Date().getTimezoneOffset() / 60),
+		start: $state(new Date(new Date().setUTCHours(0, 0, 0, 0))),
+		end: $state(new Date(new Date().setUTCHours(0, 0, 0, 0))),
+		today: $state(new Date(new Date().setUTCHours(0, 0, 0, 0))),
+		startWeekOnSunday: $state(false),
+	};
+
+	years = $derived([
+		{
+			start: new Date(),
+			startWeek: new Date(), // The start day rounded down to the nearerst Sunday/Monday
+			end: new Date(),
+			numWeeks: 52,
+			numDays: 365,
+			quarters: [],
+			months: [
+				{
+					start: new Date(),
+					startWeek: new Date(),
+					end: new Date(),
+					numWeeks: 4,
+					numDays: 30,
+					weeks: [
+						{
+							start: new Date(),
+							startWeek: new Date(),
+							end: new Date(),
+							numDays: 7,
+							days: [
+								{
+									date: new Date(),
+								},
+							],
+						},
+					],
+				},
+			],
+		},
+	]);
+
+	sideNav = {
+		disable: $state(false),
+		showCollectionLinks: $state(true),
+		width: $state(52),
+		font: $state(''),
+	};
+
+	topNav = {
+		disable: $state(false),
+		showCollectionLinks: $state(true),
+		height: $state(45),
+		font: $state(''),
+	};
+
+	coverPage = {
+		disable: $state(false),
+		name: $state(''),
+		email: $state(''),
+		title: $state(''),
+		showCollectionLinks: $state(false),
+		font: $state(''),
+	};
+
+	yearPage = {
+		disable: $state(false),
+		template: $state('dotted'),
+		numNotePages: $state(1),
+	};
+
+	quarterPage = {
+		disable: $state(false),
+		template: $state('dotted'),
+		numNotePages: $state(1),
+	};
+
+	monthPage = {
+		disable: $state(false),
+		template: $state('dotted'),
+		numNotePages: $state(1),
+	};
+
+	weekPage = {
+		disable: $state(false),
+		template: $state('dotted'),
+		numNotePages: $state(1),
+	};
+
+	dayPage = {
+		disable: $state(false),
+		template: $state('dotted'),
+		numNotePages: $state(1),
+	};
+
+	collections = $state([]);
 
 	edits = $derived(
 		!this.initialSettings
