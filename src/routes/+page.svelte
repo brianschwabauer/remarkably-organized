@@ -1,7 +1,3 @@
-<script lang="ts">
-	import coverPhoto from './../../static/remarkably-organized-day-view.jpg';
-</script>
-
 <main>
 	<section>
 		<h1>
@@ -14,7 +10,9 @@
 		<a href="/planner">Start Creating</a>
 	</section>
 	<section>
-		<img src={coverPhoto} alt="Remarkably Organized Planner - Day View" />
+		<img
+			src="/remarkably-organized-day-view.jpg?url"
+			alt="Remarkably Organized Planner - Day View" />
 	</section>
 </main>
 
