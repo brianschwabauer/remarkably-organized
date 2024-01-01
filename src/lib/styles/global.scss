@@ -272,6 +272,7 @@ body {
 	font-weight: var(--font-weight-4);
 	-webkit-print-color-adjust: exact; /* Chrome/Safari/Edge/Opera */
 	print-color-adjust: exact; /* Chrome/Safari/Edge/Opera */
+	color-adjust: exact !important;
 
 	@media only screen {
 		background-color: #5f6368;
