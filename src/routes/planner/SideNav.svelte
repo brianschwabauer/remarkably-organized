@@ -100,7 +100,10 @@
 						{@const isPreviousWeekActive =
 							!disableActiveIndicator &&
 							weeks[i - 1]?.weekSinceYear === timeframe.weekSinceYear}
-						{@const shouldHighlight = !isActive && timeframe.month === week.month}
+						{@const shouldHighlight =
+							!isActive &&
+							timeframe.month === week.month &&
+							settings.weekPage.useWeekSinceYear}
 						{@const highlightStart =
 							shouldHighlight && isNextWeekInMonth && !isNextWeekActive}
 						{@const highlightEnd =
@@ -138,7 +141,8 @@
 							{@const isSaturday = day.start.getUTCDay() === 6}
 							{@const isSunday = day.start.getUTCDay() === 0}
 							{@const isWeekend = isSaturday || isSunday}
-							{@const shouldHighlight = !isActive && isWeekend}
+							{@const shouldHighlight =
+								!isActive && isWeekend && !settings.dayPage.showOnlyThisWeekInSideNav}
 							{@const highlightStart =
 								shouldHighlight && isSaturday && i < days.length - 1}
 							{@const highlighEnd = shouldHighlight && isSunday && i > 0}
