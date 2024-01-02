@@ -11,22 +11,21 @@
 	} = $props();
 
 	const cols = $derived(
-		columns ??
-			(display === 'lined' ||
+		display === 'lined' ||
 			display === 'lined-large' ||
 			display === 'numbered' ||
 			display === 'numbered-large'
-				? 1
-				: display === 'dotted' || display === 'grid'
-					? 30
-					: 20),
+			? columns ?? 1
+			: display === 'dotted' || display === 'grid'
+				? 30
+				: 20,
 	);
 	const numLines = $derived(lines ?? (display.endsWith('large') ? 30 : 40));
 </script>
 
 {#if display === 'dotted' || display === 'dotted-large'}
 	<div class="dots" style:--cols={cols}>
-		{#each new Array(cols * cols * aspectRatio) as _, i (i)}
+		{#each new Array(Math.ceil(cols * cols * aspectRatio)) as _, i (i)}
 			<div
 				class="dot"
 				class:last-col={i % cols === cols - 1}
@@ -43,7 +42,7 @@
 
 {#if display === 'grid' || display === 'grid-large'}
 	<div class="grid" style:--cols={cols}>
-		{#each new Array(cols * cols * aspectRatio) as _, i (i)}
+		{#each new Array(Math.ceil(cols * cols * aspectRatio)) as _, i (i)}
 			<div
 				class="line"
 				class:last-col={i % cols === cols - 1}
@@ -60,7 +59,7 @@
 
 {#if display === 'lined' || display === 'lined-large' || display === 'numbered' || display === 'numbered-large'}
 	<div class="lined" style:--cols={cols} style:--lines={numLines}>
-		{#each new Array(numLines * cols) as _, i (i)}
+		{#each new Array(Math.ceil(numLines * cols)) as _, i (i)}
 			{#if display === 'numbered' || display === 'numbered-large'}
 				<div class="line">{i + 1}&#41;</div>
 			{:else}
@@ -79,7 +78,7 @@
 		--dot-size: 1px;
 		--minor-dot-size: 2px;
 		--major-dot-size: 2px;
-		--dot-color: rgba(0, 0, 0, 0.75);
+		--dot-color: rgba(0, 0, 0, 0.85);
 		--minor-dot-color: rgba(0, 0, 0, 0.35);
 		--major-dot-color: rgba(0, 0, 0, 0.65);
 	}
@@ -142,11 +141,11 @@
 		grid-template-columns: repeat(var(--cols), 1fr);
 		padding: 0 calc(100% / var(--cols));
 		--line-size: 1px;
-		--minor-line-size: 2px;
-		--major-line-size: 2px;
-		--line-color: rgba(0, 0, 0, 0.2);
-		--minor-line-color: rgba(0, 0, 0, 0.15);
-		--major-line-color: rgba(0, 0, 0, 0.2);
+		--minor-line-size: 1px;
+		--major-line-size: 1px;
+		--line-color: rgba(0, 0, 0, 0.05);
+		--minor-line-color: rgba(0, 0, 0, 0.08);
+		--major-line-color: rgba(0, 0, 0, 0.15);
 		.line {
 			width: 100%;
 			aspect-ratio: 1;
