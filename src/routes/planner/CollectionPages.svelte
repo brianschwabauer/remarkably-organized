@@ -1,6 +1,12 @@
 <script lang="ts">
-	import type { Collection, PlannerSettings } from '$lib';
+	import {
+		getFirstDayOfWeek,
+		type Collection,
+		type PlannerSettings,
+		getTimeframe,
+	} from '$lib';
 	import Grid from '$lib/components/Grid.svelte';
+	import Page from '$lib/components/Page.svelte';
 	import SideNav from './SideNav.svelte';
 	import TopNav from './TopNav.svelte';
 
@@ -59,28 +65,50 @@
 								href: `#${collection.id}-${item + 1}`,
 							},
 						]} />
-					<div
-						class="collection {type}{type === collection.type
-							? ''
-							: ` ${collection.type}`}">
-						{#if type === 'month-checkbox'}
-							<!-- Month Checkbox -->
-						{:else if type === 'year-checkbox'}
-							<!-- Year Checkbox -->
-						{:else if type === 'lined'}
-							<Grid
-								display={collection.type}
-								columns={collection.columns}
-								lines={collection.lines} />
-						{:else if type === 'numbered'}
-							<Grid
-								display={collection.type}
-								columns={collection.columns}
-								lines={collection.lines} />
-						{:else if type !== 'blank'}
-							<Grid display={collection.type} />
-						{/if}
-					</div>
+					<Page
+						display={collection.type}
+						{settings}
+						columns={collection.columns}
+						lines={collection.lines}
+						timeframe={!collection.start
+							? undefined
+							: getTimeframe(
+									collection.start.getUTCFullYear(),
+									collection.start.getUTCMonth() + 1,
+									collection.start.getUTCDate(),
+								)} />
+					<!-- timeframe={!collection.start
+							? undefined
+							: {
+									start: collection.start,
+									end: collection.end || collection.start,
+									id: collection.id,
+									year: collection.start.getUTCFullYear(),
+									month: collection.start.getUTCMonth() + 1,
+									nameLong: '',
+									nameShort: '',
+									weekStart: new Date(getFirstDayOfWeek(collection.start)),
+									daySinceMonth: collection.start.getUTCDate(),
+									daySinceWeek: collection.start.getUTCDay(),
+									daySinceYear: Math.floor(
+										(collection.start.getTime() -
+											getFirstDayOfWeek(
+												Date.UTC(collection.start.getUTCFullYear(), 0, 1),
+											)) /
+											86400000,
+									),
+									quarter: Math.floor(collection.start.getUTCMonth() / 3) + 1,
+									weekSinceMonth: Math.floor(
+										(collection.start.getUTCDate() - 1) / 7,
+									),
+									weekSinceYear: Math.floor(
+										(collection.start.getTime() -
+											getFirstDayOfWeek(
+												Date.UTC(collection.start.getUTCFullYear(), 0, 1),
+											)) /
+											604800000,
+									),
+								}} /> -->
 				</article>
 			{/each}
 		{/each}

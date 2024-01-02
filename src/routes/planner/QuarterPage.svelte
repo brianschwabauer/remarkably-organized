@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { PlannerSettings, Quarter } from '$lib';
+	import Page from '$lib/components/Page.svelte';
 	import SideNav from './SideNav.svelte';
 	import TopNav from './TopNav.svelte';
 
@@ -9,15 +10,28 @@
 <article id={`${quarter.id}`}>
 	<SideNav {settings} tabs="quarter" timeframe={quarter}></SideNav>
 	<TopNav {settings} timeframe={quarter} />
-	Quarter {quarter.quarter}
+	<Page {settings} display="navigate-quarter" timeframe={quarter} />
 </article>
+
+{#if settings.quarterPage.notePagesAmount > 0}
+	{#each new Array(settings.quarterPage.notePagesAmount) as _, i}
+		<article>
+			<SideNav {settings} tabs="quarter" timeframe={quarter} />
+			<TopNav {settings} timeframe={quarter} />
+			<Page
+				display={settings.quarterPage.notePagesTemplate}
+				{settings}
+				timeframe={quarter} />
+		</article>
+	{/each}
+{/if}
 
 <style lang="scss">
 	article {
 		display: flex;
 		align-items: center;
-		justify-content: center;
 		flex-direction: column;
 		padding-left: var(--sidenav-width);
+		padding-top: var(--topnav-height);
 	}
 </style>

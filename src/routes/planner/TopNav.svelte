@@ -59,7 +59,7 @@
 			{/if}
 			{#if showWeekBreadcrumb}
 				<li>
-					<a href="#{timeframe.year}-wk{timeframe.weekSinceYear}">
+					<a href="#{timeframe.year}-{timeframe.month}-wk{timeframe.weekSinceMonth}">
 						{#if settings.weekPage.useWeekSinceYear}
 							{#if !showYearBreadcrumb && !showMonthBreadcrumb}
 								{timeframe.year}

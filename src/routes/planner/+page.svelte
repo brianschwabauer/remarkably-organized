@@ -12,7 +12,6 @@
 	import WeekPage from './WeekPage.svelte';
 	import DayPage from './DayPage.svelte';
 	import CollectionPages from './CollectionPages.svelte';
-	import { browser } from '$app/environment';
 	import HelpModal from './HelpModal.svelte';
 	let { data } = $props();
 	const { settings } = data;
@@ -31,9 +30,27 @@
 		{ name: 'Numbered - Small', value: 'numbered-small' },
 		{ name: 'Numbered - Medium', value: 'numbered' },
 		{ name: 'Numbered - Large', value: 'numbered-large' },
-		{ name: 'Habit Checkboxes - Year', value: 'year-checkbox' },
-		{ name: 'Habit Checkboxes - Month', value: 'month-checkbox' },
+		{ name: 'Notes - Yearly', value: 'notes-year' },
+		{ name: 'Notes - Quarterly', value: 'notes-quarter' },
+		{ name: 'Notes - Monthly', value: 'notes-month' },
+		{ name: 'Notes - Weekly', value: 'notes-week' },
+		{ name: 'Notes - Daily', value: 'notes-day' },
+		{ name: 'Habit Checkboxes - Year', value: 'checkbox-year' },
+		{ name: 'Habit Checkboxes - Month', value: 'checkbox-month' },
 	];
+
+	function getAvailablePageTemplates(
+		location: 'collection' | 'year' | 'month' | 'quarter' | 'week' | 'day',
+	) {
+		if (location === 'collection') return pageTemplates;
+		const order = ['year', 'quarter', 'month', 'week', 'day'];
+		return pageTemplates.filter((t) => {
+			if (!t.value.startsWith('notes') && !t.value.startsWith('checkbox')) return true;
+			const timeframe = t.value.split('-')[1];
+			if (!order.includes(timeframe)) return true;
+			return order.indexOf(timeframe) <= order.indexOf(location);
+		});
+	}
 
 	let showHelp = $state($page.url.searchParams.get('help') !== '0');
 	let showMenu = $state(true);
@@ -71,6 +88,17 @@
 			const date = new Date(target.value);
 			date.setUTCHours(0, 0, 0, 0);
 			if (date.getTime()) settings.date.end = date;
+		} catch (error) {
+			// ignore
+		}
+	}
+	function onCollectionDateChange(index: number, e: Event) {
+		const target = e.target as HTMLInputElement;
+		if (!target.value || !settings.collections[index]) return;
+		try {
+			const date = new Date(target.value);
+			date.setUTCHours(0, 0, 0, 0);
+			if (date.getTime()) settings.collections[index].start = date;
 		} catch (error) {
 			// ignore
 		}
@@ -189,21 +217,21 @@
 				</div>
 				{#if !settings.yearPage.disable}
 					<fieldset>
-						<label for="yearNotePagesAmount">Extra Pages Amount</label>
+						<label for="yearNotePagesAmount">Additional Note Pages</label>
 						<input
 							type="number"
-							placeholder="Extra Pages Amount"
+							placeholder="Additional Note Pages"
 							id="yearNotePagesAmount"
-							min="1"
+							min="0"
 							step="1"
 							bind:value={settings.yearPage.notePagesAmount} />
 					</fieldset>
 					<fieldset>
-						<label for="yearNotePagesTemplate">Extra Pages Template</label>
+						<label for="yearNotePagesTemplate">Additional Note Pages Template</label>
 						<select
 							id="yearNotePagesTemplate"
 							bind:value={settings.yearPage.notePagesTemplate}>
-							{#each pageTemplates as template}
+							{#each getAvailablePageTemplates('year') as template (template.value)}
 								<option value={template.value}>{template.name}</option>
 							{/each}
 						</select>
@@ -220,21 +248,21 @@
 				</div>
 				{#if !settings.quarterPage.disable}
 					<fieldset>
-						<label for="quarterNotePagesAmount">Extra Pages Amount</label>
+						<label for="quarterNotePagesAmount">Additional Note Pages</label>
 						<input
 							type="number"
-							placeholder="Extra Pages Amount"
+							placeholder="Additional Note Pages"
 							id="quarterNotePagesAmount"
-							min="1"
+							min="0"
 							step="1"
 							bind:value={settings.quarterPage.notePagesAmount} />
 					</fieldset>
 					<fieldset>
-						<label for="quarterNotePagesTemplate">Extra Pages Template</label>
+						<label for="quarterNotePagesTemplate">Additional Note Pages Template</label>
 						<select
 							id="quarterNotePagesTemplate"
 							bind:value={settings.quarterPage.notePagesTemplate}>
-							{#each pageTemplates as template}
+							{#each getAvailablePageTemplates('quarter') as template (template.value)}
 								<option value={template.value}>{template.name}</option>
 							{/each}
 						</select>
@@ -251,21 +279,21 @@
 				</div>
 				{#if !settings.monthPage.disable}
 					<fieldset>
-						<label for="monthNotePagesAmount">Extra Pages Amount</label>
+						<label for="monthNotePagesAmount">Additional Note Pages</label>
 						<input
 							type="number"
-							placeholder="Extra Pages Amount"
+							placeholder="Additional Note Pages"
 							id="monthNotePagesAmount"
-							min="1"
+							min="0"
 							step="1"
 							bind:value={settings.monthPage.notePagesAmount} />
 					</fieldset>
 					<fieldset>
-						<label for="monthNotePagesTemplate">Extra Pages Template</label>
+						<label for="monthNotePagesTemplate">Additional Note Pages Template</label>
 						<select
 							id="monthNotePagesTemplate"
 							bind:value={settings.monthPage.notePagesTemplate}>
-							{#each pageTemplates as template}
+							{#each getAvailablePageTemplates('month') as template (template.value)}
 								<option value={template.value}>{template.name}</option>
 							{/each}
 						</select>
@@ -282,21 +310,21 @@
 				</div>
 				{#if !settings.weekPage.disable}
 					<fieldset>
-						<label for="weekNotePagesAmount">Extra Pages Amount</label>
+						<label for="weekNotePagesAmount">Additional Note Pages</label>
 						<input
 							type="number"
-							placeholder="Extra Pages Amount"
+							placeholder="Additional Note Pages"
 							id="weekNotePagesAmount"
-							min="1"
+							min="0"
 							step="1"
 							bind:value={settings.weekPage.notePagesAmount} />
 					</fieldset>
 					<fieldset>
-						<label for="weekNotePagesTemplate">Extra Pages Template</label>
+						<label for="weekNotePagesTemplate">Additional Note Pages Template</label>
 						<select
 							id="weekNotePagesTemplate"
 							bind:value={settings.weekPage.notePagesTemplate}>
-							{#each pageTemplates as template}
+							{#each getAvailablePageTemplates('week') as template (template.value)}
 								<option value={template.value}>{template.name}</option>
 							{/each}
 						</select>
@@ -327,21 +355,21 @@
 				</div>
 				{#if !settings.dayPage.disable}
 					<fieldset>
-						<label for="dayNotePagesAmount">Extra Pages Amount</label>
+						<label for="dayNotePagesAmount">Additional Note Pages</label>
 						<input
 							type="number"
-							placeholder="Extra Pages Amount"
+							placeholder="Additional Note Pages"
 							id="dayNotePagesAmount"
-							min="1"
+							min="0"
 							step="1"
 							bind:value={settings.dayPage.notePagesAmount} />
 					</fieldset>
 					<fieldset>
-						<label for="dayNotePagesTemplate">Extra Pages Template</label>
+						<label for="dayNotePagesTemplate">Additional Note Pages Template</label>
 						<select
 							id="dayNotePagesTemplate"
 							bind:value={settings.dayPage.notePagesTemplate}>
-							{#each pageTemplates as template}
+							{#each getAvailablePageTemplates('day') as template (template.value)}
 								<option value={template.value}>{template.name}</option>
 							{/each}
 						</select>
@@ -437,6 +465,19 @@
 										bind:value={collection.columns} />
 								</fieldset>
 							{/if}
+							{#if collection.type.startsWith('notes') || collection.type.startsWith('checkbox') || collection.type.startsWith('navigate')}
+								<fieldset style="margin-top: 1rem;">
+									<label for="start">Collection Date</label>
+									<input
+										type="date"
+										placeholder="Collection Date"
+										id="start"
+										value={!collection.start
+											? ''
+											: collection.start.toISOString().slice(0, 10)}
+										on:change={(e) => onCollectionDateChange(i, e)} />
+								</fieldset>
+							{/if}
 							<button
 								type="button"
 								on:click={() => settings.collections.splice(i, 1)}
@@ -451,8 +492,11 @@
 							settings.collections.push({
 								name: 'Notes',
 								id: `${Date.now()}`,
-								total: 20,
+								total: 40,
 								type: 'blank',
+								numIndexPages: 1,
+								numPagesPerItem: 1,
+								columns: 1,
 							})}>
 						Add New Collection
 					</button>

@@ -4,7 +4,7 @@
  * 'grid' - Each page in the collection will have a grid printed on it
  * 'dotted' - Each page in the collection will have a grid of dots printed on it
  * 'lined' - Each page in the collection will be printed with lines
- * 'year-checkbox' - A collection of checkboxes for each day of the year
+ * 'checkbox-year' - A collection of checkboxes for each day of the year
  * 'month-checkbox' - A collection of checkboxes for each day of the month
  */
 export type PageTemplate =
@@ -21,8 +21,15 @@ export type PageTemplate =
 	| 'numbered'
 	| 'numbered-small'
 	| 'numbered-large'
-	| 'year-checkbox'
-	| 'month-checkbox';
+	| 'navigate-year'
+	| 'navigate-quarter'
+	| 'notes-year'
+	| 'notes-quarter'
+	| 'notes-month'
+	| 'notes-week'
+	| 'notes-day'
+	| 'checkbox-year'
+	| 'checkbox-month';
 
 export interface Collection {
 	/** The URL friendly slug used to link & id the collection */
@@ -37,7 +44,7 @@ export interface Collection {
 	 * 'grid' - Each page in the collection will have a grid printed on it
 	 * 'dotted' - Each page in the collection will have a grid of dots printed on it
 	 * 'lined' - Each page in the collection will be printed with lines
-	 * 'year-checkbox' - A collection of checkboxes for each day of the year
+	 * 'checkbox-year' - A collection of checkboxes for each day of the year
 	 * 'month-checkbox' - A collection of checkboxes for each day of the month
 	 */
 	type: PageTemplate;
@@ -57,9 +64,9 @@ export interface Collection {
 	/** The number of pages each item in the collection has */
 	numPagesPerItem?: number;
 
-	/** The start date of the collection (only applies to year-checkbox & month-checkbox) */
+	/** The start date of the collection (only applies to checkbox-year & month-checkbox) */
 	start?: Date;
 
-	/** The end date of the collection (only applies to year-checkbox & month-checkbox) */
+	/** The end date of the collection (only applies to checkbox-year & month-checkbox) */
 	end?: Date;
 }
