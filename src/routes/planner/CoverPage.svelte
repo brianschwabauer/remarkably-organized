@@ -1,85 +1,115 @@
 <script lang="ts">
-	let {
-		name = '',
-		email = '',
-		start = new Date() as Date,
-		end = new Date() as Date,
-		today = undefined as Date | undefined,
-		dark = true,
-		links = [] as { name: string; href: string }[],
-	} = $props();
+	import type { PlannerSettings } from '$lib';
+
+	let { settings = {} as PlannerSettings } = $props();
+
+	const plannerLink = $derived(
+		!settings.yearPage.disable
+			? `#${settings.years[0].id}`
+			: !settings.quarterPage.disable
+				? `#${settings.quarters[0].id}`
+				: !settings.monthPage.disable
+					? `#${settings.months[0].id}`
+					: !settings.weekPage.disable
+						? `#${settings.weeks[0].id}`
+						: !settings.dayPage.disable
+							? `#${settings.days[0].id}`
+							: '',
+	);
 </script>
 
-<article class:dark id="home">
+<article class:dark={settings.coverPage.darkBackground} id="home">
 	<header>
-		{#if start.getUTCFullYear() !== end.getUTCFullYear()}
+		{#if settings.coverPage.title}
+			<h1 class="title">{settings.coverPage.title}</h1>
+		{:else if settings.years.length > 1}
 			<h1 class="multi-year">
 				<div class="start">
 					<small>
-						{start.toLocaleString('default', { month: 'long', timeZone: 'UTC' })}
+						{settings.years[0].start.toLocaleString('default', {
+							month: 'long',
+							timeZone: 'UTC',
+						})}
 					</small>
-					{start.getUTCFullYear()}
+					{settings.years[0].year}
 				</div>
 				<div class="separator">-</div>
 				<div class="end">
 					<small>
-						{end.toLocaleString('default', { month: 'long', timeZone: 'UTC' })}
+						{settings.years[settings.years.length - 1].end.toLocaleString('default', {
+							month: 'long',
+							timeZone: 'UTC',
+						})}
 					</small>
-					{end.getUTCFullYear()}
+					{settings.years[settings.years.length - 1].year}
 				</div>
 			</h1>
 		{:else}
-			<h1>{start.getUTCFullYear()}</h1>
+			<h1>{settings.years[0].year}</h1>
 		{/if}
-		{#if today}
-			{@const quarter = Math.floor(today.getUTCMonth() / 3) + 1}
-			{@const monthName = today.toLocaleString('default', {
+		{#if settings.date.today && settings.coverPage.showCurrentDay}
+			{@const quarter = Math.floor(settings.date.today.getUTCMonth() / 3) + 1}
+			{@const monthName = settings.date.today.toLocaleString('default', {
 				month: 'long',
 				timeZone: 'UTC',
 			})}
-			{@const dayName = today.toLocaleString('default', {
+			{@const dayName = settings.date.today.toLocaleString('default', {
 				weekday: 'long',
 				timeZone: 'UTC',
 			})}
-			{@const currentWeek = Math.ceil(today.getUTCDate() / 7)}
+			{@const currentWeek = Math.ceil(settings.date.today.getUTCDate() / 7)}
 			{@const dateOrdinal =
-				today.getUTCDate() > 0
+				settings.date.today.getUTCDate() > 0
 					? ['th', 'st', 'nd', 'rd'][
-							(today.getUTCDate() > 3 && today.getUTCDate() < 21) ||
-							today.getUTCDate() > 23
+							(settings.date.today.getUTCDate() > 3 &&
+								settings.date.today.getUTCDate() < 21) ||
+							settings.date.today.getUTCDate() > 23
 								? 0
-								: today.getUTCDate() % 10
+								: settings.date.today.getUTCDate() % 10
 						]
 					: ''}
 			<div class="actions">
-				<a href="#{today.getUTCFullYear()}">{today.getUTCFullYear()}</a>
-				<a href="#{today.getUTCFullYear()}-q{quarter}">Q{quarter}</a>
-				<a href="#{today.getUTCFullYear()}-{today.getUTCMonth() + 1}">{monthName}</a>
-				<a href="#{today.getUTCFullYear()}-{today.getUTCMonth() + 1}-w{currentWeek}">
+				<a href="#{settings.date.today.getUTCFullYear()}">
+					{settings.date.today.getUTCFullYear()}
+				</a>
+				<a href="#{settings.date.today.getUTCFullYear()}-q{quarter}">Q{quarter}</a>
+				<a
+					href="#{settings.date.today.getUTCFullYear()}-{settings.date.today.getUTCMonth() +
+						1}">
+					{monthName}
+				</a>
+				<a
+					href="#{settings.date.today.getUTCFullYear()}-{settings.date.today.getUTCMonth() +
+						1}-w{currentWeek}">
 					{dayName}
 				</a>
 				<a
-					href="#{today.getUTCFullYear()}-{today.getUTCMonth() + 1}-{today.getUTCDate()}">
-					{today.getUTCDate()}
+					href="#{settings.date.today.getUTCFullYear()}-{settings.date.today.getUTCMonth() +
+						1}-{settings.date.today.getUTCDate()}">
+					{settings.date.today.getUTCDate()}
 					<small>{dateOrdinal}</small>
 				</a>
 			</div>
 		{/if}
-		{#if links?.length}
+		{#if settings.collections?.length && settings.coverPage.showCollectionLinks}
 			<div class="links">
-				{#each links as link, i (link.href)}
-					<a href={link.href}>{link.name}</a>
-					{#if i !== links.length - 1}
+				{#if plannerLink}<a href={plannerLink}>Planner</a>{/if}
+				{#if plannerLink && settings.collections.length}
+					<span class="separator">/</span>
+				{/if}
+				{#each settings.collections as collection, i (collection.id)}
+					<a href="#{collection.id}">{collection.name}</a>
+					{#if i !== settings.collections.length - 1}
 						<span class="separator">/</span>
 					{/if}
 				{/each}
 			</div>
 		{/if}
 	</header>
-	{#if name || email}
+	{#if settings.coverPage.name || settings.coverPage.email}
 		<footer>
-			{name}
-			<small>{email}</small>
+			{settings.coverPage.name}
+			<small>{settings.coverPage.email}</small>
 		</footer>
 	{/if}
 </article>
@@ -149,6 +179,13 @@
 		line-height: 1;
 		text-align: center;
 		margin: 0;
+		padding: 0 2rem;
+		text-wrap: balance;
+		&.title {
+			font-size: 5rem;
+			font-family: var(--font);
+			font-weight: bold;
+		}
 		&.multi-year {
 			display: flex;
 			font-size: 8rem;

@@ -1,47 +1,25 @@
 <script lang="ts">
-	import type { Collection } from '$lib';
+	import type { Collection, PlannerSettings } from '$lib';
 	import Grid from '$lib/components/Grid.svelte';
 	import SideNav from './SideNav.svelte';
 	import TopNav from './TopNav.svelte';
 
-	let {
-		start = new Date() as Date,
-		end = new Date() as Date,
-		date = start as Date,
-		year = date.getUTCFullYear() as number,
-		collection = undefined as undefined | Collection,
-		links = [] as { name: string; href: string }[],
-		startWeekOnSunday = false,
-		disableCoverPage = false,
-		disableYears = false,
-		disableMonths = false,
-		disableTopNavLinks = false,
-		disableSideNavLinks = false,
-	} = $props();
+	let { collection = {} as Collection, settings = {} as PlannerSettings } = $props();
+	const year = $derived(settings.years[0]);
 </script>
 
 {#if collection}
 	{#each new Array(collection.numIndexPages) as _, indexPage (indexPage)}
 		<article
 			id={`${indexPage === 0 ? collection.id : collection.id + `-${indexPage + 1}`}`}>
-			<TopNav
-				{disableCoverPage}
-				disableYears
-				disableQuarters
-				disableMonths
-				disableWeeks
-				disableDays
-				links={disableTopNavLinks ? [] : links}
-				breadcrumbs={[{ name: collection.name, href: `#${collection.id}` }]}
-				{date} />
 			<SideNav
-				{start}
-				{end}
-				{year}
-				{date}
-				disableActiveIndicator
-				links={disableSideNavLinks ? [] : links}
-				tabs={!disableMonths ? 'month' : 'none'}></SideNav>
+				tabs={!settings.monthPage.disable ? 'month' : 'none'}
+				{settings}
+				timeframe={year}
+				disableActiveIndicator></SideNav>
+			<TopNav
+				{settings}
+				breadcrumbs={[{ name: collection.name, href: `#${collection.id}` }]} />
 			<div class="collection-index">
 				{#each new Array(collection.total) as _, i (i)}
 					<a
@@ -58,30 +36,20 @@
 			{#each new Array(Math.max(1, collection.numPagesPerItem || 1)) as _, itemPage (itemPage)}
 				<article
 					id={`${collection.id}-${item + 1}${itemPage === 0 ? '' : `-${itemPage + 1}`}`}>
+					<SideNav
+						tabs={!settings.monthPage.disable ? 'month' : 'none'}
+						{settings}
+						timeframe={year}
+						disableActiveIndicator />
 					<TopNav
-						{disableCoverPage}
-						disableYears
-						disableQuarters
-						disableMonths
-						disableWeeks
-						disableDays
-						links={disableTopNavLinks ? [] : links}
+						{settings}
 						breadcrumbs={[
 							{ name: collection.name, href: `#${collection.id}` },
 							{
 								name: `${item + 1}${itemPage === 0 ? '' : `-${itemPage + 1}`}`,
 								href: `#${collection.id}-${item + 1}`,
 							},
-						]}
-						{date} />
-					<SideNav
-						{start}
-						{end}
-						{year}
-						{date}
-						disableActiveIndicator
-						links={disableSideNavLinks ? [] : links}
-						tabs={!disableMonths ? 'month' : 'none'}></SideNav>
+						]} />
 					<div class="collection {collection.type}">
 						{#if collection.type === 'month-checkbox'}
 							<!-- Month Checkbox -->

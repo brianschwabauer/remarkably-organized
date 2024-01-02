@@ -10,36 +10,26 @@
 	import YearPage from './YearPage.svelte';
 	import QuarterPage from './QuarterPage.svelte';
 	import WeekPage from './WeekPage.svelte';
-	import { getFirstDayOfWeek } from '$lib';
 	import DayPage from './DayPage.svelte';
 	import CollectionPages from './CollectionPages.svelte';
 	import { browser } from '$app/environment';
 	import HelpModal from './HelpModal.svelte';
 	let { data } = $props();
-	const { today, aspectRatio, sidebarWidth, topbarHeight } = data;
+	const { settings } = data;
 
-	let showLinksOnCoverPage = $state(data.showLinksOnCoverPage);
-	let showLinksOnSideNav = $state(data.showLinksOnSideNav);
-	let showLinksOnTopNav = $state(data.showLinksOnTopNav);
-	let startWeekOnSunday = $state(data.startWeekOnSunday);
-	let disableCoverPage = $state(data.disableCoverPage);
-	let disableYears = $state(data.disableYears);
-	let disableQuarters = $state(data.disableQuarters);
-	let disableMonths = $state(data.disableMonths);
-	let disableWeeks = $state(data.disableWeeks);
-	let disableDays = $state(data.disableDays);
-
-	let collections = $state(data.collections);
-	let name = $state(data.name);
-	let email = $state(data.email);
-	let start = $state(data.start);
-	let end = $state(data.end);
-	let links = $derived(
-		collections.map((collection) => ({
-			name: collection.name,
-			href: `#${collection.id}`,
-		})),
-	);
+	const pageTemplates = [
+		{ name: 'Blank Page', value: 'blank' },
+		{ name: 'Dotted Grid', value: 'dotted' },
+		{ name: 'Dotted Grid - Large', value: 'dotted-large' },
+		{ name: 'Grid', value: 'grid' },
+		{ name: 'Grid - Large', value: 'grid-large' },
+		{ name: 'Lined', value: 'lined' },
+		{ name: 'Lined - Large', value: 'lined-large' },
+		{ name: 'Numbered', value: 'numbered' },
+		{ name: 'Numbered - Large', value: 'numbered-large' },
+		{ name: 'Habit Checkboxes - Year', value: 'year-checkbox' },
+		{ name: 'Habit Checkboxes - Month', value: 'month-checkbox' },
+	];
 
 	let showHelp = $state($page.url.searchParams.get('help') !== '0');
 	let showMenu = $state(true);
@@ -51,49 +41,40 @@
 		}
 	});
 
+	let settingsUrlInitialized = false;
 	$effect(() => {
 		const url = new URL(untrack(() => $page.url));
-		url.searchParams.set('name', name);
-		url.searchParams.set('email', email);
-		url.searchParams.set('start', `${start.getTime()}`);
-		url.searchParams.set('end', `${end.getTime()}`);
-		url.searchParams.set('collections', JSON.stringify(collections));
-		if (showLinksOnCoverPage) {
-			url.searchParams.set('showLinksOnCoverPage', '1');
-		} else {
-			url.searchParams.delete('showLinksOnCoverPage');
+		if (settings.edits) {
+			url.searchParams.set('settings', JSON.stringify(settings.edits));
+			replaceState(url, {});
+		} else if (settingsUrlInitialized) {
+			url.searchParams.delete('settings');
+			replaceState(url, {});
 		}
-		if (startWeekOnSunday) {
-			url.searchParams.set('startWeekOnSunday', '1');
-		} else {
-			url.searchParams.delete('startWeekOnSunday');
-		}
-		if (showLinksOnSideNav) {
-			url.searchParams.set('showLinksOnSideNav', '1');
-		} else {
-			url.searchParams.set('showLinksOnSideNav', '0');
-		}
-		if (showLinksOnTopNav) {
-			url.searchParams.set('showLinksOnTopNav', '1');
-		} else {
-			url.searchParams.delete('showLinksOnTopNav');
-		}
-		replaceState(url, {});
+		settingsUrlInitialized = true;
 	});
 
 	function onStartDateChange(e: Event) {
 		const target = e.target as HTMLInputElement;
 		if (!target.value) return;
-		const date = new Date(target.value);
-		date.setUTCHours(0, 0, 0, 0);
-		start = date;
+		try {
+			const date = new Date(target.value);
+			date.setUTCHours(0, 0, 0, 0);
+			if (date.getTime()) settings.date.start = date;
+		} catch (error) {
+			// ignore
+		}
 	}
 	function onEndDateChange(e: Event) {
 		const target = e.target as HTMLInputElement;
 		if (!target.value) return;
-		const date = new Date(target.value);
-		date.setUTCHours(0, 0, 0, 0);
-		end = date;
+		try {
+			const date = new Date(target.value);
+			date.setUTCHours(0, 0, 0, 0);
+			if (date.getTime()) settings.date.end = date;
+		} catch (error) {
+			// ignore
+		}
 	}
 
 	function onHelpClose() {
@@ -126,8 +107,8 @@
 					type="date"
 					placeholder="Start Date"
 					id="start"
-					max={end.toISOString().slice(0, 10)}
-					value={start.toISOString().slice(0, 10)}
+					max={settings.date.end.toISOString().slice(0, 10)}
+					value={settings.date.start.toISOString().slice(0, 10)}
 					on:change={onStartDateChange} />
 			</fieldset>
 			<fieldset>
@@ -136,38 +117,270 @@
 					type="date"
 					placeholder="End Date"
 					id="end"
-					min={start.toISOString().slice(0, 10)}
-					value={end.toISOString().slice(0, 10)}
+					min={settings.date.start.toISOString().slice(0, 10)}
+					value={settings.date.end.toISOString().slice(0, 10)}
 					on:change={onEndDateChange} />
 			</fieldset>
-			<fieldset>
-				<label for="name">Name</label>
-				<input type="text" placeholder="Name" id="name" bind:value={name} />
-			</fieldset>
-			<fieldset>
-				<label for="email">Contact Info</label>
-				<input type="text" placeholder="Contact Info" id="email" bind:value={email} />
-			</fieldset>
+			<div class="checkbox">
+				<input
+					type="checkbox"
+					bind:checked={settings.date.startWeekOnSunday}
+					id="startWeekOnSunday" />
+				<label for="startWeekOnSunday">Start Week on Sunday</label>
+			</div>
+
 			{#if showAdvancedSettings}
+				<h3>Cover Page</h3>
+				<div class="checkbox">
+					<input
+						type="checkbox"
+						bind:checked={settings.coverPage.disable}
+						id="disableCoverPage" />
+					<label for="disableCoverPage">Disable Cover Page</label>
+				</div>
+				{#if !settings.coverPage.disable}
+					<fieldset>
+						<label for="coverPageTitle">Cover Page Title</label>
+						<input
+							type="text"
+							placeholder="Cover Page Title"
+							id="coverPageTitle"
+							bind:value={settings.coverPage.title} />
+					</fieldset>
+					<fieldset>
+						<label for="name">Contact Name</label>
+						<input
+							type="text"
+							placeholder="Name"
+							id="name"
+							bind:value={settings.coverPage.name} />
+					</fieldset>
+					<fieldset>
+						<label for="email">Contact Email/Phone</label>
+						<input
+							type="text"
+							placeholder="Contact Email/Phone"
+							id="email"
+							bind:value={settings.coverPage.email} />
+					</fieldset>
+					<div class="checkbox">
+						<input
+							type="checkbox"
+							bind:checked={settings.coverPage.showCollectionLinks}
+							id="coverPageShowCollectionLinks" />
+						<label for="coverPageShowCollectionLinks">Show Links to Collections</label>
+					</div>
+					<div class="checkbox">
+						<input
+							type="checkbox"
+							bind:checked={settings.coverPage.darkBackground}
+							id="coverPageDarkBackground" />
+						<label for="coverPageDarkBackground">Dark Background</label>
+					</div>
+				{/if}
+
+				<h3>Yearly View</h3>
+				<div class="checkbox">
+					<input
+						type="checkbox"
+						bind:checked={settings.yearPage.disable}
+						id="yearPageDisable" />
+					<label for="yearPageDisable">Disable Yearly View</label>
+				</div>
+				{#if !settings.yearPage.disable}
+					<fieldset>
+						<label for="yearNotePagesAmount">Extra Pages Amount</label>
+						<input
+							type="number"
+							placeholder="Extra Pages Amount"
+							id="yearNotePagesAmount"
+							bind:value={settings.yearPage.notePagesAmount} />
+					</fieldset>
+					<fieldset>
+						<label for="yearNotePagesTemplate">Extra Pages Template</label>
+						<select
+							id="yearNotePagesTemplate"
+							bind:value={settings.yearPage.notePagesTemplate}>
+							{#each pageTemplates as template}
+								<option value={template.value}>{template.name}</option>
+							{/each}
+						</select>
+					</fieldset>
+				{/if}
+
+				<h3>Quarterly View</h3>
+				<div class="checkbox">
+					<input
+						type="checkbox"
+						bind:checked={settings.quarterPage.disable}
+						id="quarterPageDisable" />
+					<label for="quarterPageDisable">Disable Quarterly View</label>
+				</div>
+				{#if !settings.quarterPage.disable}
+					<fieldset>
+						<label for="quarterNotePagesAmount">Extra Pages Amount</label>
+						<input
+							type="number"
+							placeholder="Extra Pages Amount"
+							id="quarterNotePagesAmount"
+							bind:value={settings.quarterPage.notePagesAmount} />
+					</fieldset>
+					<fieldset>
+						<label for="quarterNotePagesTemplate">Extra Pages Template</label>
+						<select
+							id="quarterNotePagesTemplate"
+							bind:value={settings.quarterPage.notePagesTemplate}>
+							{#each pageTemplates as template}
+								<option value={template.value}>{template.name}</option>
+							{/each}
+						</select>
+					</fieldset>
+				{/if}
+
+				<h3>Monthly View</h3>
+				<div class="checkbox">
+					<input
+						type="checkbox"
+						bind:checked={settings.monthPage.disable}
+						id="monthPageDisable" />
+					<label for="monthPageDisable">Disable Monthly View</label>
+				</div>
+				{#if !settings.monthPage.disable}
+					<fieldset>
+						<label for="monthNotePagesAmount">Extra Pages Amount</label>
+						<input
+							type="number"
+							placeholder="Extra Pages Amount"
+							id="monthNotePagesAmount"
+							bind:value={settings.monthPage.notePagesAmount} />
+					</fieldset>
+					<fieldset>
+						<label for="monthNotePagesTemplate">Extra Pages Template</label>
+						<select
+							id="monthNotePagesTemplate"
+							bind:value={settings.monthPage.notePagesTemplate}>
+							{#each pageTemplates as template}
+								<option value={template.value}>{template.name}</option>
+							{/each}
+						</select>
+					</fieldset>
+				{/if}
+
+				<h3>Weekly View</h3>
+				<div class="checkbox">
+					<input
+						type="checkbox"
+						bind:checked={settings.weekPage.disable}
+						id="weekPageDisable" />
+					<label for="weekPageDisable">Disable Weekly View</label>
+				</div>
+				{#if !settings.weekPage.disable}
+					<fieldset>
+						<label for="weekNotePagesAmount">Extra Pages Amount</label>
+						<input
+							type="number"
+							placeholder="Extra Pages Amount"
+							id="weekNotePagesAmount"
+							bind:value={settings.weekPage.notePagesAmount} />
+					</fieldset>
+					<fieldset>
+						<label for="weekNotePagesTemplate">Extra Pages Template</label>
+						<select
+							id="weekNotePagesTemplate"
+							bind:value={settings.weekPage.notePagesTemplate}>
+							{#each pageTemplates as template}
+								<option value={template.value}>{template.name}</option>
+							{/each}
+						</select>
+					</fieldset>
+					<div class="checkbox">
+						<input
+							type="checkbox"
+							bind:checked={settings.weekPage.useWeekSinceYear}
+							id="useWeekSinceYear" />
+						<label for="useWeekSinceYear">Use week number from start of year</label>
+					</div>
+				{/if}
+
+				<h3>Daily View</h3>
+				<div class="checkbox">
+					<input
+						type="checkbox"
+						bind:checked={settings.dayPage.disable}
+						id="dayPageDisable" />
+					<label for="dayPageDisable">Disable Daily View</label>
+				</div>
+				{#if !settings.dayPage.disable}
+					<fieldset>
+						<label for="dayNotePagesAmount">Extra Pages Amount</label>
+						<input
+							type="number"
+							placeholder="Extra Pages Amount"
+							id="dayNotePagesAmount"
+							bind:value={settings.dayPage.notePagesAmount} />
+					</fieldset>
+					<fieldset>
+						<label for="dayNotePagesTemplate">Extra Pages Template</label>
+						<select
+							id="dayNotePagesTemplate"
+							bind:value={settings.dayPage.notePagesTemplate}>
+							{#each pageTemplates as template}
+								<option value={template.value}>{template.name}</option>
+							{/each}
+						</select>
+					</fieldset>
+				{/if}
+
+				<h3>Sidebar Navigation</h3>
+				<div class="checkbox">
+					<input
+						type="checkbox"
+						bind:checked={settings.sideNav.disable}
+						id="sideNavDisable" />
+					<label for="sideNavDisable">Disable Sidebar</label>
+				</div>
+				{#if !settings.sideNav.disable}
+					<div class="checkbox">
+						<input
+							type="checkbox"
+							bind:checked={settings.sideNav.showCollectionLinks}
+							id="sideNavShowCollectionLinks" />
+						<label for="sideNavShowCollectionLinks">Show Links to Collections</label>
+					</div>
+				{/if}
+
+				<h3>Topbar Navigation</h3>
+				<div class="checkbox">
+					<input
+						type="checkbox"
+						bind:checked={settings.topNav.disable}
+						id="topNavDisable" />
+					<label for="topNavDisable">Disable Topbar</label>
+				</div>
+				{#if !settings.topNav.disable}
+					<div class="checkbox">
+						<input
+							type="checkbox"
+							bind:checked={settings.topNav.showCollectionLinks}
+							id="topNavShowCollectionLinks" />
+						<label for="topNavShowCollectionLinks">Show Links to Collections</label>
+					</div>
+				{/if}
+
 				<h3>Collections</h3>
 				<div class="collections">
-					{#each collections as collection, i (collection.id)}
+					{#each settings.collections as collection, i (collection.id)}
 						<fieldset>
 							<label for="">Collection {i + 1}</label>
 							<input type="text" bind:value={collection.name} placeholder="Name" />
-							<select bind:value={collection.type}>
-								<option value="blank">Blank Page</option>
-								<option value="dotted">Dotted Grid</option>
-								<option value="dotted-large">Dotted Grid - Large</option>
-								<option value="grid">Grid</option>
-								<option value="grid-large">Grid - Large</option>
-								<option value="lined">Lined</option>
-								<option value="lined-large">Lined - Large</option>
-								<option value="numbered">Numbered</option>
-								<option value="numbered-large">Numbered - Large</option>
-								<option value="year-checkbox">Habit Checkboxes - Year</option>
-								<option value="month-checkbox">Habit Checkboxes - Month</option>
-							</select>
+							<fieldset style="margin-top: 1rem;">
+								<label for="collection-{collection.id}-type">Page Template</label>
+								<select id="collection-{collection.id}-type" bind:value={collection.type}>
+									{#each pageTemplates as template}
+										<option value={template.value}>{template.name}</option>
+									{/each}
+								</select>
+							</fieldset>
 							<fieldset style="margin-top: 1rem;">
 								<label for="numIndexPages">Number of Index Pages</label>
 								<input
@@ -196,7 +409,7 @@
 							{/if}
 							<button
 								type="button"
-								on:click={() => collections.splice(i, 1)}
+								on:click={() => settings.collections.splice(i, 1)}
 								style:color="var(--error)">
 								Remove Collection
 							</button>
@@ -205,7 +418,7 @@
 					<button
 						type="button"
 						on:click={() =>
-							collections.push({
+							settings.collections.push({
 								name: 'Notes',
 								id: `${Date.now()}`,
 								total: 20,
@@ -214,61 +427,11 @@
 						Add New Collection
 					</button>
 				</div>
-				<div class="checkbox">
-					<input
-						type="checkbox"
-						bind:checked={showLinksOnCoverPage}
-						id="showLinksOnCoverPage" />
-					<label for="showLinksOnCoverPage">Show Collections on Cover Page</label>
-				</div>
-				<div class="checkbox">
-					<input
-						type="checkbox"
-						bind:checked={showLinksOnSideNav}
-						id="showLinksOnSideNav" />
-					<label for="showLinksOnSideNav">Show Collections on Sidebar</label>
-				</div>
-				<div class="checkbox">
-					<input
-						type="checkbox"
-						bind:checked={showLinksOnTopNav}
-						id="showLinksOnTopNav" />
-					<label for="showLinksOnTopNav">Show Collections on Topbar</label>
-				</div>
-				<h3>Toggles</h3>
-				<div class="checkbox">
-					<input
-						type="checkbox"
-						bind:checked={startWeekOnSunday}
-						id="startWeekOnSunday" />
-					<label for="startWeekOnSunday">Start Week on Sunday</label>
-				</div>
-				<div class="checkbox">
-					<input type="checkbox" bind:checked={disableCoverPage} id="disableCoverPage" />
-					<label for="disableCoverPage">Disable Cover Page</label>
-				</div>
-				<div class="checkbox">
-					<input type="checkbox" bind:checked={disableYears} id="disableYears" />
-					<label for="disableYears">Disable Years</label>
-				</div>
-				<div class="checkbox">
-					<input type="checkbox" bind:checked={disableQuarters} id="disableQuarters" />
-					<label for="disableQuarters">Disable Quarters</label>
-				</div>
-				<div class="checkbox">
-					<input type="checkbox" bind:checked={disableMonths} id="disableMonths" />
-					<label for="disableMonths">Disable Months</label>
-				</div>
-				<div class="checkbox">
-					<input type="checkbox" bind:checked={disableWeeks} id="disableWeeks" />
-					<label for="disableWeeks">Disable Weeks</label>
-				</div>
-				<div class="checkbox">
-					<input type="checkbox" bind:checked={disableDays} id="disableDays" />
-					<label for="disableDays">Disable Days</label>
-				</div>
 			{:else}
-				<button type="button" on:click={() => (showAdvancedSettings = true)}>
+				<button
+					type="button"
+					style="margin: 1rem 0;"
+					on:click={() => (showAdvancedSettings = true)}>
 					Advanced Settings
 				</button>
 			{/if}
@@ -284,9 +447,9 @@
 
 <main
 	style:--doc-width="{702}px"
-	style:--doc-height="{702 * (1 / (aspectRatio || 1))}px"
-	style:--sidenav-width="{sidebarWidth}px"
-	style:--topnav-height="{topbarHeight}px">
+	style:--doc-height="{702 * (1 / (settings.design.aspectRatio || 1))}px"
+	style:--sidenav-width="{settings.sideNav.disable ? 0 : settings.sideNav.width}px"
+	style:--topnav-height="{settings.topNav.disable ? 0 : settings.topNav.height}px">
 	{#if !loadPages}
 		<article
 			style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
@@ -294,144 +457,37 @@
 			<LoadingIcon font-size="3rem" />
 		</article>
 	{/if}
-	{#if !disableCoverPage && loadPages}
-		<CoverPage {name} {email} {start} {end} links={showLinksOnCoverPage ? links : []} />
+	{#if !settings.coverPage.disable && loadPages}
+		<CoverPage {settings} />
 	{/if}
-	{#if !disableYears && loadPages}
-		{#each new Array(end.getUTCFullYear() - start.getUTCFullYear() + 1) as _, i}
-			{@const year = start.getUTCFullYear() + i}
-			<YearPage
-				{year}
-				{start}
-				{end}
-				{disableCoverPage}
-				{disableYears}
-				{links}
-				disableSideNavLinks={!showLinksOnSideNav}
-				disableTopNavLinks={!showLinksOnTopNav} />
+	{#if !settings.yearPage.disable && loadPages}
+		{#each settings.years as year, i}
+			<YearPage {settings} {year} />
 		{/each}
 	{/if}
-	{#if !disableQuarters && loadPages}
-		{#each new Array(end.getUTCFullYear() - start.getUTCFullYear() + 1) as _, i}
-			{@const year = start.getUTCFullYear() + i}
-			{@const startQuarter = i === 0 ? Math.floor(start.getUTCMonth() / 3) + 1 : 1}
-			{@const endQuarter =
-				year === end.getUTCFullYear() ? Math.floor(end.getUTCMonth() / 3) + 1 : 4}
-			{#each new Array(endQuarter - startQuarter + 1) as _, i}
-				{@const month = (startQuarter + i - 1) * 3}
-				<QuarterPage
-					{start}
-					{end}
-					{year}
-					date={new Date(year, month, 1)}
-					{disableCoverPage}
-					{disableDays}
-					{disableMonths}
-					{disableQuarters}
-					{disableWeeks}
-					{disableYears}
-					disableSideNavLinks={!showLinksOnSideNav}
-					disableTopNavLinks={!showLinksOnTopNav}
-					{links} />
-			{/each}
+	{#if !settings.quarterPage.disable && loadPages}
+		{#each settings.quarters as quarter, i (i)}
+			<QuarterPage {settings} {quarter} />
 		{/each}
 	{/if}
-	{#if !disableMonths && loadPages}
-		{#each new Array(end.getUTCFullYear() - start.getUTCFullYear() + 1) as _, i}
-			{@const year = start.getUTCFullYear() + i}
-			{@const startMonth = i === 0 ? start.getUTCMonth() + 1 : 1}
-			{@const endMonth = year === end.getUTCFullYear() ? end.getUTCMonth() + 1 : 12}
-			{#each new Array(endMonth - startMonth + 1) as _, i}
-				{@const month = startMonth + i}
-				<MonthPage
-					{start}
-					{end}
-					{year}
-					date={new Date(year, month - 1, 1)}
-					{disableCoverPage}
-					{disableDays}
-					{disableMonths}
-					{disableQuarters}
-					{disableWeeks}
-					{disableYears}
-					disableSideNavLinks={!showLinksOnSideNav}
-					disableTopNavLinks={!showLinksOnTopNav}
-					{links} />
-			{/each}
+	{#if !settings.monthPage.disable && loadPages}
+		{#each settings.months as month, i (i)}
+			<MonthPage {settings} {month} />
 		{/each}
 	{/if}
-	{#if !disableWeeks && loadPages}
-		{#each new Array(end.getUTCFullYear() - start.getUTCFullYear() + 1) as _, i}
-			{@const year = start.getUTCFullYear() + i}
-			{@const firstDay =
-				year === start.getUTCFullYear()
-					? getFirstDayOfWeek(start, startWeekOnSunday)
-					: getFirstDayOfWeek(`${year}-01-01`, startWeekOnSunday)}
-			{@const lastDay =
-				year === end.getUTCFullYear()
-					? end.getTime()
-					: new Date(`${year}-12-31`).getTime()}
-			{@const numWeeks = Math.floor((lastDay - firstDay) / 604800000) + 1}
-			{#each new Array(numWeeks) as _, i}
-				<WeekPage
-					{start}
-					{end}
-					{year}
-					date={new Date(firstDay + i * 604800000)}
-					{disableCoverPage}
-					{disableDays}
-					{disableMonths}
-					{disableQuarters}
-					{disableWeeks}
-					{disableYears}
-					{startWeekOnSunday}
-					disableSideNavLinks={!showLinksOnSideNav}
-					disableTopNavLinks={!showLinksOnTopNav}
-					{links} />
-			{/each}
+	{#if !settings.weekPage.disable && loadPages}
+		{#each settings.weeks as week, i (i)}
+			<WeekPage {settings} {week} />
 		{/each}
 	{/if}
-	{#if !disableDays && loadPages}
-		{#each new Array(end.getUTCFullYear() - start.getUTCFullYear() + 1) as _, i}
-			{@const year = start.getUTCFullYear() + i}
-			{@const startDay = i === 0 ? start.getTime() : new Date(`${year}-01-01`).getTime()}
-			{@const endDay =
-				year === end.getUTCFullYear()
-					? end.getTime()
-					: new Date(`${year}-12-31`).getTime()}
-			{@const numDays = Math.floor((endDay - startDay) / 86400000) + 1}
-			{#each new Array(numDays) as _, i}
-				<DayPage
-					{start}
-					{end}
-					{year}
-					date={new Date(startDay + i * 86400000)}
-					{disableCoverPage}
-					{disableDays}
-					{disableMonths}
-					{disableQuarters}
-					{disableWeeks}
-					{disableYears}
-					disableSideNavLinks={!showLinksOnSideNav}
-					disableTopNavLinks={!showLinksOnTopNav}
-					{startWeekOnSunday}
-					{links} />
-			{/each}
+	{#if !settings.dayPage.disable && loadPages}
+		{#each settings.days as day, i (i)}
+			<DayPage {settings} {day} />
 		{/each}
 	{/if}
 	{#if loadPages}
-		{#each collections as collection (collection.id)}
-			<CollectionPages
-				{start}
-				{end}
-				{disableCoverPage}
-				{disableYears}
-				{disableMonths}
-				disableSideNavLinks={!showLinksOnSideNav}
-				disableTopNavLinks={!showLinksOnTopNav}
-				{collection}
-				{startWeekOnSunday}
-				{links} />
+		{#each settings.collections as collection (collection.id)}
+			<CollectionPages {settings} {collection} />
 		{/each}
 	{/if}
 </main>
@@ -473,7 +529,7 @@
 		right: 1rem;
 		background-color: var(--bg);
 		z-index: 10;
-		width: 350px;
+		width: 400px;
 		max-width: 100vw;
 		max-height: 80vh;
 		border-radius: var(--radius-5);
@@ -493,19 +549,25 @@
 			top: 0;
 			background-color: var(--bg);
 			padding: 2rem 0 1rem;
+			color: var(--text);
 		}
 		h3 {
 			position: sticky;
 			top: 4rem;
 			background-color: var(--bg);
+			color: var(--text);
 			padding: 1rem 0;
+			margin-top: 1rem;
 			margin-bottom: -1rem;
+		}
+		.checkbox {
+			margin: 0 0 0 0.5rem;
 		}
 	}
 	form {
 		display: flex;
 		flex-direction: column;
-		gap: 0.75rem;
+		gap: 1rem;
 		margin: 0;
 		fieldset {
 			border: none;
@@ -542,9 +604,6 @@
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
-		select {
-			margin: 0.5rem 0 0;
-		}
 		button {
 			margin: 0.5rem 0 0;
 		}

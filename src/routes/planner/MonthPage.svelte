@@ -1,48 +1,16 @@
 <script lang="ts">
+	import type { Month, PlannerSettings } from '$lib';
 	import SideNav from './SideNav.svelte';
 	import TopNav from './TopNav.svelte';
 
-	let {
-		start = new Date() as Date,
-		end = new Date() as Date,
-		date = new Date() as Date,
-		year = date.getUTCFullYear() as number,
-		links = [] as { name: string; href: string }[],
-		disableCoverPage = false,
-		disableYears = false,
-		disableQuarters = false,
-		disableMonths = false,
-		disableWeeks = false,
-		disableDays = false,
-		disableTopNavLinks = false,
-		disableSideNavLinks = false,
-	} = $props();
-
-	const month = $derived(
-		date.getUTCFullYear() < year
-			? 1
-			: date.getUTCFullYear() > year
-				? 12
-				: date.getUTCMonth() + 1,
-	);
-	const monthName = $derived(
-		new Date(year, month - 1).toLocaleString('default', { month: 'long' }),
-	);
+	let { month = {} as Month, settings = {} as PlannerSettings } = $props();
 </script>
 
-<article id={`${year}-${month}`}>
-	<SideNav {start} {end} {year} {date} links={disableSideNavLinks ? [] : links}></SideNav>
-	<TopNav
-		{disableCoverPage}
-		{disableYears}
-		{disableQuarters}
-		{disableMonths}
-		disableWeeks
-		disableDays
-		date={new Date(year, month - 1, 1)}
-		links={disableTopNavLinks ? [] : links} />
+<article id={`${month.id}`}>
+	<SideNav tabs="month" {settings} timeframe={month}></SideNav>
+	<TopNav {settings} timeframe={month} />
 	<div class="calendar">
-		{#each Array.from({ length: new Date(year, month, 0).getUTCDate() }, (_, i) => i + 1) as day}
+		{#each Array.from({ length: month.end.getUTCDate() }, (_, i) => i + 1) as day}
 			<div class="day">{day}</div>
 		{/each}
 	</div>

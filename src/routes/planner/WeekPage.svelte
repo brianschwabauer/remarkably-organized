@@ -1,60 +1,15 @@
 <script lang="ts">
-	import { getFirstDayOfWeek } from '$lib';
+	import { PlannerSettings, type Week } from '$lib';
 	import SideNav from './SideNav.svelte';
 	import TopNav from './TopNav.svelte';
 
-	let {
-		start = new Date() as Date,
-		end = new Date() as Date,
-		date = new Date() as Date,
-		year = date.getUTCFullYear() as number,
-		links = [] as { name: string; href: string }[],
-		startWeekOnSunday = false,
-		disableCoverPage = false,
-		disableYears = false,
-		disableQuarters = false,
-		disableMonths = false,
-		disableWeeks = false,
-		disableDays = false,
-		disableTopNavLinks = false,
-		disableSideNavLinks = false,
-	} = $props();
-
-	const month = $derived(
-		date.getUTCFullYear() < year
-			? 1
-			: date.getUTCFullYear() > year
-				? 12
-				: date.getUTCMonth() + 1,
-	);
-	const firstDay = $derived(getFirstDayOfWeek(`${year}-01-01`, startWeekOnSunday));
-	const week = $derived(Math.floor((date.getTime() - firstDay) / 604800000) + 1);
-	const monthName = $derived(
-		new Date(year, month - 1).toLocaleString('default', { month: 'long' }),
-	);
+	let { week = {} as Week, settings = {} as PlannerSettings } = $props();
 </script>
 
-<article id={`${year}-wk${week}`}>
-	<SideNav
-		tabs="week"
-		{start}
-		{end}
-		{date}
-		{year}
-		links={disableSideNavLinks ? [] : links}
-		{startWeekOnSunday}></SideNav>
-	<TopNav
-		{year}
-		{startWeekOnSunday}
-		{disableCoverPage}
-		{disableYears}
-		{disableQuarters}
-		{disableMonths}
-		{disableWeeks}
-		disableDays
-		{date}
-		links={disableTopNavLinks ? [] : links} />
-	Week {week}
+<article id={`${week.id}`}>
+	<SideNav tabs="week" {settings} timeframe={week}></SideNav>
+	<TopNav {settings} timeframe={week} />
+	Week {settings.weekPage.useWeekSinceYear ? week.weekSinceYear : week.weekSinceMonth}
 </article>
 
 <style lang="scss">

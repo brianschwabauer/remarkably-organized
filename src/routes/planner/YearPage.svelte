@@ -1,27 +1,17 @@
 <script lang="ts">
+	import type { PlannerSettings, Year } from '$lib';
 	import SideNav from './SideNav.svelte';
 	import TopNav from './TopNav.svelte';
 
-	let {
-		year = 0,
-		start = new Date() as Date,
-		end = new Date() as Date,
-		links = [] as { name: string; href: string }[],
-		disableCoverPage = false,
-		disableYears = false,
-		disableTopNavLinks = false,
-		disableSideNavLinks = false,
-	} = $props();
+	let { year = {} as Year, settings = {} as PlannerSettings } = $props();
 </script>
 
-<article id={`${year}`}>
+<article id={`${year.year}`}>
 	<SideNav
-		{start}
-		{end}
-		{year}
-		links={disableSideNavLinks ? [] : links}
-		tabs={start.getUTCFullYear() !== end.getUTCFullYear() ? 'year' : 'month'}></SideNav>
-	Year {year}
+		{settings}
+		tabs={settings.years.length > 1 ? 'year' : 'month'}
+		timeframe={year} />
+	Year {year.year}
 </article>
 
 <style lang="scss">

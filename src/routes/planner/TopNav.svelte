@@ -1,96 +1,115 @@
 <script lang="ts">
-	import { formatToString, getFirstDayOfWeek } from '$lib';
+	import { formatToString, PlannerSettings, type Timeframe } from '$lib';
 	import HomeIcon from '~icons/material-symbols-light/home-rounded';
 
 	let {
-		date = new Date() as Date,
-		year = date.getUTCFullYear() as number,
-		startWeekOnSunday = false,
-		disableCoverPage = false,
-		disableYears = false,
-		disableQuarters = false,
-		disableMonths = false,
-		disableWeeks = false,
-		disableDays = false,
-		links = [] as { name: string; href: string }[],
+		timeframe = {} as Timeframe,
+		settings = {} as PlannerSettings,
 		breadcrumbs = [] as { name: string; href: string }[],
 	} = $props();
 
-	const month = $derived(
-		date.getUTCFullYear() < year
-			? 1
-			: date.getUTCFullYear() > year
-				? 12
-				: date.getUTCMonth() + 1,
+	const showYearBreadcrumb = $derived(!settings.yearPage.disable && timeframe.year);
+	const showQuarterBreadcrumb = $derived(
+		!settings.quarterPage.disable && timeframe.year && timeframe.quarter,
 	);
-	const quarter = $derived(
-		date.getUTCFullYear() < year
-			? 1
-			: date.getUTCFullYear() > year
-				? 4
-				: Math.floor((month - 1) / 3) + 1,
+	const showMonthBreadcrumb = $derived(
+		!settings.monthPage.disable && timeframe.year && timeframe.month,
 	);
-	const firstDay = $derived(getFirstDayOfWeek(`${year}-01-01`, startWeekOnSunday));
-	const week = $derived(Math.floor((date.getTime() - firstDay) / 604800000) + 1);
-	const day = $derived(date.getUTCDate());
+	const showWeekBreadcrumb = $derived(
+		!settings.weekPage.disable &&
+			timeframe.year &&
+			timeframe.month &&
+			timeframe.weekSinceYear,
+	);
+	const showDayBreadcrumb = $derived(
+		!settings.dayPage.disable &&
+			timeframe.year &&
+			timeframe.month &&
+			timeframe.daySinceMonth,
+	);
 </script>
 
-<nav>
-	<ol class="breadcrumbs">
-		{#if !disableCoverPage}
-			<li><a href="#home"><HomeIcon style="margin-bottom: .15em" /></a></li>
-		{/if}
-		{#if !disableYears}
-			<li><a href="#{year}">{year}</a></li>
-		{/if}
-		{#if !disableQuarters}
-			<li>
-				<a href="#{year}-q{quarter}">
-					{disableMonths && disableWeeks && disableDays ? 'Quarter ' : 'Q'}{quarter}
-				</a>
-			</li>
-		{/if}
-		{#if !disableMonths}
-			<li>
-				<a href="#{year}-{month}">
-					{new Date(year, month - 1).toLocaleString('default', {
-						month: disableWeeks && disableDays ? 'long' : 'short',
-					})}
-				</a>
-			</li>
-		{/if}
-		{#if !disableWeeks}
-			<li>
-				<a href="#{year}-wk{week}">
-					{#if disableDays}Week{:else}WK{/if}
-					{week}
-				</a>
-			</li>
-		{/if}
-		{#if !disableDays}
-			<li>
-				<a href="#{year}-{month}-{day}">
-					{date.toLocaleString('default', { weekday: 'short', timeZone: 'UTC' })},
-					{date.toLocaleString('default', { month: 'long', timeZone: 'UTC' })}
-					{@html formatToString(day, { type: 'ordinal', html: true })}
-				</a>
-			</li>
-		{/if}
-		{#if breadcrumbs?.length}
-			{#each breadcrumbs as breadcrumb (breadcrumb.href)}
-				<li><a href={breadcrumb.href}>{breadcrumb.name}</a></li>
-			{/each}
-		{/if}
-	</ol>
-	{#if links?.length}
-		<div style="flex: 1" />
-		<ol class="links">
-			{#each links as link, i (link.href)}
-				<li><a href={link.href}>{link.name}</a></li>
-			{/each}
+{#if !settings.topNav.disable}
+	<nav>
+		<ol class="breadcrumbs">
+			{#if !settings.coverPage.disable}
+				<li><a href="#home"><HomeIcon style="margin-bottom: .15em" /></a></li>
+			{/if}
+			{#if showYearBreadcrumb}
+				<li><a href="#{timeframe.year}">{timeframe.year}</a></li>
+			{/if}
+			{#if showQuarterBreadcrumb}
+				<li>
+					<a href="#{timeframe.year}-q{timeframe.quarter}">
+						{!showWeekBreadcrumb && !showMonthBreadcrumb && !showDayBreadcrumb
+							? 'Quarter '
+							: 'Q'}{timeframe.quarter}
+					</a>
+				</li>
+			{/if}
+			{#if showMonthBreadcrumb}
+				<li>
+					<a href="#{timeframe.year}-{timeframe.month}">
+						{timeframe.start.toLocaleString('default', {
+							month: !showWeekBreadcrumb && !showDayBreadcrumb ? 'long' : 'short',
+							timeZone: 'UTC',
+						})}
+					</a>
+				</li>
+			{/if}
+			{#if showWeekBreadcrumb}
+				<li>
+					<a href="#{timeframe.year}-wk{timeframe.weekSinceYear}">
+						{#if !showDayBreadcrumb && !showMonthBreadcrumb && !settings.weekPage.useWeekSinceYear}
+							{timeframe.start.toLocaleString('default', {
+								month: 'long',
+								timeZone: 'UTC',
+							})}
+						{/if}
+						{#if !showYearBreadcrumb && !showMonthBreadcrumb && settings.weekPage.useWeekSinceYear}
+							{timeframe.year}
+						{/if}
+						{#if !showDayBreadcrumb}Week{:else}WK{/if}
+						{settings.weekPage.useWeekSinceYear
+							? timeframe.weekSinceYear
+							: timeframe.weekSinceMonth}
+					</a>
+				</li>
+			{/if}
+			{#if showDayBreadcrumb}
+				<li>
+					<a href="#{timeframe.year}-{timeframe.month}-{timeframe.daySinceMonth}">
+						{timeframe.start.toLocaleString('default', {
+							weekday: 'short',
+							timeZone: 'UTC',
+						})},
+						{timeframe.start.toLocaleString('default', {
+							month: 'long',
+							timeZone: 'UTC',
+						})}
+						{@html formatToString(timeframe.daySinceMonth, {
+							type: 'ordinal',
+							html: true,
+						})}
+					</a>
+				</li>
+			{/if}
+			{#if breadcrumbs?.length}
+				{#each breadcrumbs as breadcrumb (breadcrumb.href)}
+					<li><a href={breadcrumb.href}>{breadcrumb.name}</a></li>
+				{/each}
+			{/if}
 		</ol>
-	{/if}
-</nav>
+		<div style="flex: 1" />
+		{#if settings.topNav.showCollectionLinks && settings.collections?.length}
+			<ol class="links">
+				{#each settings.collections as collection, i (collection.id)}
+					<li><a href="#{collection.id}">{collection.name}</a></li>
+				{/each}
+			</ol>
+		{/if}
+	</nav>
+{/if}
 
 <style lang="scss">
 	nav {
