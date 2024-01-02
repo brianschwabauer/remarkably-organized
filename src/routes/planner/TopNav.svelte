@@ -60,14 +60,20 @@
 			{#if showWeekBreadcrumb}
 				<li>
 					<a href="#{timeframe.year}-wk{timeframe.weekSinceYear}">
-						{#if !showDayBreadcrumb && !showMonthBreadcrumb && !settings.weekPage.useWeekSinceYear}
+						{#if settings.weekPage.useWeekSinceYear}
+							{#if !showYearBreadcrumb && !showMonthBreadcrumb}
+								{timeframe.year}
+							{/if}
+						{:else if !showDayBreadcrumb && !showMonthBreadcrumb}
 							{timeframe.start.toLocaleString('default', {
 								month: 'long',
 								timeZone: 'UTC',
 							})}
-						{/if}
-						{#if !showYearBreadcrumb && !showMonthBreadcrumb && settings.weekPage.useWeekSinceYear}
-							{timeframe.year}
+						{:else if !showMonthBreadcrumb}
+							{timeframe.start.toLocaleString('default', {
+								month: 'short',
+								timeZone: 'UTC',
+							})}
 						{/if}
 						{#if !showDayBreadcrumb}Week{:else}WK{/if}
 						{settings.weekPage.useWeekSinceYear
