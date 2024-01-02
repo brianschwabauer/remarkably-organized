@@ -46,7 +46,7 @@
 		{#if tabs !== 'none'}
 			<ol class="tabs">
 				{#if tabs === 'year' && settings.years.length > 1 && !settings.yearPage.disable}
-					{#each settings.years as year}
+					{#each settings.years as year (year.id)}
 						<li class="year">
 							<a
 								href="#{year.id}"
@@ -57,7 +57,7 @@
 					{/each}
 				{/if}
 				{#if tabs === 'quarter' && !settings.quarterPage.disable}
-					{#each settings.quarters as quarter}
+					{#each settings.quarters as quarter (quarter.id)}
 						{#if quarter.year === timeframe.year}
 							<li class="quarter">
 								<a
@@ -71,7 +71,7 @@
 					{/each}
 				{/if}
 				{#if tabs === 'month' && !settings.monthPage.disable}
-					{#each settings.months as month}
+					{#each settings.months as month (month.id)}
 						{#if month.year === timeframe.year}
 							<li class="month">
 								<a
@@ -85,55 +85,66 @@
 					{/each}
 				{/if}
 				{#if tabs === 'week' && !settings.weekPage.disable}
-					{#each weeks as week, i (i)}
-						{#if week.year === timeframe.year}
-							<li class="week">
-								<a
-									href="#{week.id}"
-									class:active={!disableActiveIndicator &&
-										timeframe.weekSinceYear === week.weekSinceYear}>
-									<small>
-										{settings.weekPage.useWeekNumbersInSideNav
-											? 'WK'
-											: week.start.toLocaleString('default', {
-													month: 'short',
-													timeZone: 'UTC',
-												})}
-									</small>
-									{!settings.weekPage.useWeekNumbersInSideNav
-										? week.start.getUTCDate()
-										: settings.weekPage.useWeekSinceYear
-											? week.weekSinceYear
-											: week.weekSinceMonth}
-								</a>
-							</li>
-						{/if}
+					{#each weeks as week, i (week.id)}
+						{@const isActive =
+							!disableActiveIndicator && timeframe.weekSinceYear === week.weekSinceYear}
+						{@const isNextWeekInMonth = weeks[i + 1]?.month === timeframe.month}
+						{@const isNextWeekActive =
+							!disableActiveIndicator &&
+							weeks[i + 1]?.weekSinceYear === timeframe.weekSinceYear}
+						{@const isPreviousWeekInMonth = weeks[i - 1]?.month === timeframe.month}
+						{@const isPreviousWeekActive =
+							!disableActiveIndicator &&
+							weeks[i - 1]?.weekSinceYear === timeframe.weekSinceYear}
+						{@const shouldHighlight = !isActive && timeframe.month === week.month}
+						{@const highlightStart =
+							shouldHighlight && isNextWeekInMonth && !isNextWeekActive}
+						{@const highlightEnd =
+							shouldHighlight && isPreviousWeekInMonth && !isPreviousWeekActive}
+						<li class="week">
+							<a
+								href="#{week.id}"
+								class:active={isActive}
+								class:highlight={shouldHighlight}
+								class:highlight-start={highlightStart && !highlightEnd}
+								class:highlight-middle={highlightStart && highlightEnd}
+								class:highlight-end={highlightEnd && !highlightStart}>
+								<small>
+									{settings.weekPage.useWeekNumbersInSideNav
+										? 'WK'
+										: week.start.toLocaleString('default', {
+												month: 'short',
+												timeZone: 'UTC',
+											})}
+								</small>
+								{!settings.weekPage.useWeekNumbersInSideNav
+									? week.start.getUTCDate()
+									: settings.weekPage.useWeekSinceYear
+										? week.weekSinceYear
+										: week.weekSinceMonth}
+							</a>
+						</li>
 					{/each}
 				{/if}
 				{#if tabs === 'day' && !settings.dayPage.disable}
-					{#each days as day, i (i)}
+					{#each days as day, i (day.id)}
 						{#if day.year === timeframe.year}
+							{@const isActive =
+								!disableActiveIndicator && timeframe.daySinceYear === day.daySinceYear}
 							{@const isSaturday = day.start.getUTCDay() === 6}
 							{@const isSunday = day.start.getUTCDay() === 0}
 							{@const isWeekend = isSaturday || isSunday}
-							{@const weekendStart =
-								isSaturday &&
-								i < days.length - 1 &&
-								(disableActiveIndicator ||
-									days[i + 1]?.daySinceYear !== timeframe.daySinceYear)}
-							{@const weekendEnd =
-								isSunday &&
-								i > 0 &&
-								(disableActiveIndicator ||
-									days[i - 1]?.daySinceYear !== timeframe.daySinceYear)}
+							{@const shouldHighlight = !isActive && isWeekend}
+							{@const highlightStart =
+								shouldHighlight && isSaturday && i < days.length - 1}
+							{@const highlighEnd = shouldHighlight && isSunday && i > 0}
 							<li class="day">
 								<a
 									href="#{day.id}"
-									class:active={!disableActiveIndicator &&
-										timeframe.daySinceYear === day.daySinceYear}
-									class:weekend={isWeekend}
-									class:weekend-start={weekendStart}
-									class:weekend-end={weekendEnd}>
+									class:active={isActive}
+									class:highlight={shouldHighlight}
+									class:highlight-start={highlightStart}
+									class:highlight-end={highlighEnd}>
 									<span class="weekday">
 										{day.start.toLocaleString('default', {
 											weekday: 'short',
@@ -240,7 +251,7 @@
 				color: var(--text-high);
 			}
 		}
-		a.weekend:not(.active) {
+		a.highlight {
 			--tab-background: #d6d6d6;
 			border-top-right-radius: 0;
 			border-bottom-right-radius: 0;
@@ -266,10 +277,12 @@
 				border-top-right-radius: var(--radius);
 				box-shadow: var(--tab-background) 0px calc(-1 * var(--radius)) 0px 0px;
 			}
-			&.weekend-start {
+			&.highlight-start,
+			&.highlight-middle {
 				border-bottom-left-radius: 0;
 			}
-			&.weekend-end {
+			&.highlight-end,
+			&.highlight-middle {
 				border-top-left-radius: 0;
 			}
 		}
