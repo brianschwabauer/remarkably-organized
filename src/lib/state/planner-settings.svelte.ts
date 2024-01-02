@@ -1,17 +1,5 @@
 import { getFirstDayOfWeek, getUTCDate, objectDiff, type Collection } from '$lib';
-
-type PageTemplate =
-	| 'blank'
-	| 'grid'
-	| 'grid-large'
-	| 'dotted'
-	| 'dotted-large'
-	| 'lined'
-	| 'lined-large'
-	| 'numbered'
-	| 'numbered-large'
-	| 'year-checkbox'
-	| 'month-checkbox';
+import type { PageTemplate } from './collection';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type DeepPartial<T> = T extends { [key: string]: any }
@@ -172,28 +160,28 @@ export class PlannerSettings {
 	/** Settings for changing how the year pages should work */
 	readonly yearPage = new (class YearPageSettings {
 		disable = $state(false);
-		notePagesTemplate = $state('dotted' as PageTemplate);
+		notePagesTemplate = $state('dotted-small' as PageTemplate);
 		notePagesAmount = $state(1);
 	})();
 
 	/** Settings for changing how the quarterly pages should work */
 	readonly quarterPage = new (class QuarterPageSettings {
 		disable = $state(false);
-		notePagesTemplate = $state('dotted' as PageTemplate);
+		notePagesTemplate = $state('dotted-small' as PageTemplate);
 		notePagesAmount = $state(1);
 	})();
 
 	/** Settings for changing how the monthly pages should work */
 	readonly monthPage = new (class MonthPageSettings {
 		disable = $state(false);
-		notePagesTemplate = $state('dotted' as PageTemplate);
+		notePagesTemplate = $state('dotted-small' as PageTemplate);
 		notePagesAmount = $state(1);
 	})();
 
 	/** Settings for changing how the weekly pages should work */
 	readonly weekPage = new (class WeekPageSettings {
 		disable = $state(false);
-		notePagesTemplate = $state('dotted' as PageTemplate);
+		notePagesTemplate = $state('dotted-small' as PageTemplate);
 		notePagesAmount = $state(1);
 		useWeekSinceYear = $state(true);
 		useWeekNumbersInSideNav = $state(false);
@@ -202,7 +190,7 @@ export class PlannerSettings {
 	/** Settings for changing how the daily pages should work */
 	readonly dayPage = new (class DayPageSettings {
 		disable = $state(false);
-		notePagesTemplate = $state('dotted' as PageTemplate);
+		notePagesTemplate = $state('dotted-small' as PageTemplate);
 		notePagesAmount = $state(1);
 		showOnlyThisWeekInSideNav = $state(true);
 	})();
@@ -213,7 +201,7 @@ export class PlannerSettings {
 			id: 'notes',
 			name: 'Notes',
 			total: 40,
-			type: 'dotted',
+			type: 'dotted-small',
 			numIndexPages: 2,
 			numPagesPerItem: 1,
 		},

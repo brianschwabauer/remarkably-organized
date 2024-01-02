@@ -10,20 +10,27 @@
 		aspectRatio = 1.5,
 	} = $props();
 
-	const cols = $derived(
-		display === 'lined' ||
-			display === 'lined-large' ||
-			display === 'numbered' ||
-			display === 'numbered-large'
-			? columns ?? 1
-			: display === 'dotted' || display === 'grid'
-				? 30
-				: 20,
+	const type = $derived(
+		display.startsWith('lined') || display.startsWith('numbered')
+			? 'lined'
+			: display.startsWith('dotted') || display.startsWith('grid')
+				? 'grid'
+				: display === 'blank'
+					? 'blank'
+					: 'special',
 	);
-	const numLines = $derived(lines ?? (display.endsWith('large') ? 30 : 40));
+	const size = $derived(
+		display.endsWith('large') ? 'large' : display.endsWith('small') ? 'small' : 'medium',
+	);
+	const cols = $derived(
+		type === 'lined' ? columns ?? 1 : size === 'small' ? 30 : size === 'medium' ? 25 : 20,
+	);
+	const numLines = $derived(
+		lines ?? (size === 'small' ? 40 : size === 'medium' ? 35 : 30),
+	);
 </script>
 
-{#if display === 'dotted' || display === 'dotted-large'}
+{#if display.startsWith('dotted')}
 	<div class="dots" style:--cols={cols}>
 		{#each new Array(Math.ceil(cols * cols * aspectRatio)) as _, i (i)}
 			<div
@@ -40,7 +47,7 @@
 	</div>
 {/if}
 
-{#if display === 'grid' || display === 'grid-large'}
+{#if display.startsWith('grid')}
 	<div class="grid" style:--cols={cols}>
 		{#each new Array(Math.ceil(cols * cols * aspectRatio)) as _, i (i)}
 			<div
@@ -57,10 +64,10 @@
 	</div>
 {/if}
 
-{#if display === 'lined' || display === 'lined-large' || display === 'numbered' || display === 'numbered-large'}
+{#if type === 'lined'}
 	<div class="lined" style:--cols={cols} style:--lines={numLines}>
 		{#each new Array(Math.ceil(numLines * cols)) as _, i (i)}
-			{#if display === 'numbered' || display === 'numbered-large'}
+			{#if display.startsWith('numbered')}
 				<div class="line">{i + 1}&#41;</div>
 			{:else}
 				<div class="line"></div>

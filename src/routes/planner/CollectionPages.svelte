@@ -34,6 +34,15 @@
 	{#if collection.total}
 		{#each new Array(collection.total * Math.max(1, collection.numIndexPages || 1)) as _, item (item)}
 			{#each new Array(Math.max(1, collection.numPagesPerItem || 1)) as _, itemPage (itemPage)}
+				{@const type = collection.type.startsWith('lined')
+					? 'lined'
+					: collection.type.startsWith('numbered')
+						? 'numbered'
+						: collection.type.startsWith('dotted')
+							? 'dotted'
+							: collection.type.startsWith('grid')
+								? 'grid'
+								: collection.type}
 				<article
 					id={`${collection.id}-${item + 1}${itemPage === 0 ? '' : `-${itemPage + 1}`}`}>
 					<SideNav
@@ -50,22 +59,25 @@
 								href: `#${collection.id}-${item + 1}`,
 							},
 						]} />
-					<div class="collection {collection.type}">
-						{#if collection.type === 'month-checkbox'}
+					<div
+						class="collection {type}{type === collection.type
+							? ''
+							: ` ${collection.type}`}">
+						{#if type === 'month-checkbox'}
 							<!-- Month Checkbox -->
-						{:else if collection.type === 'year-checkbox'}
+						{:else if type === 'year-checkbox'}
 							<!-- Year Checkbox -->
-						{:else if collection.type === 'lined' || collection.type === 'lined-large'}
+						{:else if type === 'lined'}
 							<Grid
 								display={collection.type}
 								columns={collection.columns}
 								lines={collection.lines} />
-						{:else if collection.type === 'numbered' || collection.type === 'numbered-large'}
+						{:else if type === 'numbered'}
 							<Grid
 								display={collection.type}
 								columns={collection.columns}
 								lines={collection.lines} />
-						{:else if collection.type !== 'blank'}
+						{:else if type !== 'blank'}
 							<Grid display={collection.type} />
 						{/if}
 					</div>
@@ -110,20 +122,16 @@
 		&:not(.lined):not(.lined-large) {
 			padding-top: 0.5rem;
 		}
-		&.dotted,
-		&.dotted-large {
+		&.dotted {
 			height: calc(100% - 2rem);
 		}
-		&.grid,
-		&.grid-large {
+		&.grid {
 			height: calc(100% - 2rem);
 		}
-		&.lined,
-		&.lined-large {
+		&.lined {
 			padding: 0 2rem 1rem;
 		}
-		&.numbered,
-		&.numbered-large {
+		&.numbered {
 			padding: 0 2rem 1rem;
 		}
 	}

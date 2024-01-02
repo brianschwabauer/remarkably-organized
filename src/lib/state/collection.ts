@@ -1,3 +1,29 @@
+/**
+ * The type of collection. This is used to determine how to display the collection.
+ * 'blank' - A collection of freeform items (useful for notes, etc.)
+ * 'grid' - Each page in the collection will have a grid printed on it
+ * 'dotted' - Each page in the collection will have a grid of dots printed on it
+ * 'lined' - Each page in the collection will be printed with lines
+ * 'year-checkbox' - A collection of checkboxes for each day of the year
+ * 'month-checkbox' - A collection of checkboxes for each day of the month
+ */
+export type PageTemplate =
+	| 'blank'
+	| 'grid'
+	| 'grid-small'
+	| 'grid-large'
+	| 'dotted'
+	| 'dotted-small'
+	| 'dotted-large'
+	| 'lined'
+	| 'lined-small'
+	| 'lined-large'
+	| 'numbered'
+	| 'numbered-small'
+	| 'numbered-large'
+	| 'year-checkbox'
+	| 'month-checkbox';
+
 export interface Collection {
 	/** The URL friendly slug used to link & id the collection */
 	id: string;
@@ -14,18 +40,7 @@ export interface Collection {
 	 * 'year-checkbox' - A collection of checkboxes for each day of the year
 	 * 'month-checkbox' - A collection of checkboxes for each day of the month
 	 */
-	type:
-		| 'blank'
-		| 'grid'
-		| 'grid-large'
-		| 'dotted'
-		| 'dotted-large'
-		| 'lined'
-		| 'lined-large'
-		| 'numbered'
-		| 'numbered-large'
-		| 'year-checkbox'
-		| 'month-checkbox';
+	type: PageTemplate;
 
 	/** The total amount of items allowed in the collection */
 	total: number;

@@ -19,13 +19,17 @@
 
 	const pageTemplates = [
 		{ name: 'Blank Page', value: 'blank' },
-		{ name: 'Dotted Grid', value: 'dotted' },
+		{ name: 'Dotted Grid - Small', value: 'dotted-small' },
+		{ name: 'Dotted Grid - Medium', value: 'dotted' },
 		{ name: 'Dotted Grid - Large', value: 'dotted-large' },
-		{ name: 'Grid', value: 'grid' },
+		{ name: 'Grid - Small', value: 'grid-small' },
+		{ name: 'Grid - Medium', value: 'grid' },
 		{ name: 'Grid - Large', value: 'grid-large' },
-		{ name: 'Lined', value: 'lined' },
+		{ name: 'Lined - Small', value: 'lined-small' },
+		{ name: 'Lined - Medium', value: 'lined' },
 		{ name: 'Lined - Large', value: 'lined-large' },
-		{ name: 'Numbered', value: 'numbered' },
+		{ name: 'Numbered - Small', value: 'numbered-small' },
+		{ name: 'Numbered - Medium', value: 'numbered' },
 		{ name: 'Numbered - Large', value: 'numbered-large' },
 		{ name: 'Habit Checkboxes - Year', value: 'year-checkbox' },
 		{ name: 'Habit Checkboxes - Month', value: 'month-checkbox' },
@@ -34,12 +38,7 @@
 	let showHelp = $state($page.url.searchParams.get('help') !== '0');
 	let showMenu = $state(true);
 	let showAdvancedSettings = $state(false);
-	let loadPages = $state(!browser && $page.url.searchParams.get('help') === '0');
-	$effect(() => {
-		if (!showHelp) {
-			setTimeout(() => (loadPages = true), 180);
-		}
-	});
+	let loadPages = $state($page.url.searchParams.get('help') === '0');
 
 	let settingsUrlInitialized = false;
 	$effect(() => {
@@ -82,6 +81,7 @@
 		const url = new URL($page.url);
 		url.searchParams.set('help', '0');
 		replaceState(url, {});
+		setTimeout(() => (loadPages = true), 180);
 	}
 </script>
 
@@ -425,7 +425,7 @@
 									step="1"
 									bind:value={collection.numPagesPerItem} />
 							</fieldset>
-							{#if collection.type === 'numbered' || collection.type === 'numbered-large' || collection.type === 'lined' || collection.type === 'lined-large'}
+							{#if collection.type.startsWith('numbered') || collection.type.startsWith('lined')}
 								<fieldset style="margin-top: 1rem;">
 									<label for="columns">Columns</label>
 									<input
