@@ -565,14 +565,14 @@ export class PlannerSettings {
 		// Collections
 		if (state?.collections !== undefined) {
 			this.collections = state.collections.filter(Boolean).map((collection, i) => ({
-				id: `${i}`,
-				name: `Collection ${i}`,
-				type: 'blank',
-				total: 40,
-				columns: collection?.columns,
+				id: collection?.id || `${i}`,
+				name: collection?.name || `Collection ${i}`,
+				type: collection?.type || 'blank',
+				total: collection?.total || 40,
+				columns: collection?.columns || 1,
 				lines: collection?.lines,
-				numIndexPages: collection?.numIndexPages,
-				numPagesPerItem: collection?.numPagesPerItem,
+				numIndexPages: collection?.numIndexPages || 1,
+				numPagesPerItem: collection?.numPagesPerItem || 1,
 				...(collection!.start ? { start: new Date(<number>collection!.start) } : {}),
 				...(collection!.end ? { end: new Date(<number>collection!.end) } : {}),
 			}));
