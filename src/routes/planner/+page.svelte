@@ -308,6 +308,13 @@
 							id="useWeekSinceYear" />
 						<label for="useWeekSinceYear">Use week number from start of year</label>
 					</div>
+					<div class="checkbox">
+						<input
+							type="checkbox"
+							bind:checked={settings.weekPage.useWeekNumbersInSideNav}
+							id="useWeekNumbersInSideNav" />
+						<label for="useWeekNumbersInSideNav">Show week numbers in side bar</label>
+					</div>
 				{/if}
 
 				<h3>Daily View</h3>

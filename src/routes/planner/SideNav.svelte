@@ -12,9 +12,11 @@
 
 	const weekList = $derived(
 		settings.weeks.filter(
-			(week) =>
+			(week, i) =>
 				week.year === timeframe.year &&
-				(settings.weekPage.useWeekSinceYear || week.month === timeframe.month),
+				(settings.weekPage.useWeekSinceYear || week.month === timeframe.month) &&
+				(!settings.weekPage.useWeekSinceYear ||
+					settings.weeks[i - 1]?.weekSinceYear !== week.weekSinceYear),
 		),
 	);
 	const startWeek = $derived(
@@ -45,7 +47,7 @@
 			<ol class="tabs">
 				{#if tabs === 'year' && settings.years.length > 1 && !settings.yearPage.disable}
 					{#each settings.years as year}
-						<li>
+						<li class="year">
 							<a
 								href="#{year.id}"
 								class:active={!disableActiveIndicator && timeframe.year === year.year}>
@@ -57,7 +59,7 @@
 				{#if tabs === 'quarter' && !settings.quarterPage.disable}
 					{#each settings.quarters as quarter}
 						{#if quarter.year === timeframe.year}
-							<li>
+							<li class="quarter">
 								<a
 									href="#{quarter.id}"
 									class:active={!disableActiveIndicator &&
@@ -71,7 +73,7 @@
 				{#if tabs === 'month' && !settings.monthPage.disable}
 					{#each settings.months as month}
 						{#if month.year === timeframe.year}
-							<li>
+							<li class="month">
 								<a
 									href="#{month.id}"
 									class:active={!disableActiveIndicator &&
@@ -85,15 +87,24 @@
 				{#if tabs === 'week' && !settings.weekPage.disable}
 					{#each weeks as week, i (i)}
 						{#if week.year === timeframe.year}
-							<li>
+							<li class="week">
 								<a
 									href="#{week.id}"
 									class:active={!disableActiveIndicator &&
 										timeframe.weekSinceYear === week.weekSinceYear}>
-									<small>WK</small>
-									{settings.weekPage.useWeekSinceYear
-										? week.weekSinceYear
-										: week.weekSinceMonth}
+									<small>
+										{settings.weekPage.useWeekNumbersInSideNav
+											? 'WK'
+											: week.start.toLocaleString('default', {
+													month: 'short',
+													timeZone: 'UTC',
+												})}
+									</small>
+									{!settings.weekPage.useWeekNumbersInSideNav
+										? week.start.getUTCDate()
+										: settings.weekPage.useWeekSinceYear
+											? week.weekSinceYear
+											: week.weekSinceMonth}
 								</a>
 							</li>
 						{/if}
@@ -102,16 +113,32 @@
 				{#if tabs === 'day' && !settings.dayPage.disable}
 					{#each days as day, i (i)}
 						{#if day.year === timeframe.year}
+							{@const isSaturday = day.start.getUTCDay() === 6}
+							{@const isSunday = day.start.getUTCDay() === 0}
+							{@const isWeekend = isSaturday || isSunday}
+							{@const weekendStart =
+								isSaturday &&
+								i < days.length - 1 &&
+								(disableActiveIndicator ||
+									days[i + 1]?.daySinceYear !== timeframe.daySinceYear)}
+							{@const weekendEnd =
+								isSunday &&
+								i > 0 &&
+								(disableActiveIndicator ||
+									days[i - 1]?.daySinceYear !== timeframe.daySinceYear)}
 							<li class="day">
 								<a
 									href="#{day.id}"
 									class:active={!disableActiveIndicator &&
-										timeframe.daySinceYear === day.daySinceYear}>
+										timeframe.daySinceYear === day.daySinceYear}
+									class:weekend={isWeekend}
+									class:weekend-start={weekendStart}
+									class:weekend-end={weekendEnd}>
 									<span class="weekday">
-										{new Date(day.year, day.month, day.daySinceMonth).toLocaleString(
-											'default',
-											{ weekday: 'short' },
-										)}
+										{day.start.toLocaleString('default', {
+											weekday: 'short',
+											timeZone: 'UTC',
+										})}
 									</span>
 									{day.daySinceMonth}
 								</a>
@@ -163,10 +190,16 @@
 		margin: 0;
 		width: 100%;
 		padding: 0 0 0 2px;
+		&.quarter {
+			a {
+				font-size: 1.3rem;
+				line-height: 100%;
+			}
+		}
 		&.week {
 			a {
-				font-size: 1.1rem;
-				line-height: 100%;
+				font-size: 1.3rem;
+				line-height: 1.2rem;
 			}
 			small {
 				color: currentColor;
@@ -183,8 +216,8 @@
 				opacity: 0.7;
 			}
 			a {
-				font-size: 1.2rem;
-				line-height: 100%;
+				font-size: 1.35rem;
+				line-height: 1.2rem;
 			}
 		}
 		a {
@@ -198,7 +231,8 @@
 			padding: 0.75rem 0;
 			color: var(--text-low);
 			font-family: var(--font-display);
-			font-size: 1rem;
+			font-size: 1.1rem;
+			line-height: 1.5rem;
 			position: relative;
 			border-radius: var(--radius);
 			&.active {
@@ -206,10 +240,44 @@
 				color: var(--text-high);
 			}
 		}
+		a.weekend:not(.active) {
+			--tab-background: #d6d6d6;
+			border-top-right-radius: 0;
+			border-bottom-right-radius: 0;
+			background-color: var(--tab-background);
+			&::before,
+			&::after {
+				content: '';
+				height: calc(2 * var(--radius));
+				width: var(--radius);
+				position: absolute;
+			}
+			&::before {
+				right: 0;
+				top: calc(-2 * var(--radius));
+				border-top-right-radius: 0;
+				border-bottom-right-radius: var(--radius);
+				box-shadow: var(--tab-background) 0px var(--radius) 0px 0px;
+			}
+			&::after {
+				right: 0;
+				bottom: calc(-2 * var(--radius));
+				border-top-left-radius: 0;
+				border-top-right-radius: var(--radius);
+				box-shadow: var(--tab-background) 0px calc(-1 * var(--radius)) 0px 0px;
+			}
+			&.weekend-start {
+				border-bottom-left-radius: 0;
+			}
+			&.weekend-end {
+				border-top-left-radius: 0;
+			}
+		}
 		a.active {
 			border-top-right-radius: 0;
 			border-bottom-right-radius: 0;
 			box-shadow: 1px 0 var(--bg);
+			z-index: 1;
 			&::before,
 			&::after {
 				content: '';

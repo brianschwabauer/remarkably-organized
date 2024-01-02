@@ -196,6 +196,7 @@ export class PlannerSettings {
 		notePagesTemplate = $state('dotted' as PageTemplate);
 		notePagesAmount = $state(1);
 		useWeekSinceYear = $state(true);
+		useWeekNumbersInSideNav = $state(false);
 	})();
 
 	/** Settings for changing how the daily pages should work */
@@ -310,32 +311,42 @@ export class PlannerSettings {
 	/** The computed list of weeks within the start/end timeframe in this.date */
 	readonly weeks = $derived(
 		this.years.reduce((acc, year) => {
-			const firstDay = year.weekStart.getTime();
-			const numWeeks = Math.floor((year.end.getTime() - firstDay) / 604800000) + 1;
-			for (let week = 1; week <= numWeeks; week++) {
-				const start = new Date(firstDay + (week - 1) * 604800000);
-				const end = new Date(start.getTime() + 86400000 * 6);
-				const month = start.getUTCMonth() + 1;
+			const firstWeekDayOfYear = year.weekStart.getTime();
+			for (
+				let month = year.start.getUTCMonth() + 1;
+				month <= year.end.getUTCMonth() + 1;
+				month++
+			) {
 				const quarter = Math.floor((month - 1) / 3) + 1;
 				const firstWeekDayOfMonth = new Date(
-					getFirstDayOfWeek(getUTCDate(year.year, month - 1)),
+					getFirstDayOfWeek(
+						getUTCDate(year.year, month - 1),
+						this.date.startWeekOnSunday,
+					),
 				);
-				const weekSinceMonth = Math.floor(
-					(start.getTime() - firstWeekDayOfMonth.getTime()) / 604800000,
-				);
-				acc.push({
-					id: `${year.year}-wk${week}`,
-					year: year.year,
-					quarter,
-					month,
-					weekSinceYear: week,
-					weekSinceMonth,
-					start,
-					end,
-					weekStart: start,
-					nameShort: `WK${week}`,
-					nameLong: `Week ${week}`,
-				});
+				const lastDayOfMonth = getUTCDate(year.year, month, 0);
+				const firstDay = firstWeekDayOfMonth.getTime();
+				const numWeeks =
+					Math.floor((lastDayOfMonth.getTime() - firstDay) / 604800000) + 1;
+				for (let week = 1; week <= numWeeks; week++) {
+					const start = new Date(firstDay + (week - 1) * 604800000);
+					const end = new Date(start.getTime() + 86400000 * 6);
+					const weekSinceYear =
+						Math.floor((start.getTime() - firstWeekDayOfYear) / 604800000) + 1;
+					acc.push({
+						id: `${year.year}-${month}-wk${week}`,
+						year: year.year,
+						quarter,
+						month,
+						weekSinceYear,
+						weekSinceMonth: week,
+						start,
+						end,
+						weekStart: start,
+						nameShort: `WK${week}`,
+						nameLong: `Week ${week}`,
+					});
+				}
 			}
 			return acc;
 		}, [] as Week[]),
@@ -351,7 +362,10 @@ export class PlannerSettings {
 				const month = start.getUTCMonth() + 1;
 				const quarter = Math.floor((month - 1) / 3) + 1;
 				const firstWeekDayOfMonth = new Date(
-					getFirstDayOfWeek(getUTCDate(year.year, month - 1)),
+					getFirstDayOfWeek(
+						getUTCDate(year.year, month - 1),
+						this.date.startWeekOnSunday,
+					),
 				);
 				acc.push({
 					id: `${year.year}-${month}-${day}`,
@@ -460,6 +474,7 @@ export class PlannerSettings {
 				notePagesTemplate: this.weekPage.notePagesTemplate,
 				notePagesAmount: this.weekPage.notePagesAmount,
 				useWeekSinceYear: this.weekPage.useWeekSinceYear,
+				useWeekNumbersInSideNav: this.weekPage.useWeekNumbersInSideNav,
 			},
 			dayPage: {
 				disable: this.dayPage.disable,
@@ -553,6 +568,8 @@ export class PlannerSettings {
 			this.weekPage.notePagesAmount = state.weekPage.notePagesAmount;
 		if (state?.weekPage?.useWeekSinceYear !== undefined)
 			this.weekPage.useWeekSinceYear = state.weekPage.useWeekSinceYear;
+		if (state?.weekPage?.useWeekNumbersInSideNav !== undefined)
+			this.weekPage.useWeekNumbersInSideNav = state.weekPage.useWeekNumbersInSideNav;
 
 		// Day Page Settings
 		if (state?.dayPage?.disable !== undefined)
