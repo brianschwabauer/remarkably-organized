@@ -79,7 +79,6 @@
 	article {
 		display: flex;
 		align-items: center;
-		justify-content: center;
 		flex-direction: column;
 		padding-left: var(--sidenav-width);
 		padding-top: var(--topnav-height);
@@ -106,8 +105,18 @@
 	.collection {
 		width: 100%;
 		height: 100%;
+		overflow: hidden;
+
 		&:not(.lined):not(.lined-large) {
 			padding-top: 0.5rem;
+		}
+		&.dotted,
+		&.dotted-large {
+			height: calc(100% - 2rem);
+		}
+		&.grid,
+		&.grid-large {
+			height: calc(100% - 2rem);
 		}
 		&.lined,
 		&.lined-large {
