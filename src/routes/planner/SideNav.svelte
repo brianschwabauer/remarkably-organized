@@ -27,18 +27,22 @@
 	);
 	const weeks = $derived(weekList.slice(startWeek, startWeek + numWeeksInSideNav));
 
-	const daysInTheMonth = $derived(
+	const dayList = $derived(
 		settings.days.filter(
-			(day) => day.year === timeframe.year && timeframe.month === day.month,
+			(day) =>
+				day.year === timeframe.year &&
+				(settings.dayPage.showOnlyThisWeekInSideNav
+					? day.weekSinceYear === timeframe.weekSinceYear
+					: timeframe.month === day.month),
 		),
 	);
 	const startDay = $derived(
 		Math.min(
-			daysInTheMonth.length - numDaysInSideNav,
+			dayList.length - numDaysInSideNav,
 			Math.ceil(Math.max(0, (timeframe.daySinceMonth || 0) - numDaysInSideNav / 2)),
 		),
 	);
-	const days = $derived(daysInTheMonth.slice(startDay, startDay + numDaysInSideNav));
+	const days = $derived(dayList.slice(startDay, startDay + numDaysInSideNav));
 </script>
 
 {#if !settings.sideNav.disable}

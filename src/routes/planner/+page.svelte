@@ -346,6 +346,13 @@
 							{/each}
 						</select>
 					</fieldset>
+					<div class="checkbox">
+						<input
+							type="checkbox"
+							bind:checked={settings.dayPage.showOnlyThisWeekInSideNav}
+							id="showOnlyThisWeekInSideNav" />
+						<label for="showOnlyThisWeekInSideNav">Show only this week in side bar</label>
+					</div>
 				{/if}
 
 				<h3>Sidebar Navigation</h3>

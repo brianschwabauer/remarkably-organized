@@ -204,6 +204,7 @@ export class PlannerSettings {
 		disable = $state(false);
 		notePagesTemplate = $state('dotted' as PageTemplate);
 		notePagesAmount = $state(1);
+		showOnlyThisWeekInSideNav = $state(true);
 	})();
 
 	/** The list of extra note/goals collections in addition to the planner pages */
@@ -480,6 +481,7 @@ export class PlannerSettings {
 				disable: this.dayPage.disable,
 				notePagesTemplate: this.dayPage.notePagesTemplate,
 				notePagesAmount: this.dayPage.notePagesAmount,
+				showOnlyThisWeekInSideNav: this.dayPage.showOnlyThisWeekInSideNav,
 			},
 			collections: this.collections.map((collection) => ({
 				...collection,
@@ -578,6 +580,8 @@ export class PlannerSettings {
 			this.dayPage.notePagesTemplate = state.dayPage.notePagesTemplate;
 		if (state?.dayPage?.notePagesAmount !== undefined)
 			this.dayPage.notePagesAmount = state.dayPage.notePagesAmount;
+		if (state?.dayPage?.showOnlyThisWeekInSideNav !== undefined)
+			this.dayPage.showOnlyThisWeekInSideNav = state.dayPage.showOnlyThisWeekInSideNav;
 
 		// Collections
 		if (state?.collections !== undefined) {
