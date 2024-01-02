@@ -194,6 +194,8 @@
 							type="number"
 							placeholder="Extra Pages Amount"
 							id="yearNotePagesAmount"
+							min="1"
+							step="1"
 							bind:value={settings.yearPage.notePagesAmount} />
 					</fieldset>
 					<fieldset>
@@ -223,6 +225,8 @@
 							type="number"
 							placeholder="Extra Pages Amount"
 							id="quarterNotePagesAmount"
+							min="1"
+							step="1"
 							bind:value={settings.quarterPage.notePagesAmount} />
 					</fieldset>
 					<fieldset>
@@ -252,6 +256,8 @@
 							type="number"
 							placeholder="Extra Pages Amount"
 							id="monthNotePagesAmount"
+							min="1"
+							step="1"
 							bind:value={settings.monthPage.notePagesAmount} />
 					</fieldset>
 					<fieldset>
@@ -281,6 +287,8 @@
 							type="number"
 							placeholder="Extra Pages Amount"
 							id="weekNotePagesAmount"
+							min="1"
+							step="1"
 							bind:value={settings.weekPage.notePagesAmount} />
 					</fieldset>
 					<fieldset>
@@ -317,6 +325,8 @@
 							type="number"
 							placeholder="Extra Pages Amount"
 							id="dayNotePagesAmount"
+							min="1"
+							step="1"
 							bind:value={settings.dayPage.notePagesAmount} />
 					</fieldset>
 					<fieldset>
@@ -387,6 +397,8 @@
 									type="number"
 									placeholder="Number of Index Pages"
 									id="numIndexPages"
+									min="1"
+									step="1"
 									bind:value={collection.numIndexPages} />
 							</fieldset>
 							<fieldset style="margin-top: 1rem;">
@@ -395,6 +407,8 @@
 									type="number"
 									placeholder="Number of Pages Per Item"
 									id="numPagesPerItem"
+									min="1"
+									step="1"
 									bind:value={collection.numPagesPerItem} />
 							</fieldset>
 							{#if collection.type === 'numbered' || collection.type === 'numbered-large' || collection.type === 'lined' || collection.type === 'lined-large'}
@@ -404,6 +418,8 @@
 										type="number"
 										placeholder="Columns"
 										id="columns"
+										min="1"
+										step="1"
 										bind:value={collection.columns} />
 								</fieldset>
 							{/if}
