@@ -71,8 +71,8 @@
 			align-items: center;
 			justify-content: center;
 			font-size: 0.75rem;
-			color: rgba(0, 0, 0, 0.3);
-			background-color: rgba(0, 0, 0, 0.01);
+			color: rgba(0, 0, 0, 0.5);
+			background-color: rgba(0, 0, 0, 0.1);
 			border-top: solid 1px var(--outline);
 			&.last-week {
 				border-top: none;
