@@ -26,7 +26,7 @@
 			font-size: 1;
 			text-align: center;
 			font-size: .85rem;
-			font-weight: normal;
+			font-weight: lighter;
 			padding: 0.5rem 0;
 		}
 	}

@@ -37,7 +37,7 @@
 			text-align: center;
 			font-size: .85rem;
 			padding: 0.5rem 0 0.5rem;
-			font-weight: normal;
+			font-weight: lighter;
 		}
 	}
 	.month {
