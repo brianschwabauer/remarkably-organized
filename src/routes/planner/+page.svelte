@@ -569,7 +569,8 @@
 <style lang="scss">
 	@media screen {
 		main {
-			overflow: hidden;
+			overflow-y: auto;
+			overflow-x: hidden;
 			max-width: 100vw;
 			max-height: 100vh;
 		}
