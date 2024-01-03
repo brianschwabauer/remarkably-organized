@@ -25,7 +25,7 @@
 		h2 {
 			font-size: 1;
 			text-align: center;
-			font-size: 1rem;
+			font-size: .85rem;
 			font-weight: normal;
 			padding: 0.5rem 0;
 		}

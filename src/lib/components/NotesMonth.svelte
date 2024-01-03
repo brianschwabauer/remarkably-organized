@@ -71,7 +71,7 @@
 			align-items: center;
 			justify-content: center;
 			font-size: 0.75rem;
-			color: rgba(0, 0, 0, 0.5);
+			color: rgba(0, 0, 0, 0.75);
 			background-color: rgba(0, 0, 0, 0.02);
 			border-top: solid 1px var(--outline);
 			border-left: solid 1px var(--outline-high);
@@ -92,7 +92,7 @@
 			}
 			small {
 				font-size: 0.65rem;
-				opacity: 0.8;
+				opacity: 1;
 				color: currentColor;
 				margin: 0.2rem 0.2rem 0 0;
 			}

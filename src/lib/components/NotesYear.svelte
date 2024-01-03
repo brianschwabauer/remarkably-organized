@@ -34,11 +34,10 @@
 		height: 100%;
 		padding: 0 2rem 2rem;
 		h2 {
-			font-size: 1;
 			text-align: center;
-			font-size: 1rem;
-			font-weight: normal;
+			font-size: .85rem;
 			padding: 0.5rem 0 0.5rem;
+			font-weight: normal;
 		}
 	}
 	.month {

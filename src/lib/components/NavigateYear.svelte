@@ -46,7 +46,7 @@
 		grid-gap: 1.5rem;
 		flex: 1;
 		width: 100%;
-		padding: 0 2rem 2rem;
+		padding: 0 1.5rem 1.5rem;
 		h2 {
 			font-size: 1;
 			text-align: center;
@@ -61,7 +61,7 @@
 		grid-template-rows: repeat(6, 1fr);
 		justify-items: center;
 		align-items: center;
-		grid-gap: 0.15rem;
+		grid-gap: 0.15rem .25rem;
 		.label {
 			display: flex;
 			align-items: center;
