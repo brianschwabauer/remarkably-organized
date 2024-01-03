@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Month, PlannerSettings } from '$lib';
+	import { intersect, type Month, type PlannerSettings } from '$lib';
 	import Page from '$lib/components/Page.svelte';
 	import SideNav from './SideNav.svelte';
 	import TopNav from './TopNav.svelte';
@@ -7,7 +7,7 @@
 	let { month = {} as Month, settings = {} as PlannerSettings } = $props();
 </script>
 
-<article id={`${month.id}`}>
+<article id={month.id} use:intersect={{ rootMargin: '1000px 0px 1000px 0px' }}>
 	<SideNav tabs="month" {settings} timeframe={month}></SideNav>
 	<TopNav {settings} timeframe={month} />
 	<Page {settings} display="notes-month" timeframe={month} />
@@ -15,7 +15,9 @@
 
 {#if settings.monthPage.notePagesAmount > 0}
 	{#each new Array(settings.monthPage.notePagesAmount) as _, i}
-		<article>
+		<article
+			id="{month.id}-{i + 2}"
+			use:intersect={{ rootMargin: '1000px 0px 1000px 0px' }}>
 			<SideNav {settings} tabs="month" timeframe={month} />
 			<TopNav {settings} timeframe={month} />
 			<Page display={settings.monthPage.notePagesTemplate} {settings} timeframe={month} />

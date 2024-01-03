@@ -1,11 +1,5 @@
 <script lang="ts">
-	import {
-		getFirstDayOfWeek,
-		type Collection,
-		type PlannerSettings,
-		getTimeframe,
-	} from '$lib';
-	import Grid from '$lib/components/Grid.svelte';
+	import { type Collection, type PlannerSettings, getTimeframe, intersect } from '$lib';
 	import Page from '$lib/components/Page.svelte';
 	import SideNav from './SideNav.svelte';
 	import TopNav from './TopNav.svelte';
@@ -17,7 +11,8 @@
 {#if collection}
 	{#each new Array(collection.numIndexPages) as _, indexPage (indexPage)}
 		<article
-			id={`${indexPage === 0 ? collection.id : collection.id + `-${indexPage + 1}`}`}>
+			id={`${indexPage === 0 ? collection.id : collection.id + `-${indexPage + 1}`}`}
+			use:intersect={{ rootMargin: '1000px 0px 1000px 0px' }}>
 			<SideNav
 				tabs={!settings.monthPage.disable ? 'month' : 'none'}
 				{settings}
@@ -40,17 +35,9 @@
 	{#if collection.total}
 		{#each new Array(collection.total * Math.max(1, collection.numIndexPages || 1)) as _, item (item)}
 			{#each new Array(Math.max(1, collection.numPagesPerItem || 1)) as _, itemPage (itemPage)}
-				{@const type = collection.type.startsWith('lined')
-					? 'lined'
-					: collection.type.startsWith('numbered')
-						? 'numbered'
-						: collection.type.startsWith('dotted')
-							? 'dotted'
-							: collection.type.startsWith('grid')
-								? 'grid'
-								: collection.type}
 				<article
-					id={`${collection.id}-${item + 1}${itemPage === 0 ? '' : `-${itemPage + 1}`}`}>
+					id={`${collection.id}-${item + 1}${itemPage === 0 ? '' : `-${itemPage + 1}`}`}
+					use:intersect={{ rootMargin: '1000px 0px 1000px 0px' }}>
 					<SideNav
 						tabs={!settings.monthPage.disable ? 'month' : 'none'}
 						{settings}
@@ -77,38 +64,6 @@
 									collection.start.getUTCMonth() + 1,
 									collection.start.getUTCDate(),
 								)} />
-					<!-- timeframe={!collection.start
-							? undefined
-							: {
-									start: collection.start,
-									end: collection.end || collection.start,
-									id: collection.id,
-									year: collection.start.getUTCFullYear(),
-									month: collection.start.getUTCMonth() + 1,
-									nameLong: '',
-									nameShort: '',
-									weekStart: new Date(getFirstDayOfWeek(collection.start)),
-									daySinceMonth: collection.start.getUTCDate(),
-									daySinceWeek: collection.start.getUTCDay(),
-									daySinceYear: Math.floor(
-										(collection.start.getTime() -
-											getFirstDayOfWeek(
-												Date.UTC(collection.start.getUTCFullYear(), 0, 1),
-											)) /
-											86400000,
-									),
-									quarter: Math.floor(collection.start.getUTCMonth() / 3) + 1,
-									weekSinceMonth: Math.floor(
-										(collection.start.getUTCDate() - 1) / 7,
-									),
-									weekSinceYear: Math.floor(
-										(collection.start.getTime() -
-											getFirstDayOfWeek(
-												Date.UTC(collection.start.getUTCFullYear(), 0, 1),
-											)) /
-											604800000,
-									),
-								}} /> -->
 				</article>
 			{/each}
 		{/each}

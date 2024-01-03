@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { PlannerSettings, Quarter } from '$lib';
+	import { intersect, type PlannerSettings, type Quarter } from '$lib';
 	import Page from '$lib/components/Page.svelte';
 	import SideNav from './SideNav.svelte';
 	import TopNav from './TopNav.svelte';
@@ -7,7 +7,7 @@
 	let { quarter = {} as Quarter, settings = {} as PlannerSettings } = $props();
 </script>
 
-<article id={`${quarter.id}`}>
+<article id={quarter.id} use:intersect={{ rootMargin: '1000px 0px 1000px 0px' }}>
 	<SideNav {settings} tabs="quarter" timeframe={quarter}></SideNav>
 	<TopNav {settings} timeframe={quarter} />
 	<Page {settings} display="navigate-quarter" timeframe={quarter} />
@@ -15,7 +15,9 @@
 
 {#if settings.quarterPage.notePagesAmount > 0}
 	{#each new Array(settings.quarterPage.notePagesAmount) as _, i}
-		<article>
+		<article
+			id="{quarter.id}-{i + 2}"
+			use:intersect={{ rootMargin: '1000px 0px 1000px 0px' }}>
 			<SideNav {settings} tabs="quarter" timeframe={quarter} />
 			<TopNav {settings} timeframe={quarter} />
 			<Page

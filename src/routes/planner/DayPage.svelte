@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { type Day, PlannerSettings } from '$lib';
+	import { type Day, PlannerSettings, intersect } from '$lib';
 	import Page from '$lib/components/Page.svelte';
 	import SideNav from './SideNav.svelte';
 	import TopNav from './TopNav.svelte';
@@ -7,7 +7,7 @@
 	let { day = {} as Day, settings = {} as PlannerSettings } = $props();
 </script>
 
-<article id={`${day.id}`}>
+<article id={day.id} use:intersect={{ rootMargin: '1000px 0px 1000px 0px' }}>
 	<SideNav tabs="day" {settings} timeframe={day}></SideNav>
 	<TopNav {settings} timeframe={day} />
 	<Page {settings} display="notes-day" timeframe={day} />
@@ -15,7 +15,9 @@
 
 {#if settings.dayPage.notePagesAmount > 0}
 	{#each new Array(settings.dayPage.notePagesAmount) as _, i}
-		<article>
+		<article
+			id="{day.id}-{i + 2}"
+			use:intersect={{ rootMargin: '1000px 0px 1000px 0px' }}>
 			<SideNav {settings} tabs="day" timeframe={day} />
 			<TopNav {settings} timeframe={day} />
 			<Page display={settings.dayPage.notePagesTemplate} {settings} timeframe={day} />

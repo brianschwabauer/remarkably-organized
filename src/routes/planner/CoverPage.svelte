@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { PlannerSettings } from '$lib';
+	import { intersect, type PlannerSettings } from '$lib';
 
 	let { settings = {} as PlannerSettings } = $props();
 
@@ -18,7 +18,10 @@
 	);
 </script>
 
-<article class:dark={settings.coverPage.darkBackground} id="home">
+<article
+	class:dark={settings.coverPage.darkBackground}
+	id="home"
+	use:intersect={{ rootMargin: '1000px 0px 1000px 0px' }}>
 	<header>
 		{#if settings.coverPage.title}
 			<h1 class="title">{settings.coverPage.title}</h1>
