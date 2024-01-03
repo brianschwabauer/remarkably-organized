@@ -13,8 +13,8 @@ html {
 	--bg: #ffffff; // the default background color of the page
 	--bg-low: #ffffff; // the low contrast background color
 	--bg-high: #f2f2f2; // the higher contrast background color (for hover/focus of background)
-	--text: #464646; // default text on the bg
-	--text-low: #838383; // text on the bg in a de-emphasized state - like disabled or metadata
+	--text: #424242; // default text on the bg
+	--text-low: #696969; // text on the bg in a de-emphasized state - like disabled or metadata
 	--text-high: #000000; // text on the bg in an emphasized state - like hover or focus
 
 	--fg: #ebebeb; // default background color for a foreground element - like a card
@@ -47,8 +47,8 @@ html {
 	--accent-text-low: #b3b3b3; // text color of disabled primary/accented actions
 	--accent-text-high: #ffffff; // text color of primary/accented actions with focus/hover
 
-	--outline: #dedede; // default color of outlines/borders
-	--outline-low: #ebebeb; // color of outlines/borders when disabled
+	--outline: #cfcfcf; // default color of outlines/borders
+	--outline-low: #e2e2e2; // color of outlines/borders when disabled
 	--outline-high: #b3b3b3; // color of outlines/borders when active/hover/focus
 
 	--error: #ef6262;
@@ -280,6 +280,9 @@ body {
 		article {
 			margin: 0.25in auto;
 			box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+			&:not(.visible) > * {
+				display: none !important;
+			}
 		}
 	}
 }
@@ -381,7 +384,7 @@ button,
 	outline: none;
 	background: none;
 	margin: 0;
-	padding: .5rem 1rem;
+	padding: 0.5rem 1rem;
 	color: var(--text);
 	border-radius: var(--radius-3);
 	cursor: pointer;
@@ -407,10 +410,11 @@ select {
 }
 
 /** Form & Inputs styles */
-input, select {
+input,
+select {
 	border: 1px solid var(--outline);
 	border-radius: var(--radius);
-	padding: .5rem 1rem;
+	padding: 0.5rem 1rem;
 	font-size: 1rem;
 	color: var(--text);
 	background-color: var(--bg);
@@ -423,5 +427,5 @@ input, select {
 	}
 }
 select {
-	padding: .5rem .75rem;
+	padding: 0.5rem 0.75rem;
 }

@@ -51,7 +51,7 @@
 		h2 {
 			font-size: 1;
 			text-align: center;
-			font-size: 1.2rem;
+			font-size: 1rem;
 			font-weight: normal;
 			padding: 0 0 0.5rem;
 		}

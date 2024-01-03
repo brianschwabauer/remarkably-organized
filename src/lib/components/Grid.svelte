@@ -85,7 +85,7 @@
 		--dot-size: 1px;
 		--minor-dot-size: 2px;
 		--major-dot-size: 2px;
-		--dot-color: rgba(0, 0, 0, 0.85);
+		--dot-color: rgba(0, 0, 0, 0.9);
 		--minor-dot-color: rgba(0, 0, 0, 0.35);
 		--major-dot-color: rgba(0, 0, 0, 0.65);
 	}
