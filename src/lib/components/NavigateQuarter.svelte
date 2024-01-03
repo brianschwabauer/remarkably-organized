@@ -59,9 +59,10 @@
 	.month {
 		display: flex;
 		flex: 1;
-		align-items: center;
+		align-items: start;
 		width: 100%;
 		border-bottom: solid 1px var(--outline-low);
+		padding: 1rem 0 0;
 		&:last-child {
 			border-bottom: none;
 		}
