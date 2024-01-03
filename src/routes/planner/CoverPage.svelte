@@ -123,6 +123,7 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
+		width: 100%;
 	}
 	article {
 		display: flex;
@@ -166,13 +167,17 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		margin: 2rem 0 0;
+		margin: 2rem auto 0;
+		flex-wrap: wrap;
+		max-width: 80%;
 		a {
 			display: flex;
 			border-radius: 10px;
 			text-decoration: none;
-			gap: 0.05rem;
-			padding: 1rem 1rem;
+			gap: 0 0.05rem;
+			padding: 1rem 0.75rem;
+			font-weight: bold;
+			margin: -.5rem 0;
 		}
 	}
 	h1 {
