@@ -35,6 +35,8 @@
 		{ name: 'Notes - Quarterly', value: 'notes-quarter' },
 		{ name: 'Notes - Monthly', value: 'notes-month' },
 		{ name: 'Notes - Weekly', value: 'notes-week' },
+		{ name: 'Notes - Weekly - Columns', value: 'notes-week-columns' },
+		{ name: 'Notes - Weekly - Rows', value: 'notes-week-rows' },
 		{ name: 'Notes - Daily', value: 'notes-day' },
 		{ name: 'Habit Checkboxes - Year', value: 'checkbox-year' },
 		{ name: 'Habit Checkboxes - Month', value: 'checkbox-month' },
@@ -43,9 +45,11 @@
 	function getAvailablePageTemplates(
 		location: 'collection' | 'year' | 'month' | 'quarter' | 'week' | 'day',
 	) {
-		if (location === 'collection') return pageTemplates;
 		return pageTemplates.filter((t) => {
 			if (!t.value.startsWith('notes') && !t.value.startsWith('checkbox')) return true;
+			if (location === 'collection') {
+				return !['notes-quarter', 'notes-month'].includes(t.value);
+			}
 			const timeframe = t.value.split('-')[1];
 			return location === timeframe;
 		});
@@ -90,17 +94,6 @@
 			const date = new Date(target.value);
 			date.setUTCHours(0, 0, 0, 0);
 			if (date.getTime()) settings.date.end = date;
-		} catch (error) {
-			// ignore
-		}
-	}
-	function onCollectionDateChange(index: number, e: Event) {
-		const target = e.target as HTMLInputElement;
-		if (!target.value || !settings.collections[index]) return;
-		try {
-			const date = new Date(target.value);
-			date.setUTCHours(0, 0, 0, 0);
-			if (date.getTime()) settings.collections[index].start = date;
 		} catch (error) {
 			// ignore
 		}
@@ -456,54 +449,58 @@
 							<fieldset style="margin-top: 1rem;">
 								<label for="collection-{collection.id}-type">Page Template</label>
 								<select id="collection-{collection.id}-type" bind:value={collection.type}>
-									{#each pageTemplates as template}
+									{#each getAvailablePageTemplates('collection') as template}
 										<option value={template.value}>{template.name}</option>
 									{/each}
 								</select>
 							</fieldset>
 							<fieldset style="margin-top: 1rem;">
-								<label for="numIndexPages">Number of Index Pages</label>
+								<label for="collection-{collection.id}-numIndexPages">
+									Number of Index Pages
+								</label>
 								<input
 									type="number"
 									placeholder="Number of Index Pages"
-									id="numIndexPages"
+									id="collection-{collection.id}-numIndexPages"
 									min="1"
 									step="1"
 									bind:value={collection.numIndexPages} />
 							</fieldset>
 							<fieldset style="margin-top: 1rem;">
-								<label for="numPagesPerItem">Number of Pages Per Item</label>
+								<label for="collection-{collection.id}-total">
+									Number of Items Per Index Page
+								</label>
+								<input
+									type="number"
+									placeholder="Number of Items Per Index Page"
+									id="collection-{collection.id}-total"
+									min="1"
+									max="180"
+									step="1"
+									bind:value={collection.total} />
+							</fieldset>
+							<fieldset style="margin-top: 1rem;">
+								<label for="collection-{collection.id}-numPagesPerItem">
+									Number of Pages Per Item
+								</label>
 								<input
 									type="number"
 									placeholder="Number of Pages Per Item"
-									id="numPagesPerItem"
+									id="collection-{collection.id}-numPagesPerItem"
 									min="1"
 									step="1"
 									bind:value={collection.numPagesPerItem} />
 							</fieldset>
 							{#if collection.type.startsWith('numbered') || collection.type.startsWith('lined')}
 								<fieldset style="margin-top: 1rem;">
-									<label for="columns">Columns</label>
+									<label for="collection-{collection.id}-columns">Columns</label>
 									<input
 										type="number"
 										placeholder="Columns"
-										id="columns"
+										id="collection-{collection.id}-columns"
 										min="1"
 										step="1"
 										bind:value={collection.columns} />
-								</fieldset>
-							{/if}
-							{#if collection.type.startsWith('notes') || collection.type.startsWith('checkbox') || collection.type.startsWith('navigate')}
-								<fieldset style="margin-top: 1rem;">
-									<label for="start">Collection Date</label>
-									<input
-										type="date"
-										placeholder="Collection Date"
-										id="start"
-										value={!collection.start
-											? ''
-											: collection.start.toISOString().slice(0, 10)}
-										on:change={(e) => onCollectionDateChange(i, e)} />
 								</fieldset>
 							{/if}
 							<button

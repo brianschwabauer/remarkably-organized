@@ -9,6 +9,10 @@
 </script>
 
 {#if collection}
+	{@const total = collection.total}
+	{@const cols =
+		total <= 20 ? 1 : total <= 60 ? 2 : total <= 108 ? 3 : total <= 144 ? 4 : 5}
+	{@const rows = Math.ceil(total / cols)}
 	{#each new Array(collection.numIndexPages) as _, indexPage (indexPage)}
 		<article
 			id={`${indexPage === 0 ? collection.id : collection.id + `-${indexPage + 1}`}`}
@@ -21,19 +25,23 @@
 			<TopNav
 				{settings}
 				breadcrumbs={[{ name: collection.name, href: `#${collection.id}` }]} />
-			<div class="collection-index">
-				{#each new Array(collection.total) as _, i (i)}
-					<a
-						href="#{collection.id}-{i + 1 + indexPage * collection.total}"
-						class="collection-item">
-						{i + 1 + indexPage * collection.total}&#41;
+			<div class="collection-index" style:--rows={rows + 1}>
+				<div style="grid-row: {rows + 1}; grid-column: 1 / span {Math.max(1, cols - 1)};">
+				</div>
+				{#each new Array(total) as _, i (i)}
+					<a href="#{collection.id}-{i + 1 + indexPage * total}" class="collection-item">
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 20">
+							<text y="12" font-size="16px">
+								{i + 1 + indexPage * total}&#41;
+							</text>
+						</svg>
 					</a>
 				{/each}
 			</div>
 		</article>
 	{/each}
-	{#if collection.total}
-		{#each new Array(collection.total * Math.max(1, collection.numIndexPages || 1)) as _, item (item)}
+	{#if total}
+		{#each new Array(total * Math.max(1, collection.numIndexPages || 1)) as _, item (item)}
 			{#each new Array(Math.max(1, collection.numPagesPerItem || 1)) as _, itemPage (itemPage)}
 				<article
 					id={`${collection.id}-${item + 1}${itemPage === 0 ? '' : `-${itemPage + 1}`}`}
@@ -56,14 +64,7 @@
 						display={collection.type}
 						{settings}
 						columns={collection.columns}
-						lines={collection.lines}
-						timeframe={!collection.start
-							? undefined
-							: getTimeframe(
-									collection.start.getUTCFullYear(),
-									collection.start.getUTCMonth() + 1,
-									collection.start.getUTCDate(),
-								)} />
+						lines={collection.lines} />
 				</article>
 			{/each}
 		{/each}
@@ -81,20 +82,24 @@
 	.collection-index {
 		display: grid;
 		grid-auto-flow: column;
-		// grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-		grid-template-rows: repeat(20, 1fr);
-		grid-template-columns: repeat(2, 1fr);
-		grid-gap: 0 2rem;
+		grid-template-rows: repeat(var(--rows), minmax(1.5rem, 1fr));
+		grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+		grid-gap: 0 1rem;
 		flex: 1;
 		width: 100%;
-		padding: 0rem 2rem 2.25rem;
+		height: 100%;
+		padding: 0rem 2rem 1rem;
 		font-weight: lighter;
 		.collection-item {
 			color: var(--text);
 			border-bottom: solid 1px var(--outline-low);
 			display: flex;
 			align-items: end;
-			padding-bottom: 0.2rem;
+			svg {
+				height: 50%;
+				max-height: 2rem;
+				min-height: 0.9rem;
+			}
 		}
 	}
 	.collection {
