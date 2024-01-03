@@ -18,7 +18,7 @@
 {#if settings.yearPage.notePagesAmount > 0}
 	{#each new Array(settings.yearPage.notePagesAmount) as _, i}
 		<article
-			id="{year.year}-{i + 2}"
+			id="{year.year}-pg{i + 2}"
 			use:intersect={{ rootMargin: '1000px 0px 1000px 0px' }}>
 			<SideNav
 				{settings}

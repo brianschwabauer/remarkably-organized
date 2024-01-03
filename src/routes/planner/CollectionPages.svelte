@@ -51,7 +51,7 @@
 			{#each new Array(Math.max(1, collection.numPagesPerItem || 1)) as _, itemPage (itemPage)}
 				{@const id1 = collection.id}
 				{@const id2 = !showIndexPage ? '' : `${item + 1}`}
-				{@const id3 = itemPage === 0 ? '' : `${itemPage + 1}`}
+				{@const id3 = itemPage === 0 ? '' : `pg${itemPage + 1}`}
 				{@const id = [id1, id2, id3].filter(Boolean).join('-')}
 				<article {id} use:intersect={{ rootMargin: '1000px 0px 1000px 0px' }}>
 					<SideNav

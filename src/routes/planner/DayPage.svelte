@@ -16,7 +16,7 @@
 {#if settings.dayPage.notePagesAmount > 0}
 	{#each new Array(settings.dayPage.notePagesAmount) as _, i}
 		<article
-			id="{day.id}-{i + 2}"
+			id="{day.id}-pg{i + 2}"
 			use:intersect={{ rootMargin: '1000px 0px 1000px 0px' }}>
 			<SideNav {settings} tabs="day" timeframe={day} />
 			<TopNav
