@@ -10,7 +10,7 @@
 <article id={day.id} use:intersect={{ rootMargin: '1000px 0px 1000px 0px' }}>
 	<SideNav tabs="day" {settings} timeframe={day}></SideNav>
 	<TopNav {settings} timeframe={day} />
-	<Page {settings} display="notes-day" timeframe={day} />
+	<Page {settings} display={settings.dayPage.template} timeframe={day} />
 </article>
 
 {#if settings.dayPage.notePagesAmount > 0}

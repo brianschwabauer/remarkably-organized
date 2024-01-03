@@ -181,6 +181,7 @@ export class PlannerSettings {
 	/** Settings for changing how the weekly pages should work */
 	readonly weekPage = new (class WeekPageSettings {
 		disable = $state(false);
+		template = $state('notes-week' as PageTemplate);
 		notePagesTemplate = $state('dotted' as PageTemplate);
 		notePagesAmount = $state(0);
 		useWeekSinceYear = $state(true);
@@ -190,6 +191,7 @@ export class PlannerSettings {
 	/** Settings for changing how the daily pages should work */
 	readonly dayPage = new (class DayPageSettings {
 		disable = $state(false);
+		template = $state('notes-day' as PageTemplate);
 		notePagesTemplate = $state('dotted' as PageTemplate);
 		notePagesAmount = $state(0);
 		showOnlyThisWeekInSideNav = $state(true);
@@ -464,12 +466,14 @@ export class PlannerSettings {
 				notePagesAmount: this.weekPage.notePagesAmount,
 				useWeekSinceYear: this.weekPage.useWeekSinceYear,
 				useWeekNumbersInSideNav: this.weekPage.useWeekNumbersInSideNav,
+				template: this.weekPage.template,
 			},
 			dayPage: {
 				disable: this.dayPage.disable,
 				notePagesTemplate: this.dayPage.notePagesTemplate,
 				notePagesAmount: this.dayPage.notePagesAmount,
 				showOnlyThisWeekInSideNav: this.dayPage.showOnlyThisWeekInSideNav,
+				template: this.dayPage.template,
 			},
 			collections: this.collections.map((collection) => ({
 				...collection,
@@ -560,6 +564,8 @@ export class PlannerSettings {
 			this.weekPage.useWeekSinceYear = state.weekPage.useWeekSinceYear;
 		if (state?.weekPage?.useWeekNumbersInSideNav !== undefined)
 			this.weekPage.useWeekNumbersInSideNav = state.weekPage.useWeekNumbersInSideNav;
+		if (state?.weekPage?.template !== undefined)
+			this.weekPage.template = state.weekPage.template;
 
 		// Day Page Settings
 		if (state?.dayPage?.disable !== undefined)
@@ -570,6 +576,8 @@ export class PlannerSettings {
 			this.dayPage.notePagesAmount = state.dayPage.notePagesAmount;
 		if (state?.dayPage?.showOnlyThisWeekInSideNav !== undefined)
 			this.dayPage.showOnlyThisWeekInSideNav = state.dayPage.showOnlyThisWeekInSideNav;
+		if (state?.dayPage?.template !== undefined)
+			this.dayPage.template = state.dayPage.template;
 
 		// Collections
 		if (state?.collections !== undefined) {

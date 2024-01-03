@@ -44,12 +44,10 @@
 		location: 'collection' | 'year' | 'month' | 'quarter' | 'week' | 'day',
 	) {
 		if (location === 'collection') return pageTemplates;
-		const order = ['year', 'quarter', 'month', 'week', 'day'];
 		return pageTemplates.filter((t) => {
 			if (!t.value.startsWith('notes') && !t.value.startsWith('checkbox')) return true;
 			const timeframe = t.value.split('-')[1];
-			if (!order.includes(timeframe)) return true;
-			return order.indexOf(timeframe) <= order.indexOf(location);
+			return location === timeframe;
 		});
 	}
 
@@ -320,6 +318,14 @@
 				</div>
 				{#if !settings.weekPage.disable}
 					<fieldset>
+						<label for="weekPageTemplate">Week Page Template</label>
+						<select id="weekPageTemplate" bind:value={settings.weekPage.template}>
+							{#each getAvailablePageTemplates('week') as template (template.value)}
+								<option value={template.value}>{template.name}</option>
+							{/each}
+						</select>
+					</fieldset>
+					<fieldset>
 						<label for="weekNotePagesAmount">Additional Note Pages</label>
 						<input
 							type="number"
@@ -366,6 +372,14 @@
 					<label for="dayPageDisable">Disable Daily View</label>
 				</div>
 				{#if !settings.dayPage.disable}
+					<fieldset>
+						<label for="dayPageTemplate">Day Page Template</label>
+						<select id="dayPageTemplate" bind:value={settings.dayPage.template}>
+							{#each getAvailablePageTemplates('day') as template (template.value)}
+								<option value={template.value}>{template.name}</option>
+							{/each}
+						</select>
+					</fieldset>
 					<fieldset>
 						<label for="dayNotePagesAmount">Additional Note Pages</label>
 						<input

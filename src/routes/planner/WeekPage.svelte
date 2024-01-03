@@ -10,7 +10,7 @@
 <article id={week.id} use:intersect={{ rootMargin: '1000px 0px 1000px 0px' }}>
 	<SideNav tabs="week" {settings} timeframe={week}></SideNav>
 	<TopNav {settings} timeframe={week} />
-	<Page {settings} display="notes-week" timeframe={week} />
+	<Page {settings} display={settings.weekPage.template} timeframe={week} />
 </article>
 
 {#if settings.weekPage.notePagesAmount > 0}
