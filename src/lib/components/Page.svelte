@@ -8,6 +8,7 @@
 	import NotesYear from './NotesYear.svelte';
 	import NotesWeek from './NotesWeek.svelte';
 	import NotesDay from './NotesDay.svelte';
+	import HabitsYear from './HabitsYear.svelte';
 
 	let {
 		display = 'dotted' as Collection['type'],
@@ -73,6 +74,16 @@
 			display="rows" />
 	{:else if display === 'notes-day'}
 		<NotesDay />
+	{:else if display === 'habit-year-by-week'}
+		<HabitsYear
+			{timeframe}
+			startWeekOnSunday={settings.date.startWeekOnSunday}
+			groupBy="week" />
+	{:else if display === 'habit-year-by-month'}
+		<HabitsYear
+			{timeframe}
+			startWeekOnSunday={settings.date.startWeekOnSunday}
+			groupBy="month" />
 	{:else if display.startsWith('lined')}
 		<Grid {display} columns={cols} lines={numLines} {aspectRatio} />
 	{:else if display.startsWith('numbered')}

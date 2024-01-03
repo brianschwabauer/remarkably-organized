@@ -38,15 +38,15 @@
 		{ name: 'Notes - Weekly - Columns', value: 'notes-week-columns' },
 		{ name: 'Notes - Weekly - Rows', value: 'notes-week-rows' },
 		{ name: 'Notes - Daily', value: 'notes-day' },
-		{ name: 'Habit Checkboxes - Year', value: 'checkbox-year' },
-		{ name: 'Habit Checkboxes - Month', value: 'checkbox-month' },
+		{ name: 'Habit Checkboxes - Weekly', value: 'habit-year-by-week' },
+		{ name: 'Habit Checkboxes - Monthly', value: 'habit-year-by-month' },
 	];
 
 	function getAvailablePageTemplates(
 		location: 'collection' | 'year' | 'month' | 'quarter' | 'week' | 'day',
 	) {
 		return pageTemplates.filter((t) => {
-			if (!t.value.startsWith('notes') && !t.value.startsWith('checkbox')) return true;
+			if (!t.value.startsWith('notes') && !t.value.startsWith('habit')) return true;
 			if (location === 'collection') {
 				return !['notes-quarter', 'notes-month'].includes(t.value);
 			}
@@ -517,7 +517,7 @@
 							settings.collections.push({
 								name: 'Notes',
 								id: `${Date.now()}`,
-								total: 40,
+								total: 20,
 								type: 'blank',
 								numIndexPages: 1,
 								numPagesPerItem: 1,

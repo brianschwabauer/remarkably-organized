@@ -4,8 +4,7 @@
  * 'grid' - Each page in the collection will have a grid printed on it
  * 'dotted' - Each page in the collection will have a grid of dots printed on it
  * 'lined' - Each page in the collection will be printed with lines
- * 'checkbox-year' - A collection of checkboxes for each day of the year
- * 'month-checkbox' - A collection of checkboxes for each day of the month
+ * 'habit-year' - A collection of checkboxes for each day of the year
  */
 export type PageTemplate =
 	| 'blank'
@@ -30,8 +29,8 @@ export type PageTemplate =
 	| 'notes-week-columns'
 	| 'notes-week-rows'
 	| 'notes-day'
-	| 'checkbox-year'
-	| 'checkbox-month';
+	| 'habit-year-by-week'
+	| 'habit-year-by-month';
 
 export interface Collection {
 	/** The URL friendly slug used to link & id the collection */
@@ -46,8 +45,7 @@ export interface Collection {
 	 * 'grid' - Each page in the collection will have a grid printed on it
 	 * 'dotted' - Each page in the collection will have a grid of dots printed on it
 	 * 'lined' - Each page in the collection will be printed with lines
-	 * 'checkbox-year' - A collection of checkboxes for each day of the year
-	 * 'month-checkbox' - A collection of checkboxes for each day of the month
+	 * 'habit-year' - A collection of checkboxes for each day of the year
 	 */
 	type: PageTemplate;
 
