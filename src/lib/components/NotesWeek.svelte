@@ -78,10 +78,11 @@
 		border-top: solid 1px var(--outline-low);
 		text-align: center;
 		padding: 0.5rem 0 0;
+		font-weight: lighter;
 
 		:global(.ordinal) {
 			font-size: 0.75em;
-			vertical-align: super;
+			vertical-align: text-top;
 		}
 	}
 </style>
