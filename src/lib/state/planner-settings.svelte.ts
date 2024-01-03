@@ -140,7 +140,7 @@ export class PlannerSettings {
 	/** Settings for changing the top navigation bar display */
 	readonly topNav = new (class TopNavSettings {
 		disable = $state(false);
-		showCollectionLinks = $state(false);
+		showCollectionLinks = $state(true);
 		height = $state(45);
 		font = $state('');
 	})();
@@ -175,13 +175,13 @@ export class PlannerSettings {
 	readonly monthPage = new (class MonthPageSettings {
 		disable = $state(false);
 		notePagesTemplate = $state('dotted' as PageTemplate);
-		notePagesAmount = $state(0);
+		notePagesAmount = $state(2);
 	})();
 
 	/** Settings for changing how the weekly pages should work */
 	readonly weekPage = new (class WeekPageSettings {
 		disable = $state(false);
-		template = $state('notes-week' as PageTemplate);
+		template = $state('notes-week-columns' as PageTemplate);
 		notePagesTemplate = $state('dotted' as PageTemplate);
 		notePagesAmount = $state(0);
 		useWeekSinceYear = $state(true);
@@ -210,7 +210,7 @@ export class PlannerSettings {
 		{
 			id: 'goals',
 			name: 'Goals',
-			total: 40,
+			total: 1,
 			type: 'habit-year-by-week',
 			numIndexPages: 1,
 			numPagesPerItem: 1,
