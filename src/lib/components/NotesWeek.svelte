@@ -8,7 +8,9 @@
 	<div class="week">
 		{#each new Array(7) as _, i (i)}
 			{@const date = new Date(timeframe.weekStart.getTime() + i * 86400000)}
-			<a class="day" href="#{timeframe.year}-{timeframe.month}-{date.getUTCDate()}">
+			<a
+				class="day"
+				href="#{date.getUTCFullYear()}-{date.getUTCMonth() + 1}-{date.getUTCDate()}">
 				{date.toLocaleString('default', { weekday: 'short', timeZone: 'UTC' })},
 				{@html formatToString(date.getUTCDate(), { type: 'ordinal', html: true })}
 			</a>
@@ -28,7 +30,7 @@
 		align-items: stretch;
 	}
 	.day {
-		font-size: 1.1rem;
+		font-size: .9rem;
 		border-top: solid 1px var(--outline-low);
 		text-align: center;
 		padding: 0.5rem 0 0;
