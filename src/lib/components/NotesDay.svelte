@@ -8,7 +8,7 @@
 {#if timeframe.daySinceMonth}
 	<div class="day">
 		<div class="hours">
-			{#each new Array(16) as _, i (i)}
+			{#each new Array(17) as _, i (i)}
 				{@const hour = i + 5}
 				<div class="hour">
 					<span>
