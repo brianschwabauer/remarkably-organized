@@ -19,7 +19,10 @@
 			id="{day.id}-{i + 2}"
 			use:intersect={{ rootMargin: '1000px 0px 1000px 0px' }}>
 			<SideNav {settings} tabs="day" timeframe={day} />
-			<TopNav {settings} timeframe={day} />
+			<TopNav
+				{settings}
+				timeframe={day}
+				breadcrumbs={[{ href: `#${day.id}-${i + 2}`, name: `Page ${i + 2}` }]} />
 			<Page display={settings.dayPage.notePagesTemplate} {settings} timeframe={day} />
 		</article>
 	{/each}

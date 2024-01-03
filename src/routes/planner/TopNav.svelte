@@ -90,7 +90,7 @@
 							timeZone: 'UTC',
 						})},
 						{timeframe.start.toLocaleString('default', {
-							month: 'long',
+							month: !breadcrumbs.length ? 'long' : 'short',
 							timeZone: 'UTC',
 						})}
 						{@html formatToString(timeframe.daySinceMonth, {

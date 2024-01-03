@@ -19,7 +19,10 @@
 			id="{month.id}-{i + 2}"
 			use:intersect={{ rootMargin: '1000px 0px 1000px 0px' }}>
 			<SideNav {settings} tabs="month" timeframe={month} />
-			<TopNav {settings} timeframe={month} />
+			<TopNav
+				{settings}
+				timeframe={month}
+				breadcrumbs={[{ href: `#${month.id}-${i + 2}`, name: `Page ${i + 2}` }]} />
 			<Page display={settings.monthPage.notePagesTemplate} {settings} timeframe={month} />
 		</article>
 	{/each}
