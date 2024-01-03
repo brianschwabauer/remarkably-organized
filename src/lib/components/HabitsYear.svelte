@@ -119,7 +119,7 @@
 
 			.month {
 				font-size: 0.45rem;
-				opacity: 0.8;
+				opacity: 1;
 			}
 			.date {
 				font-size: 0.8rem;
@@ -168,7 +168,7 @@
 
 			.weekday {
 				font-size: 0.5rem;
-				opacity: 0.8;
+				opacity: 1;
 			}
 			.date {
 				font-size: 0.8rem;
