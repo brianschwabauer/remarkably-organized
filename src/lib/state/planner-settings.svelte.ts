@@ -160,29 +160,29 @@ export class PlannerSettings {
 	/** Settings for changing how the year pages should work */
 	readonly yearPage = new (class YearPageSettings {
 		disable = $state(false);
-		notePagesTemplate = $state('dotted-small' as PageTemplate);
+		notePagesTemplate = $state('notes-year' as PageTemplate);
 		notePagesAmount = $state(1);
 	})();
 
 	/** Settings for changing how the quarterly pages should work */
 	readonly quarterPage = new (class QuarterPageSettings {
 		disable = $state(false);
-		notePagesTemplate = $state('dotted-small' as PageTemplate);
+		notePagesTemplate = $state('notes-quarter' as PageTemplate);
 		notePagesAmount = $state(1);
 	})();
 
 	/** Settings for changing how the monthly pages should work */
 	readonly monthPage = new (class MonthPageSettings {
 		disable = $state(false);
-		notePagesTemplate = $state('dotted-small' as PageTemplate);
-		notePagesAmount = $state(1);
+		notePagesTemplate = $state('dotted' as PageTemplate);
+		notePagesAmount = $state(0);
 	})();
 
 	/** Settings for changing how the weekly pages should work */
 	readonly weekPage = new (class WeekPageSettings {
 		disable = $state(false);
-		notePagesTemplate = $state('dotted-small' as PageTemplate);
-		notePagesAmount = $state(1);
+		notePagesTemplate = $state('dotted' as PageTemplate);
+		notePagesAmount = $state(0);
 		useWeekSinceYear = $state(true);
 		useWeekNumbersInSideNav = $state(false);
 	})();
@@ -190,8 +190,8 @@ export class PlannerSettings {
 	/** Settings for changing how the daily pages should work */
 	readonly dayPage = new (class DayPageSettings {
 		disable = $state(false);
-		notePagesTemplate = $state('dotted-small' as PageTemplate);
-		notePagesAmount = $state(1);
+		notePagesTemplate = $state('dotted' as PageTemplate);
+		notePagesAmount = $state(0);
 		showOnlyThisWeekInSideNav = $state(true);
 	})();
 
@@ -201,7 +201,7 @@ export class PlannerSettings {
 			id: 'notes',
 			name: 'Notes',
 			total: 40,
-			type: 'dotted-small',
+			type: 'dotted',
 			numIndexPages: 2,
 			numPagesPerItem: 1,
 		},
@@ -357,7 +357,7 @@ export class PlannerSettings {
 					),
 				);
 				acc.push({
-					id: `${year.year}-${month}-${day}`,
+					id: `${year.year}-${month}-${start.getUTCDate()}`,
 					year: year.year,
 					quarter,
 					month,
