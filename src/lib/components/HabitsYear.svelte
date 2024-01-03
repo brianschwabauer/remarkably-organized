@@ -107,6 +107,7 @@
 			border-bottom: solid 1px var(--outline-low);
 			border-left: solid 1px var(--outline-low);
 			line-height: 1;
+			gap: .1rem 0;
 
 			&.last-col {
 				border-right: solid 1px var(--outline-low);
