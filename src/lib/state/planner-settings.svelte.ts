@@ -583,11 +583,11 @@ export class PlannerSettings {
 				id: collection?.id || `${i}`,
 				name: collection?.name || `Collection ${i}`,
 				type: collection?.type || 'blank',
-				total: collection?.total || 20,
+				total: collection?.total ?? 20,
 				columns: collection?.columns || 1,
 				lines: collection?.lines,
-				numIndexPages: collection?.numIndexPages || 1,
-				numPagesPerItem: collection?.numPagesPerItem || 1,
+				numIndexPages: collection?.numIndexPages ?? 1,
+				numPagesPerItem: collection?.numPagesPerItem ?? 1,
 			}));
 		}
 	}
