@@ -226,16 +226,18 @@
 							step="1"
 							bind:value={settings.yearPage.notePagesAmount} />
 					</fieldset>
-					<fieldset>
-						<label for="yearNotePagesTemplate">Additional Note Pages Template</label>
-						<select
-							id="yearNotePagesTemplate"
-							bind:value={settings.yearPage.notePagesTemplate}>
-							{#each getAvailablePageTemplates('year') as template (template.value)}
-								<option value={template.value}>{template.name}</option>
-							{/each}
-						</select>
-					</fieldset>
+					{#if settings.yearPage.notePagesAmount > 0}
+						<fieldset>
+							<label for="yearNotePagesTemplate">Additional Note Pages Template</label>
+							<select
+								id="yearNotePagesTemplate"
+								bind:value={settings.yearPage.notePagesTemplate}>
+								{#each getAvailablePageTemplates('year') as template (template.value)}
+									<option value={template.value}>{template.name}</option>
+								{/each}
+							</select>
+						</fieldset>
+					{/if}
 				{/if}
 
 				<h3>Quarterly View</h3>
@@ -257,16 +259,18 @@
 							step="1"
 							bind:value={settings.quarterPage.notePagesAmount} />
 					</fieldset>
-					<fieldset>
-						<label for="quarterNotePagesTemplate">Additional Note Pages Template</label>
-						<select
-							id="quarterNotePagesTemplate"
-							bind:value={settings.quarterPage.notePagesTemplate}>
-							{#each getAvailablePageTemplates('quarter') as template (template.value)}
-								<option value={template.value}>{template.name}</option>
-							{/each}
-						</select>
-					</fieldset>
+					{#if settings.quarterPage.notePagesAmount > 0}
+						<fieldset>
+							<label for="quarterNotePagesTemplate">Additional Note Pages Template</label>
+							<select
+								id="quarterNotePagesTemplate"
+								bind:value={settings.quarterPage.notePagesTemplate}>
+								{#each getAvailablePageTemplates('quarter') as template (template.value)}
+									<option value={template.value}>{template.name}</option>
+								{/each}
+							</select>
+						</fieldset>
+					{/if}
 				{/if}
 
 				<h3>Monthly View</h3>
@@ -288,16 +292,18 @@
 							step="1"
 							bind:value={settings.monthPage.notePagesAmount} />
 					</fieldset>
-					<fieldset>
-						<label for="monthNotePagesTemplate">Additional Note Pages Template</label>
-						<select
-							id="monthNotePagesTemplate"
-							bind:value={settings.monthPage.notePagesTemplate}>
-							{#each getAvailablePageTemplates('month') as template (template.value)}
-								<option value={template.value}>{template.name}</option>
-							{/each}
-						</select>
-					</fieldset>
+					{#if settings.monthPage.notePagesAmount > 0}
+						<fieldset>
+							<label for="monthNotePagesTemplate">Additional Note Pages Template</label>
+							<select
+								id="monthNotePagesTemplate"
+								bind:value={settings.monthPage.notePagesTemplate}>
+								{#each getAvailablePageTemplates('month') as template (template.value)}
+									<option value={template.value}>{template.name}</option>
+								{/each}
+							</select>
+						</fieldset>
+					{/if}
 				{/if}
 
 				<h3>Weekly View</h3>
@@ -319,16 +325,18 @@
 							step="1"
 							bind:value={settings.weekPage.notePagesAmount} />
 					</fieldset>
-					<fieldset>
-						<label for="weekNotePagesTemplate">Additional Note Pages Template</label>
-						<select
-							id="weekNotePagesTemplate"
-							bind:value={settings.weekPage.notePagesTemplate}>
-							{#each getAvailablePageTemplates('week') as template (template.value)}
-								<option value={template.value}>{template.name}</option>
-							{/each}
-						</select>
-					</fieldset>
+					{#if settings.weekPage.notePagesAmount > 0}
+						<fieldset>
+							<label for="weekNotePagesTemplate">Additional Note Pages Template</label>
+							<select
+								id="weekNotePagesTemplate"
+								bind:value={settings.weekPage.notePagesTemplate}>
+								{#each getAvailablePageTemplates('week') as template (template.value)}
+									<option value={template.value}>{template.name}</option>
+								{/each}
+							</select>
+						</fieldset>
+					{/if}
 					<div class="checkbox">
 						<input
 							type="checkbox"
@@ -364,16 +372,18 @@
 							step="1"
 							bind:value={settings.dayPage.notePagesAmount} />
 					</fieldset>
-					<fieldset>
-						<label for="dayNotePagesTemplate">Additional Note Pages Template</label>
-						<select
-							id="dayNotePagesTemplate"
-							bind:value={settings.dayPage.notePagesTemplate}>
-							{#each getAvailablePageTemplates('day') as template (template.value)}
-								<option value={template.value}>{template.name}</option>
-							{/each}
-						</select>
-					</fieldset>
+					{#if settings.dayPage.notePagesAmount > 0}
+						<fieldset>
+							<label for="dayNotePagesTemplate">Additional Note Pages Template</label>
+							<select
+								id="dayNotePagesTemplate"
+								bind:value={settings.dayPage.notePagesTemplate}>
+								{#each getAvailablePageTemplates('day') as template (template.value)}
+									<option value={template.value}>{template.name}</option>
+								{/each}
+							</select>
+						</fieldset>
+					{/if}
 					<div class="checkbox">
 						<input
 							type="checkbox"
