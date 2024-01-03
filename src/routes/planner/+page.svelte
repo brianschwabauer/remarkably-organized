@@ -462,7 +462,7 @@
 									type="number"
 									placeholder="Number of Index Pages"
 									id="collection-{collection.id}-numIndexPages"
-									min="1"
+									min="0"
 									step="1"
 									bind:value={collection.numIndexPages} />
 							</fieldset>

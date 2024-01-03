@@ -13,39 +13,47 @@
 	{@const cols =
 		total <= 20 ? 1 : total <= 60 ? 2 : total <= 108 ? 3 : total <= 144 ? 4 : 5}
 	{@const rows = Math.ceil(total / cols)}
-	{#each new Array(collection.numIndexPages) as _, indexPage (indexPage)}
-		<article
-			id={`${indexPage === 0 ? collection.id : collection.id + `-${indexPage + 1}`}`}
-			use:intersect={{ rootMargin: '1000px 0px 1000px 0px' }}>
-			<SideNav
-				tabs={!settings.monthPage.disable ? 'month' : 'none'}
-				{settings}
-				timeframe={year}
-				disableActiveIndicator></SideNav>
-			<TopNav
-				{settings}
-				breadcrumbs={[{ name: collection.name, href: `#${collection.id}` }]} />
-			<div class="collection-index" style:--rows={rows + 1}>
-				<div style="grid-row: {rows + 1}; grid-column: 1 / span {Math.max(1, cols - 1)};">
+	{@const showIndexPage = total > 0 && +(collection.numIndexPages || '') >= 1}
+	{#if showIndexPage}
+		{#each new Array(collection.numIndexPages) as _, indexPage (indexPage)}
+			<article
+				id={`${indexPage === 0 ? collection.id : collection.id + `-${indexPage + 1}`}`}
+				use:intersect={{ rootMargin: '1000px 0px 1000px 0px' }}>
+				<SideNav
+					tabs={!settings.monthPage.disable ? 'month' : 'none'}
+					{settings}
+					timeframe={year}
+					disableActiveIndicator></SideNav>
+				<TopNav
+					{settings}
+					breadcrumbs={[{ name: collection.name, href: `#${collection.id}` }]} />
+				<div class="collection-index" style:--rows={rows + 1}>
+					<div
+						style="grid-row: {rows + 1}; grid-column: 1 / span {Math.max(1, cols - 1)};">
+					</div>
+					{#each new Array(total) as _, i (i)}
+						<a
+							href="#{collection.id}-{i + 1 + indexPage * total}"
+							class="collection-item">
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 20">
+								<text y="12" font-size="16px">
+									{i + 1 + indexPage * total}&#41;
+								</text>
+							</svg>
+						</a>
+					{/each}
 				</div>
-				{#each new Array(total) as _, i (i)}
-					<a href="#{collection.id}-{i + 1 + indexPage * total}" class="collection-item">
-						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 20">
-							<text y="12" font-size="16px">
-								{i + 1 + indexPage * total}&#41;
-							</text>
-						</svg>
-					</a>
-				{/each}
-			</div>
-		</article>
-	{/each}
+			</article>
+		{/each}
+	{/if}
 	{#if total}
 		{#each new Array(total * Math.max(1, collection.numIndexPages || 1)) as _, item (item)}
 			{#each new Array(Math.max(1, collection.numPagesPerItem || 1)) as _, itemPage (itemPage)}
-				<article
-					id={`${collection.id}-${item + 1}${itemPage === 0 ? '' : `-${itemPage + 1}`}`}
-					use:intersect={{ rootMargin: '1000px 0px 1000px 0px' }}>
+				{@const id1 = collection.id}
+				{@const id2 = !showIndexPage ? '' : `${item + 1}`}
+				{@const id3 = itemPage === 0 ? '' : `${itemPage + 1}`}
+				{@const id = [id1, id2, id3].filter(Boolean).join('-')}
+				<article {id} use:intersect={{ rootMargin: '1000px 0px 1000px 0px' }}>
 					<SideNav
 						tabs={!settings.monthPage.disable ? 'month' : 'none'}
 						{settings}
@@ -55,10 +63,14 @@
 						{settings}
 						breadcrumbs={[
 							{ name: collection.name, href: `#${collection.id}` },
-							{
-								name: `${item + 1}${itemPage === 0 ? '' : `-${itemPage + 1}`}`,
-								href: `#${collection.id}-${item + 1}`,
-							},
+							...(showIndexPage
+								? [
+										{
+											name: `${item + 1}${itemPage === 0 ? '' : `-${itemPage + 1}`}`,
+											href: `#${collection.id}-${item + 1}`,
+										},
+									]
+								: []),
 						]} />
 					<Page
 						display={collection.type}

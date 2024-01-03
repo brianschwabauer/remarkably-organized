@@ -212,7 +212,7 @@ export class PlannerSettings {
 			name: 'Goals',
 			total: 1,
 			type: 'habit-year-by-week',
-			numIndexPages: 1,
+			numIndexPages: 0,
 			numPagesPerItem: 1,
 		},
 	] as Collection[]);
