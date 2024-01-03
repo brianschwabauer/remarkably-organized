@@ -8,7 +8,7 @@
 	} = $props();
 </script>
 
-{#if timeframe.month}
+{#if timeframe?.month}
 	<div class="month" class:with-weeks={showWeekLinks}>
 		{#if showWeekLinks}
 			{@const numWeeks =

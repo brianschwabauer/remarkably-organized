@@ -12,6 +12,16 @@
 			</a>
 		{/each}
 	</div>
+{:else}
+	<div class="months">
+		{#each new Array(12) as _, i (i)}
+			<div class="month">
+				<h2>
+					{new Date(new Date().setMonth(i)).toLocaleString('default', { month: 'long' })}
+				</h2>
+			</div>
+		{/each}
+	</div>
 {/if}
 
 <style lang="scss">
@@ -26,7 +36,7 @@
 		h2 {
 			font-size: 1;
 			text-align: center;
-			font-size: 1.2rem;
+			font-size: 1rem;
 			font-weight: normal;
 			padding: 0.5rem 0 0.5rem;
 		}

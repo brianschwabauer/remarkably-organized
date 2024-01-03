@@ -27,6 +27,8 @@ export type PageTemplate =
 	| 'notes-quarter'
 	| 'notes-month'
 	| 'notes-week'
+	| 'notes-week-columns'
+	| 'notes-week-rows'
 	| 'notes-day'
 	| 'checkbox-year'
 	| 'checkbox-month';
@@ -63,10 +65,4 @@ export interface Collection {
 
 	/** The number of pages each item in the collection has */
 	numPagesPerItem?: number;
-
-	/** The start date of the collection (only applies to checkbox-year & month-checkbox) */
-	start?: Date;
-
-	/** The end date of the collection (only applies to checkbox-year & month-checkbox) */
-	end?: Date;
 }

@@ -477,8 +477,6 @@ export class PlannerSettings {
 			},
 			collections: this.collections.map((collection) => ({
 				...collection,
-				...(collection.start ? { start: collection.start.getTime() } : {}),
-				...(collection.end ? { end: collection.end.getTime() } : {}),
 			})),
 		};
 	}
@@ -590,8 +588,6 @@ export class PlannerSettings {
 				lines: collection?.lines,
 				numIndexPages: collection?.numIndexPages || 1,
 				numPagesPerItem: collection?.numPagesPerItem || 1,
-				...(collection!.start ? { start: new Date(<number>collection!.start) } : {}),
-				...(collection!.end ? { end: new Date(<number>collection!.end) } : {}),
 			}));
 		}
 	}

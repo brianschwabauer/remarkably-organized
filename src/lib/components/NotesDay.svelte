@@ -1,28 +1,23 @@
 <script lang="ts">
-	import { type Timeframe } from '$lib';
 	import Grid from './Grid.svelte';
-
-	let { timeframe = {} as Timeframe } = $props();
 </script>
 
-{#if timeframe.daySinceMonth}
-	<div class="day">
-		<div class="hours">
-			{#each new Array(17) as _, i (i)}
-				{@const hour = i + 5}
-				<div class="hour">
-					<span>
-						{hour % 12 === 0 ? 12 : hour % 12}
-						<small>{hour < 12 ? 'am' : 'pm'}</small>
-					</span>
-				</div>
-			{/each}
-		</div>
-		<div class="grid">
-			<Grid display="dotted" />
-		</div>
+<div class="day">
+	<div class="hours">
+		{#each new Array(17) as _, i (i)}
+			{@const hour = i + 5}
+			<div class="hour">
+				<span>
+					{hour % 12 === 0 ? 12 : hour % 12}
+					<small>{hour < 12 ? 'am' : 'pm'}</small>
+				</span>
+			</div>
+		{/each}
 	</div>
-{/if}
+	<div class="grid">
+		<Grid display="dotted" />
+	</div>
+</div>
 
 <style lang="scss">
 	.week {

@@ -60,9 +60,19 @@
 			startWeekOnSunday={settings.date.startWeekOnSunday}
 			showWeekLinks={!settings.weekPage.disable} />
 	{:else if display === 'notes-week'}
-		<NotesWeek {timeframe} />
+		<NotesWeek {timeframe} startWeekOnSunday={settings.date.startWeekOnSunday} />
+	{:else if display === 'notes-week-columns'}
+		<NotesWeek
+			{timeframe}
+			startWeekOnSunday={settings.date.startWeekOnSunday}
+			display="columns" />
+	{:else if display === 'notes-week-rows'}
+		<NotesWeek
+			{timeframe}
+			startWeekOnSunday={settings.date.startWeekOnSunday}
+			display="rows" />
 	{:else if display === 'notes-day'}
-		<NotesDay {timeframe} />
+		<NotesDay />
 	{:else if display.startsWith('lined')}
 		<Grid {display} columns={cols} lines={numLines} {aspectRatio} />
 	{:else if display.startsWith('numbered')}
