@@ -38,3 +38,22 @@ To build the code run,
 ```bash
 npm run build
 ```
+
+## Future Ideas
+
+### Auto linking "Today" button
+
+In the future, there could be a script that runs every day that updates the pdf so that all links to /today would be converted to the actual date (like /2024-1-1).
+
+That way you could always click on a "Today" button to take you to the right page.
+
+Here's a sample command. This command just needs to be run every day once a day.
+
+```bash
+ sed -i 's/OLD_TEXT/NEW_TEXT/g' PDF_NAME.pdf
+ sed -i 's/\/today/\/2024-1-1/g' PDF_NAME.pdf
+```
+
+### Insert events from ICS file
+
+Add an input to add a link to a public ICS file that could pull in events into the calendar.
