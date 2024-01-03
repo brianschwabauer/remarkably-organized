@@ -567,6 +567,13 @@
 </main>
 
 <style lang="scss">
+	@media screen {
+		main {
+			overflow: hidden;
+			max-width: 100vw;
+			max-height: 100vh;
+		}
+	}
 	:global(main > article) {
 		display: block;
 		position: relative;
@@ -604,7 +611,7 @@
 		background-color: var(--bg);
 		z-index: 10;
 		width: 400px;
-		max-width: 100vw;
+		max-width: calc(100vw - 2rem);
 		max-height: 80vh;
 		border-radius: var(--radius-5);
 		box-shadow: var(--shadow-4);
