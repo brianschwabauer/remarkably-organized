@@ -8,8 +8,12 @@
 {#if timeframe.daySinceMonth}
 	<div class="day">
 		<div class="hours">
-			{#each new Array(24) as _, i (i)}
-				<div class="hour">{i}:00</div>
+			{#each new Array(14) as _, i (i)}
+				{@const hour = i + 6}
+				<div class="hour">
+					{hour % 12 === 0 ? 12 : hour % 12}
+					<small>{hour < 12 ? 'am' : 'pm'}</small>
+				</div>
 			{/each}
 		</div>
 		<div class="grid">
@@ -54,11 +58,24 @@
 	}
 	.hours {
 		position: absolute;
-		top: 0;
+		top: 22px;
 		left: 0;
 		bottom: 0;
 		height: 100%;
 		display: flex;
 		flex-direction: column;
+		color: var(--text-low);
+		padding: 2px 0 40px;
+		.hour {
+			flex: 1;
+			display: flex;
+			justify-content: center;
+			align-items: start;
+			padding: 0 1rem;
+			font-size: 0.7rem;
+			small {
+				font-size: 0.6rem;
+			}
+		}
 	}
 </style>
