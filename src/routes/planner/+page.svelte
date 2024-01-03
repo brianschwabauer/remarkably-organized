@@ -13,6 +13,7 @@
 	import DayPage from './DayPage.svelte';
 	import CollectionPages from './CollectionPages.svelte';
 	import HelpModal from './HelpModal.svelte';
+	import { browser } from '$app/environment';
 	let { data } = $props();
 	const { settings } = data;
 
@@ -55,7 +56,10 @@
 	let showHelp = $state($page.url.searchParams.get('help') !== '0');
 	let showMenu = $state(true);
 	let showAdvancedSettings = $state(false);
-	let loadPages = $state($page.url.searchParams.get('help') === '0');
+	let loadPages = $state(
+		$page.url.searchParams.get('help') === '0' &&
+			(browser || $page.url.searchParams.get('load') === '1'),
+	);
 
 	let settingsUrlInitialized = false;
 	$effect(() => {
