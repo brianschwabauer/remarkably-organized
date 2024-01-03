@@ -260,7 +260,7 @@
 			}
 		}
 		a.highlight {
-			--tab-background: #d6d6d6;
+			--tab-background: #cccccc;
 			border-top-right-radius: 0;
 			border-bottom-right-radius: 0;
 			background-color: var(--tab-background);
