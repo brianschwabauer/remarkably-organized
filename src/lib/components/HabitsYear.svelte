@@ -40,7 +40,8 @@
 		{/each}
 		{#each new Array(numDays) as _, day}
 			{@const date = new Date(yearStart.getTime() + day * 86400000)}
-			<div
+			<a
+				href="#{date.getUTCFullYear()}-{date.getUTCMonth() + 1}-{date.getUTCDate()}"
 				class="day"
 				class:first-row={day < 14}
 				class:last-col={day % 14 === 13}
@@ -51,7 +52,7 @@
 				<div class="month">
 					{date.toLocaleString('default', { month: 'short', timeZone: 'UTC' })}
 				</div>
-			</div>
+			</a>
 		{/each}
 	</div>
 {/if}
@@ -68,14 +69,17 @@
 		{/each}
 		{#each new Array(numDays) as _, day}
 			{@const date = new Date(yearStart.getTime() + day * 86400000)}
-			<div class="day" class:first-row={date.getUTCDate() === 1}>
+			<a
+				href="#{date.getUTCFullYear()}-{date.getUTCMonth() + 1}-{date.getUTCDate()}"
+				class="day"
+				class:first-row={date.getUTCDate() === 1}>
 				<div class="weekday">
 					{date.toLocaleString('default', { weekday: 'short', timeZone: 'UTC' })}
 				</div>
 				<div class="date">
 					{@html formatToString(date.getUTCDate(), { type: 'ordinal', html: true })}
 				</div>
-			</div>
+			</a>
 		{/each}
 	</div>
 {/if}
@@ -120,6 +124,7 @@
 			.month {
 				font-size: 0.45rem;
 				opacity: 1;
+				font-weight: normal;
 			}
 			.date {
 				font-size: 0.8rem;
@@ -169,6 +174,7 @@
 			.weekday {
 				font-size: 0.5rem;
 				opacity: 1;
+				font-weight: normal;
 			}
 			.date {
 				font-size: 0.8rem;
