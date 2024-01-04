@@ -42,12 +42,12 @@
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
 		grid-template-rows: repeat(4, 1fr);
-		align-items: center;
-		gap: 0 1.5rem;
+		align-items: start;
+		gap: .5rem 1.5rem;
 		flex: 1;
 		width: 100%;
 		height: 100%;
-		padding: 0 1.5rem 1.5rem;
+		padding: 0 1.5rem 2.5rem;
 		h2 {
 			font-size: 1;
 			text-align: center;
