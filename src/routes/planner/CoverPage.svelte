@@ -20,7 +20,6 @@
 
 <article
 	class:dark={settings.coverPage.darkBackground}
-	id="home"
 	use:intersect={{ rootMargin: '1000px 0px 1000px 0px' }}>
 	<header>
 		{#if settings.coverPage.title}

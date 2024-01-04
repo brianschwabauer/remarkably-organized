@@ -38,18 +38,16 @@
 				: settings.design.fontDisplay === 'Caveat'
 					? '1.35rem'
 					: null}>
-			{#if !settings.coverPage.disable}
-				<li>
-					<a href="#home" class="home">
-						<HomeIcon
-							width="1.35rem"
-							height="1.35rem"
-							style={settings.design.fontDisplay === 'Bebas Neue'
-								? 'margin-bottom:.2rem'
-								: null} />
-					</a>
-				</li>
-			{/if}
+			<li>
+				<a href="#home" class="home">
+					<HomeIcon
+						width="1.35rem"
+						height="1.35rem"
+						style={settings.design.fontDisplay === 'Bebas Neue'
+							? 'margin-bottom:.2rem'
+							: null} />
+				</a>
+			</li>
 			{#if showYearBreadcrumb}
 				<li><a href="#{timeframe.year}">{timeframe.year}</a></li>
 			{/if}

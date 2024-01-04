@@ -669,6 +669,7 @@
 	style:--text={settings.design.colorText}
 	style:--outline={settings.design.colorLines}
 	style:--dots-color={settings.design.colorDots}>
+	<div id="home"></div>
 	{#if !loadPages}
 		<article
 			style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
