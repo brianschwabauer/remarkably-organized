@@ -2,7 +2,7 @@
 	{#each new Array(24) as _, i (i)}
 		<div class="hour-label">
 			{#if i > 0}
-				{i % 12}
+				{i === 12 ? 12 : i % 12}
 				<small>{i < 11 ? 'AM' : 'PM'}</small>
 			{:else}
 				12
