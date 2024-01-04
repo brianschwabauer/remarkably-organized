@@ -43,9 +43,10 @@
 		grid-template-columns: repeat(3, 1fr);
 		grid-template-rows: repeat(4, 1fr);
 		align-items: center;
-		grid-gap: 1.5rem;
+		gap: 0 1.5rem;
 		flex: 1;
 		width: 100%;
+		height: 100%;
 		padding: 0 1.5rem 1.5rem;
 		h2 {
 			font-size: 1;
