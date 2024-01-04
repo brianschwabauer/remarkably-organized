@@ -59,7 +59,8 @@
 		<CalendarMonth
 			{timeframe}
 			startWeekOnSunday={settings.date.startWeekOnSunday}
-			showWeekLinks={!settings.weekPage.disable} />
+			showWeekLinks={!settings.weekPage.disable}
+			useWeekSinceYear={settings.weekPage.useWeekSinceYear} />
 	{:else if display === 'notes-week'}
 		<NotesWeek {timeframe} startWeekOnSunday={settings.date.startWeekOnSunday} />
 	{:else if display === 'notes-week-columns'}

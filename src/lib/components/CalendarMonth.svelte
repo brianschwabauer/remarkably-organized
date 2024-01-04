@@ -1,11 +1,19 @@
 <script lang="ts">
-	import type { Timeframe } from '$lib';
+	import { getFirstDayOfWeek, type Timeframe } from '$lib';
 
 	let {
 		timeframe = {} as Timeframe,
 		startWeekOnSunday = false,
 		showWeekLinks = false,
+		useWeekSinceYear = false,
 	} = $props();
+
+	const yearStart = $derived(
+		getFirstDayOfWeek(
+			Date.UTC(timeframe.year || new Date().getFullYear(), 0, 1),
+			startWeekOnSunday,
+		),
+	);
 </script>
 
 {#if timeframe?.month}
@@ -15,12 +23,14 @@
 				Math.floor(
 					(timeframe.end.getTime() - timeframe.weekStart.getTime()) / 604800000,
 				) + 1}
+			{@const weekSinceYear =
+				Math.floor((timeframe.weekStart.getTime() - yearStart) / 604800000) + 1}
 			{#each new Array(numWeeks) as _, i (i)}
 				<a
 					href="#{timeframe.year}-{timeframe.month}-wk{i + 1}"
 					class="week"
 					class:last-week={i === numWeeks - 1}>
-					Week {i + 1}
+					Week {useWeekSinceYear ? weekSinceYear + i : i + 1}
 				</a>
 			{/each}
 		{/if}
