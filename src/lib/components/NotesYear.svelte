@@ -1,13 +1,31 @@
 <script lang="ts">
-	import type { Month } from '$lib';
+	import type { Month, PlannerSettings } from '$lib';
 
-	let { months = [] as Month[] } = $props();
+	let { settings = {} as PlannerSettings, months = [] as Month[] } = $props();
+
+	function getMonthLink(month: Month) {
+		if (!settings.monthPage) return month.id;
+		if (!settings.monthPage.disable) return month.id;
+		if (!settings.weekPage.disable) {
+			const week = settings.weeks.find(
+				(week) => week.year === month.year && week.month === month.month,
+			);
+			return week ? week.id : '';
+		}
+		if (!settings.dayPage.disable) {
+			const day = settings.days.find(
+				(day) => day.year === month.year && day.month === month.month,
+			);
+			return day ? day.id : '';
+		}
+		return month.id;
+	}
 </script>
 
 {#if months.length}
 	<div class="months">
 		{#each months as month (month.id)}
-			<a href="#{month.id}" class="month">
+			<a href="#{getMonthLink(month)}" class="month">
 				<h2>{month.nameLong}</h2>
 			</a>
 		{/each}
@@ -35,7 +53,7 @@
 		padding: 0 2rem 2rem;
 		h2 {
 			text-align: center;
-			font-size: .85rem;
+			font-size: 0.85rem;
 			padding: 0.5rem 0 0.5rem;
 			font-weight: 300;
 		}

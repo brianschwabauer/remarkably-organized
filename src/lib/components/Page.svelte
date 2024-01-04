@@ -39,22 +39,27 @@
 
 <div class="page {display.split('-')[0]}" style:padding>
 	{#if display === 'notes-year'}
-		<NotesYear months={settings.months.filter((m) => m.year === timeframe.year)} />
+		<NotesYear
+			months={settings.months.filter((m) => m.year === timeframe.year)}
+			{settings} />
 	{:else if display === 'calendar-year'}
 		<CalendarYear
 			months={settings.months.filter((m) => m.year === timeframe.year)}
-			startWeekOnSunday={settings.date.startWeekOnSunday} />
+			startWeekOnSunday={settings.date.startWeekOnSunday}
+			{settings} />
 	{:else if display === 'calendar-quarter'}
 		<CalendarQuarter
 			months={settings.months.filter(
 				(m) => m.year === timeframe.year && m.quarter === timeframe.quarter,
 			)}
-			startWeekOnSunday={settings.date.startWeekOnSunday} />
+			startWeekOnSunday={settings.date.startWeekOnSunday}
+			{settings} />
 	{:else if display === 'notes-quarter'}
 		<NotesQuarter
 			months={settings.months.filter(
 				(m) => m.year === timeframe.year && m.quarter === timeframe.quarter,
-			)} />
+			)}
+			{settings} />
 	{:else if display === 'notes-month' || display === 'calendar-month'}
 		<CalendarMonth
 			{timeframe}
