@@ -9,10 +9,10 @@
 <article id={`${year.year}`} use:intersect={{ rootMargin: '1000px 0px 1000px 0px' }}>
 	<SideNav
 		{settings}
-		tabs={settings.years.length > 1 ? 'year' : 'none'}
+		tabs={settings.years.length > 1 ? 'years' : 'none'}
 		timeframe={year} />
 	<h1>{year.year}</h1>
-	<Page {settings} display="navigate-year" timeframe={year} padding="0 2rem" />
+	<Page {settings} display="calendar-year" timeframe={year} padding="0 2rem" />
 </article>
 
 {#if settings.yearPage.notePagesAmount > 0}
@@ -22,7 +22,7 @@
 			use:intersect={{ rootMargin: '1000px 0px 1000px 0px' }}>
 			<SideNav
 				{settings}
-				tabs={settings.years.length > 1 ? 'year' : 'month'}
+				tabs={settings.years.length > 1 ? 'years' : 'months'}
 				timeframe={year} />
 			<h1>{year.year}</h1>
 			<Page display={settings.yearPage.notePagesTemplate} {settings} timeframe={year} />

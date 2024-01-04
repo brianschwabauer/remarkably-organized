@@ -8,9 +8,9 @@
 </script>
 
 <article id={month.id} use:intersect={{ rootMargin: '1000px 0px 1000px 0px' }}>
-	<SideNav tabs="month" {settings} timeframe={month}></SideNav>
+	<SideNav tabs="months" {settings} timeframe={month}></SideNav>
 	<TopNav {settings} timeframe={month} />
-	<Page {settings} display="notes-month" timeframe={month} />
+	<Page {settings} display={settings.monthPage.template} timeframe={month} />
 </article>
 
 {#if settings.monthPage.notePagesAmount > 0}
@@ -18,7 +18,7 @@
 		<article
 			id="{month.id}-pg{i + 2}"
 			use:intersect={{ rootMargin: '1000px 0px 1000px 0px' }}>
-			<SideNav {settings} tabs="month" timeframe={month} />
+			<SideNav {settings} tabs="months" timeframe={month} />
 			<TopNav
 				{settings}
 				timeframe={month}

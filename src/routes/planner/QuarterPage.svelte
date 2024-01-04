@@ -8,9 +8,9 @@
 </script>
 
 <article id={quarter.id} use:intersect={{ rootMargin: '1000px 0px 1000px 0px' }}>
-	<SideNav {settings} tabs="quarter" timeframe={quarter}></SideNav>
+	<SideNav {settings} tabs="quarters" timeframe={quarter}></SideNav>
 	<TopNav {settings} timeframe={quarter} />
-	<Page {settings} display="navigate-quarter" timeframe={quarter} />
+	<Page {settings} display="calendar-quarter" timeframe={quarter} />
 </article>
 
 {#if settings.quarterPage.notePagesAmount > 0}
@@ -18,7 +18,7 @@
 		<article
 			id="{quarter.id}-pg{i + 2}"
 			use:intersect={{ rootMargin: '1000px 0px 1000px 0px' }}>
-			<SideNav {settings} tabs="quarter" timeframe={quarter} />
+			<SideNav {settings} tabs="quarters" timeframe={quarter} />
 			<TopNav
 				{settings}
 				timeframe={quarter}

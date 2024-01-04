@@ -31,9 +31,9 @@
 		{ name: 'Numbered - Small', value: 'numbered-small' },
 		{ name: 'Numbered - Medium', value: 'numbered' },
 		{ name: 'Numbered - Large', value: 'numbered-large' },
+		{ name: 'Calendar', value: 'calendar-month' },
 		{ name: 'Notes - Yearly', value: 'notes-year' },
 		{ name: 'Notes - Quarterly', value: 'notes-quarter' },
-		{ name: 'Notes - Monthly', value: 'notes-month' },
 		{ name: 'Notes - Weekly', value: 'notes-week' },
 		{ name: 'Notes - Weekly - Columns', value: 'notes-week-columns' },
 		{ name: 'Notes - Weekly - Rows', value: 'notes-week-rows' },
@@ -46,9 +46,15 @@
 		location: 'collection' | 'year' | 'month' | 'quarter' | 'week' | 'day',
 	) {
 		return pageTemplates.filter((t) => {
-			if (!t.value.startsWith('notes') && !t.value.startsWith('habit')) return true;
+			if (
+				!t.value.startsWith('notes') &&
+				!t.value.startsWith('habit') &&
+				!t.value.startsWith('calendar')
+			) {
+				return true;
+			}
 			if (location === 'collection') {
-				return !['notes-quarter', 'notes-month'].includes(t.value);
+				return !['notes-quarter', 'notes-month', 'calendar-month'].includes(t.value);
 			}
 			const timeframe = t.value.split('-')[1];
 			return location === timeframe;
@@ -279,6 +285,14 @@
 				</div>
 				{#if !settings.monthPage.disable}
 					<fieldset>
+						<label for="monthPageTemplate">Month Page Template</label>
+						<select id="monthPageTemplate" bind:value={settings.monthPage.template}>
+							{#each getAvailablePageTemplates('month') as template (template.value)}
+								<option value={template.value}>{template.name}</option>
+							{/each}
+						</select>
+					</fieldset>
+					<fieldset>
 						<label for="monthNotePagesAmount">Additional Note Pages</label>
 						<input
 							type="number"
@@ -341,19 +355,32 @@
 							</select>
 						</fieldset>
 					{/if}
+					<fieldset>
+						<label for="sideNavDisplay">Sidebar Display</label>
+						<select id="sideNavDisplay" bind:value={settings.weekPage.sideNavDisplay}>
+							<option value="days-this-week">Days of the Week</option>
+							<option value="days-this-month">Days of the Month</option>
+							<option value="weeks-this-year">Weeks of the Year</option>
+							<option value="weeks-this-month">Weeks of the Month</option>
+							<option value="months">Months</option>
+							<option value="none">None</option>
+						</select>
+					</fieldset>
+					{#if settings.weekPage.sideNavDisplay === 'weeks-this-month' || settings.weekPage.sideNavDisplay === 'weeks-this-year'}
+						<div class="checkbox">
+							<input
+								type="checkbox"
+								bind:checked={settings.weekPage.useWeekNumbersInSideNav}
+								id="useWeekNumbersInSideNav" />
+							<label for="useWeekNumbersInSideNav">Show week numbers in side bar</label>
+						</div>
+					{/if}
 					<div class="checkbox">
 						<input
 							type="checkbox"
 							bind:checked={settings.weekPage.useWeekSinceYear}
 							id="useWeekSinceYear" />
 						<label for="useWeekSinceYear">Use week number from start of year</label>
-					</div>
-					<div class="checkbox">
-						<input
-							type="checkbox"
-							bind:checked={settings.weekPage.useWeekNumbersInSideNav}
-							id="useWeekNumbersInSideNav" />
-						<label for="useWeekNumbersInSideNav">Show week numbers in side bar</label>
 					</div>
 				{/if}
 
@@ -396,13 +423,18 @@
 							</select>
 						</fieldset>
 					{/if}
-					<div class="checkbox">
-						<input
-							type="checkbox"
-							bind:checked={settings.dayPage.showOnlyThisWeekInSideNav}
-							id="showOnlyThisWeekInSideNav" />
-						<label for="showOnlyThisWeekInSideNav">Show only this week in side bar</label>
-					</div>
+					<fieldset>
+						<label for="sideNavDisplay">Sidebar Display</label>
+						<select id="sideNavDisplay" bind:value={settings.dayPage.sideNavDisplay}>
+							<option value="days-this-week">Days of the Week</option>
+							<option value="days-this-month">Days of the Month</option>
+							<option value="days-this-year">Days of the Year</option>
+							<option value="weeks-this-year">Weeks of the Year</option>
+							<option value="weeks-this-month">Weeks of the Month</option>
+							<option value="months">Months</option>
+							<option value="none">None</option>
+						</select>
+					</fieldset>
 				{/if}
 
 				<h3>Sidebar Navigation</h3>

@@ -28,7 +28,8 @@
 								class="day"
 								style:grid-column={day > 0
 									? null
-									: month.start.getUTCDay() + (startWeekOnSunday ? 1 : 0)}>
+									: ((month.start.getUTCDay() - (startWeekOnSunday ? 0 : 1) + 7) % 7) +
+										1}>
 								{day + 1}
 							</div>
 						{/each}
@@ -51,7 +52,7 @@
 		h2 {
 			font-size: 1;
 			text-align: center;
-			font-size: .85rem;
+			font-size: 0.85rem;
 			font-weight: normal;
 			padding: 0 0 0.5rem;
 		}
@@ -76,7 +77,7 @@
 		grid-template-rows: repeat(6, 1fr);
 		justify-items: center;
 		align-items: center;
-		gap: 0.15rem .55rem;
+		gap: 0.15rem 0.55rem;
 		.label {
 			display: flex;
 			align-items: center;

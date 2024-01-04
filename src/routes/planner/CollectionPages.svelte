@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { type Collection, type PlannerSettings, getTimeframe, intersect } from '$lib';
+	import { type Collection, type PlannerSettings, intersect } from '$lib';
 	import Page from '$lib/components/Page.svelte';
 	import SideNav from './SideNav.svelte';
 	import TopNav from './TopNav.svelte';
@@ -17,10 +17,10 @@
 	{#if showIndexPage}
 		{#each new Array(collection.numIndexPages) as _, indexPage (indexPage)}
 			<article
-				id={`${indexPage === 0 ? collection.id : collection.id + `-${indexPage + 1}`}`}
+				id={`${indexPage === 0 ? collection.id : collection.id + `-pg${indexPage + 1}`}`}
 				use:intersect={{ rootMargin: '1000px 0px 1000px 0px' }}>
 				<SideNav
-					tabs={!settings.monthPage.disable ? 'month' : 'none'}
+					tabs={!settings.monthPage.disable ? 'months' : 'none'}
 					{settings}
 					timeframe={year}
 					disableActiveIndicator></SideNav>
@@ -55,7 +55,7 @@
 				{@const id = [id1, id2, id3].filter(Boolean).join('-')}
 				<article {id} use:intersect={{ rootMargin: '1000px 0px 1000px 0px' }}>
 					<SideNav
-						tabs={!settings.monthPage.disable ? 'month' : 'none'}
+						tabs={!settings.monthPage.disable ? 'months' : 'none'}
 						{settings}
 						timeframe={year}
 						disableActiveIndicator />

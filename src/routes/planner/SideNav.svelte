@@ -4,7 +4,16 @@
 	let {
 		timeframe = {} as Timeframe,
 		settings = {} as PlannerSettings,
-		tabs = 'month' as 'day' | 'week' | 'month' | 'quarter' | 'year' | 'none',
+		tabs = 'month' as
+			| 'days-this-week'
+			| 'days-this-month'
+			| 'days-this-year'
+			| 'weeks-this-year'
+			| 'weeks-this-month'
+			| 'months'
+			| 'quarters'
+			| 'years'
+			| 'none',
 		numWeeksInSideNav = 15,
 		numDaysInSideNav = 15,
 		disableActiveIndicator = false,
@@ -14,8 +23,8 @@
 		settings.weeks.filter(
 			(week, i) =>
 				week.year === timeframe.year &&
-				(settings.weekPage.useWeekSinceYear || week.month === timeframe.month) &&
-				(!settings.weekPage.useWeekSinceYear ||
+				(tabs === 'weeks-this-year' || week.month === timeframe.month) &&
+				(tabs !== 'weeks-this-year' ||
 					settings.weeks[i - 1]?.weekSinceYear !== week.weekSinceYear),
 		),
 	);
@@ -31,15 +40,27 @@
 		settings.days.filter(
 			(day) =>
 				day.year === timeframe.year &&
-				(settings.dayPage.showOnlyThisWeekInSideNav
+				(tabs === 'days-this-week'
 					? day.weekSinceYear === timeframe.weekSinceYear
-					: timeframe.month === day.month),
+					: tabs === 'days-this-month'
+						? timeframe.month === day.month
+						: true),
 		),
 	);
 	const startDay = $derived(
 		Math.min(
 			dayList.length - numDaysInSideNav,
-			Math.ceil(Math.max(0, (timeframe.daySinceMonth || 0) - numDaysInSideNav / 2)),
+			Math.ceil(
+				Math.max(
+					0,
+					(tabs === 'days-this-year'
+						? timeframe.daySinceYear || 0
+						: tabs === 'days-this-month'
+							? timeframe.daySinceMonth || 0
+							: timeframe.daySinceWeek || 0) -
+						numDaysInSideNav / 2,
+				),
+			),
 		),
 	);
 	const days = $derived(dayList.slice(startDay, startDay + numDaysInSideNav));
@@ -49,7 +70,7 @@
 	<nav>
 		{#if tabs !== 'none'}
 			<ol class="tabs">
-				{#if tabs === 'year' && settings.years.length > 1 && !settings.yearPage.disable}
+				{#if tabs === 'years' && settings.years.length > 1}
 					{#each settings.years as year (year.id)}
 						<li class="year">
 							<a
@@ -60,7 +81,7 @@
 						</li>
 					{/each}
 				{/if}
-				{#if tabs === 'quarter' && !settings.quarterPage.disable}
+				{#if tabs === 'quarters'}
 					{#each settings.quarters as quarter (quarter.id)}
 						{#if quarter.year === timeframe.year}
 							<li class="quarter">
@@ -74,7 +95,7 @@
 						{/if}
 					{/each}
 				{/if}
-				{#if tabs === 'month' && !settings.monthPage.disable}
+				{#if tabs === 'months'}
 					{#each settings.months as month (month.id)}
 						{#if month.year === timeframe.year}
 							<li class="month">
@@ -88,7 +109,7 @@
 						{/if}
 					{/each}
 				{/if}
-				{#if tabs === 'week' && !settings.weekPage.disable}
+				{#if tabs === 'weeks-this-year' || tabs === 'weeks-this-month'}
 					{#each weeks as week, i (week.id)}
 						{@const isActive =
 							!disableActiveIndicator && timeframe.weekSinceYear === week.weekSinceYear}
@@ -101,9 +122,7 @@
 							!disableActiveIndicator &&
 							weeks[i - 1]?.weekSinceYear === timeframe.weekSinceYear}
 						{@const shouldHighlight =
-							!isActive &&
-							timeframe.month === week.month &&
-							settings.weekPage.useWeekSinceYear}
+							!isActive && timeframe.month === week.month && tabs === 'weeks-this-year'}
 						{@const highlightStart =
 							shouldHighlight && isNextWeekInMonth && !isNextWeekActive}
 						{@const highlightEnd =
@@ -133,7 +152,7 @@
 						</li>
 					{/each}
 				{/if}
-				{#if tabs === 'day' && !settings.dayPage.disable}
+				{#if tabs === 'days-this-year' || tabs === 'days-this-month' || tabs === 'days-this-week'}
 					{#each days as day, i (day.id)}
 						{#if day.year === timeframe.year}
 							{@const isActive =
@@ -142,7 +161,7 @@
 							{@const isSunday = day.start.getUTCDay() === 0}
 							{@const isWeekend = isSaturday || isSunday}
 							{@const shouldHighlight =
-								!isActive && isWeekend && !settings.dayPage.showOnlyThisWeekInSideNav}
+								!isActive && isWeekend && tabs !== 'days-this-week'}
 							{@const highlightStart =
 								shouldHighlight && isSaturday && i < days.length - 1}
 							{@const highlighEnd = shouldHighlight && isSunday && i > 0}

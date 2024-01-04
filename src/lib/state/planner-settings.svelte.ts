@@ -174,6 +174,7 @@ export class PlannerSettings {
 	/** Settings for changing how the monthly pages should work */
 	readonly monthPage = new (class MonthPageSettings {
 		disable = $state(false);
+		template = $state('calendar-month' as PageTemplate);
 		notePagesTemplate = $state('dotted' as PageTemplate);
 		notePagesAmount = $state(2);
 	})();
@@ -184,17 +185,34 @@ export class PlannerSettings {
 		template = $state('notes-week-columns' as PageTemplate);
 		notePagesTemplate = $state('dotted' as PageTemplate);
 		notePagesAmount = $state(0);
-		useWeekSinceYear = $state(true);
+		useWeekSinceYear = $state(false);
 		useWeekNumbersInSideNav = $state(false);
+		sideNavDisplay = $state(
+			'weeks-this-month' as
+				| 'days-this-week'
+				| 'days-this-month'
+				| 'days-this-year'
+				| 'weeks-this-year'
+				| 'weeks-this-month'
+				| 'months',
+		);
 	})();
-
+	
 	/** Settings for changing how the daily pages should work */
 	readonly dayPage = new (class DayPageSettings {
 		disable = $state(false);
 		template = $state('notes-day' as PageTemplate);
 		notePagesTemplate = $state('dotted' as PageTemplate);
 		notePagesAmount = $state(0);
-		showOnlyThisWeekInSideNav = $state(true);
+		sideNavDisplay = $state(
+			'days-this-week' as
+				| 'days-this-week'
+				| 'days-this-month'
+				| 'days-this-year'
+				| 'weeks-this-year'
+				| 'weeks-this-month'
+				| 'months',
+		);
 	})();
 
 	/** The list of extra note/goals collections in addition to the planner pages */
@@ -457,6 +475,7 @@ export class PlannerSettings {
 			},
 			monthPage: {
 				disable: this.monthPage.disable,
+				template: this.monthPage.template,
 				notePagesTemplate: this.monthPage.notePagesTemplate,
 				notePagesAmount: this.monthPage.notePagesAmount,
 			},
@@ -466,13 +485,14 @@ export class PlannerSettings {
 				notePagesAmount: this.weekPage.notePagesAmount,
 				useWeekSinceYear: this.weekPage.useWeekSinceYear,
 				useWeekNumbersInSideNav: this.weekPage.useWeekNumbersInSideNav,
+				sideNavDisplay: this.weekPage.sideNavDisplay,
 				template: this.weekPage.template,
 			},
 			dayPage: {
 				disable: this.dayPage.disable,
 				notePagesTemplate: this.dayPage.notePagesTemplate,
 				notePagesAmount: this.dayPage.notePagesAmount,
-				showOnlyThisWeekInSideNav: this.dayPage.showOnlyThisWeekInSideNav,
+				sideNavDisplay: this.dayPage.sideNavDisplay,
 				template: this.dayPage.template,
 			},
 			collections: this.collections.map((collection) => ({
@@ -550,6 +570,8 @@ export class PlannerSettings {
 			this.monthPage.notePagesTemplate = state.monthPage.notePagesTemplate;
 		if (state?.monthPage?.notePagesAmount !== undefined)
 			this.monthPage.notePagesAmount = state.monthPage.notePagesAmount;
+		if (state?.monthPage?.template !== undefined)
+			this.monthPage.template = state.monthPage.template;
 
 		// Week Page Settings
 		if (state?.weekPage?.disable !== undefined)
@@ -564,6 +586,8 @@ export class PlannerSettings {
 			this.weekPage.useWeekNumbersInSideNav = state.weekPage.useWeekNumbersInSideNav;
 		if (state?.weekPage?.template !== undefined)
 			this.weekPage.template = state.weekPage.template;
+		if (state?.weekPage?.sideNavDisplay !== undefined)
+			this.weekPage.sideNavDisplay = state.weekPage.sideNavDisplay;
 
 		// Day Page Settings
 		if (state?.dayPage?.disable !== undefined)
@@ -572,8 +596,8 @@ export class PlannerSettings {
 			this.dayPage.notePagesTemplate = state.dayPage.notePagesTemplate;
 		if (state?.dayPage?.notePagesAmount !== undefined)
 			this.dayPage.notePagesAmount = state.dayPage.notePagesAmount;
-		if (state?.dayPage?.showOnlyThisWeekInSideNav !== undefined)
-			this.dayPage.showOnlyThisWeekInSideNav = state.dayPage.showOnlyThisWeekInSideNav;
+		if (state?.dayPage?.sideNavDisplay !== undefined)
+			this.dayPage.sideNavDisplay = state.dayPage.sideNavDisplay;
 		if (state?.dayPage?.template !== undefined)
 			this.dayPage.template = state.dayPage.template;
 
