@@ -38,8 +38,8 @@
 		{ name: 'Notes - Weekly - Columns', value: 'notes-week-columns' },
 		{ name: 'Notes - Weekly - Rows', value: 'notes-week-rows' },
 		{ name: 'Notes - Daily', value: 'notes-day' },
-		{ name: 'Habit Checkboxes - Weekly', value: 'habit-year-by-week' },
-		{ name: 'Habit Checkboxes - Monthly', value: 'habit-year-by-month' },
+		{ name: 'Habit Checkboxes - Grouped by Week', value: 'habit-year-by-week' },
+		{ name: 'Habit Checkboxes - Grouped by Month', value: 'habit-year-by-month' },
 	];
 
 	function getAvailablePageTemplates(
