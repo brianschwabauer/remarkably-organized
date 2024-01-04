@@ -10,7 +10,7 @@
 <article id={month.id} use:intersect={{ rootMargin: '1000px 0px 1000px 0px' }}>
 	<SideNav tabs="month" {settings} timeframe={month}></SideNav>
 	<TopNav {settings} timeframe={month} />
-	<Page {settings} display="notes-month" timeframe={month} />
+	<Page {settings} display={settings.monthPage.template} timeframe={month} />
 </article>
 
 {#if settings.monthPage.notePagesAmount > 0}

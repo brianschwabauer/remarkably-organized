@@ -31,9 +31,9 @@
 		{ name: 'Numbered - Small', value: 'numbered-small' },
 		{ name: 'Numbered - Medium', value: 'numbered' },
 		{ name: 'Numbered - Large', value: 'numbered-large' },
+		{ name: 'Calendar', value: 'calendar-month' },
 		{ name: 'Notes - Yearly', value: 'notes-year' },
 		{ name: 'Notes - Quarterly', value: 'notes-quarter' },
-		{ name: 'Notes - Monthly', value: 'notes-month' },
 		{ name: 'Notes - Weekly', value: 'notes-week' },
 		{ name: 'Notes - Weekly - Columns', value: 'notes-week-columns' },
 		{ name: 'Notes - Weekly - Rows', value: 'notes-week-rows' },
@@ -46,9 +46,15 @@
 		location: 'collection' | 'year' | 'month' | 'quarter' | 'week' | 'day',
 	) {
 		return pageTemplates.filter((t) => {
-			if (!t.value.startsWith('notes') && !t.value.startsWith('habit')) return true;
+			if (
+				!t.value.startsWith('notes') &&
+				!t.value.startsWith('habit') &&
+				!t.value.startsWith('calendar')
+			) {
+				return true;
+			}
 			if (location === 'collection') {
-				return !['notes-quarter', 'notes-month'].includes(t.value);
+				return !['notes-quarter', 'notes-month', 'calendar-month'].includes(t.value);
 			}
 			const timeframe = t.value.split('-')[1];
 			return location === timeframe;
@@ -278,6 +284,14 @@
 					<label for="monthPageDisable">Disable Monthly View</label>
 				</div>
 				{#if !settings.monthPage.disable}
+					<fieldset>
+						<label for="monthPageTemplate">Month Page Template</label>
+						<select id="monthPageTemplate" bind:value={settings.monthPage.template}>
+							{#each getAvailablePageTemplates('month') as template (template.value)}
+								<option value={template.value}>{template.name}</option>
+							{/each}
+						</select>
+					</fieldset>
 					<fieldset>
 						<label for="monthNotePagesAmount">Additional Note Pages</label>
 						<input

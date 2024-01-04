@@ -12,7 +12,7 @@
 		tabs={settings.years.length > 1 ? 'year' : 'none'}
 		timeframe={year} />
 	<h1>{year.year}</h1>
-	<Page {settings} display="navigate-year" timeframe={year} padding="0 2rem" />
+	<Page {settings} display="calendar-year" timeframe={year} padding="0 2rem" />
 </article>
 
 {#if settings.yearPage.notePagesAmount > 0}

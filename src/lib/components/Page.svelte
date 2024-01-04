@@ -1,9 +1,9 @@
 <script lang="ts">
 	import type { Collection, PlannerSettings, Timeframe } from '$lib';
 	import Grid from './Grid.svelte';
-	import NotesMonth from './NotesMonth.svelte';
-	import NavigateQuarter from './NavigateQuarter.svelte';
-	import NavigateYear from './NavigateYear.svelte';
+	import CalendarMonth from './CalendarMonth.svelte';
+	import CalendarQuarter from './CalendarQuarter.svelte';
+	import CalendarYear from './CalendarYear.svelte';
 	import NotesQuarter from './NotesQuarter.svelte';
 	import NotesYear from './NotesYear.svelte';
 	import NotesWeek from './NotesWeek.svelte';
@@ -40,12 +40,12 @@
 <div class="page {display.split('-')[0]}" style:padding>
 	{#if display === 'notes-year'}
 		<NotesYear months={settings.months.filter((m) => m.year === timeframe.year)} />
-	{:else if display === 'navigate-year'}
-		<NavigateYear
+	{:else if display === 'calendar-year'}
+		<CalendarYear
 			months={settings.months.filter((m) => m.year === timeframe.year)}
 			startWeekOnSunday={settings.date.startWeekOnSunday} />
-	{:else if display === 'navigate-quarter'}
-		<NavigateQuarter
+	{:else if display === 'calendar-quarter'}
+		<CalendarQuarter
 			months={settings.months.filter(
 				(m) => m.year === timeframe.year && m.quarter === timeframe.quarter,
 			)}
@@ -55,8 +55,8 @@
 			months={settings.months.filter(
 				(m) => m.year === timeframe.year && m.quarter === timeframe.quarter,
 			)} />
-	{:else if display === 'notes-month'}
-		<NotesMonth
+	{:else if display === 'notes-month' || display === 'calendar-month'}
+		<CalendarMonth
 			{timeframe}
 			startWeekOnSunday={settings.date.startWeekOnSunday}
 			showWeekLinks={!settings.weekPage.disable} />

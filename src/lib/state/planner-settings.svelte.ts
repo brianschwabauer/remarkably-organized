@@ -170,10 +170,11 @@ export class PlannerSettings {
 		notePagesTemplate = $state('notes-quarter' as PageTemplate);
 		notePagesAmount = $state(1);
 	})();
-
+	
 	/** Settings for changing how the monthly pages should work */
 	readonly monthPage = new (class MonthPageSettings {
 		disable = $state(false);
+		template = $state('calendar-month' as PageTemplate);
 		notePagesTemplate = $state('dotted' as PageTemplate);
 		notePagesAmount = $state(2);
 	})();
@@ -457,6 +458,7 @@ export class PlannerSettings {
 			},
 			monthPage: {
 				disable: this.monthPage.disable,
+				template: this.monthPage.template,
 				notePagesTemplate: this.monthPage.notePagesTemplate,
 				notePagesAmount: this.monthPage.notePagesAmount,
 			},
@@ -550,6 +552,8 @@ export class PlannerSettings {
 			this.monthPage.notePagesTemplate = state.monthPage.notePagesTemplate;
 		if (state?.monthPage?.notePagesAmount !== undefined)
 			this.monthPage.notePagesAmount = state.monthPage.notePagesAmount;
+		if (state?.monthPage?.template !== undefined)
+			this.monthPage.template = state.monthPage.template;
 
 		// Week Page Settings
 		if (state?.weekPage?.disable !== undefined)
