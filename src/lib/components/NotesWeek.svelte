@@ -50,7 +50,7 @@
 			.day {
 				border-top: none;
 				&:not(:first-child) {
-					border-left: solid 1px var(--outline-low);
+					border-left: solid 1px var(--outline);
 				}
 			}
 		}
@@ -68,17 +68,17 @@
 					border-top: none;
 				}
 				&:nth-child(2n) {
-					border-left: solid 1px var(--outline-low);
+					border-left: solid 1px var(--outline);
 				}
 			}
 		}
 	}
 	.day {
 		font-size: 0.9rem;
-		border-top: solid 1px var(--outline-low);
+		border-top: solid 1px var(--outline);
 		text-align: center;
 		padding: 0.5rem 0 0;
-		font-weight: lighter;
+		font-weight: 300;
 
 		:global(.ordinal) {
 			font-size: 0.75em;

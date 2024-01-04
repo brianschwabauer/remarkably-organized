@@ -93,12 +93,12 @@
 			display: flex;
 			justify-content: end;
 			font-size: 1rem;
-			font-weight: lighter;
-			border-left: solid 1px var(--outline-low);
+			font-weight: 300;
+			border-left: solid 1px var(--outline);
 			line-height: 1;
 			padding: 0.5rem;
 			&.border-top {
-				border-top: solid 1px var(--outline-low);
+				border-top: solid 1px var(--outline);
 			}
 			small {
 				font-size: 0.65rem;

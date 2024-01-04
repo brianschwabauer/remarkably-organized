@@ -73,7 +73,7 @@
 		}
 		.day {
 			font-size: 0.9rem;
-			font-weight: lighter;
+			font-weight: 300;
 		}
 	}
 </style>

@@ -428,4 +428,11 @@ select {
 }
 select {
 	padding: 0.5rem 0.75rem;
+	cursor: pointer;
+}
+input[type='color'] {
+	width: 100%;
+	height: 2.5rem;
+	padding: 0.25rem .5rem;
+	cursor: pointer;
 }

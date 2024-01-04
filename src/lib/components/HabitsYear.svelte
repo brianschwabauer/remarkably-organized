@@ -101,25 +101,25 @@
 		.day {
 			display: flex;
 			flex-direction: column;
-			font-weight: lighter;
+			font-weight: 300;
 			align-items: center;
 			justify-content: center;
-			border-bottom: solid 1px var(--outline-low);
-			border-left: solid 1px var(--outline-low);
+			border-bottom: solid 1px var(--outline);
+			border-left: solid 1px var(--outline);
 			line-height: 1;
 			gap: .1rem 0;
 
 			&.last-col {
-				border-right: solid 1px var(--outline-low);
+				border-right: solid 1px var(--outline);
 			}
 			&:last-child {
-				border-right: solid 1px var(--outline-low);
+				border-right: solid 1px var(--outline);
 			}
 			&.first-row {
-				border-top: solid 1px var(--outline-low);
+				border-top: solid 1px var(--outline);
 			}
 			&.second-week {
-				border-left: solid 2px var(--outline);
+				border-left: solid 2px var(--outline-high);
 			}
 
 			.month {
@@ -155,16 +155,16 @@
 			font-weight: bold;
 			opacity: 0.65;
 			grid-row: 1;
-			border-bottom: solid 1px var(--outline-low);
+			border-bottom: solid 1px var(--outline);
 		}
 		.day {
 			display: flex;
-			font-weight: lighter;
+			font-weight: 300;
 			align-items: center;
 			justify-content: center;
-			border-left: solid 1px var(--outline-low);
-			border-right: solid 1px var(--outline-low);
-			border-bottom: solid 1px var(--outline-low);
+			border-left: solid 1px var(--outline);
+			border-right: solid 1px var(--outline);
+			border-bottom: solid 1px var(--outline);
 			line-height: 1;
 			gap: 0 0.15rem;
 

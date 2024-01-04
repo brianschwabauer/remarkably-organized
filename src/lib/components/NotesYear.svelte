@@ -37,12 +37,12 @@
 			text-align: center;
 			font-size: .85rem;
 			padding: 0.5rem 0 0.5rem;
-			font-weight: lighter;
+			font-weight: 300;
 		}
 	}
 	.month {
-		border-left: solid 1px var(--outline-low);
-		border-bottom: solid 1px var(--outline-low);
+		border-left: solid 1px var(--outline);
+		border-bottom: solid 1px var(--outline);
 		&:nth-child(3n + 1) {
 			border-left: none;
 		}

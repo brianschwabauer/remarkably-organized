@@ -69,7 +69,22 @@
 {#if !settings.sideNav.disable}
 	<nav>
 		{#if tabs !== 'none'}
-			<ol class="tabs">
+			<ol
+				class="tabs"
+				class:decrease-font-size={[
+					'Lilita One',
+					'Abril Fatface',
+					'Acme',
+					'Anton',
+					'DM Serif Display',
+					'Montserrat',
+					'Pacifico',
+					'Permanent Marker',
+					'Poppins',
+					'PT Serif',
+					'Roboto',
+					'Roboto Slab',
+				].includes(settings.design.fontDisplay)}>
 				{#if tabs === 'years' && settings.years.length > 1}
 					{#each settings.years as year (year.id)}
 						<li class="year">
@@ -222,6 +237,11 @@
 		padding: 0;
 		width: 100%;
 		margin: 0;
+		&.tabs.decrease-font-size {
+			> li {
+				font-size: 0.85rem;
+			}
+		}
 	}
 	ol.tabs > li {
 		padding: 0;
@@ -230,14 +250,14 @@
 		padding: 0 0 0 2px;
 		&.quarter {
 			a {
-				font-size: 1.3rem;
+				font-size: 1.3em;
 				line-height: 100%;
 			}
 		}
 		&.week {
 			a {
-				font-size: 1.3rem;
-				line-height: 1.2rem;
+				font-size: 1.3em;
+				line-height: 1.2em;
 			}
 			small {
 				color: currentColor;
@@ -254,8 +274,8 @@
 				opacity: 0.7;
 			}
 			a {
-				font-size: 1.35rem;
-				line-height: 1.2rem;
+				font-size: 1.35em;
+				line-height: 1.2em;
 			}
 		}
 		a {
@@ -269,8 +289,8 @@
 			padding: 0.75rem 0;
 			color: var(--text-low);
 			font-family: var(--font-display);
-			font-size: 1.1rem;
-			line-height: 1.5rem;
+			font-size: 1.1em;
+			line-height: 1.5em;
 			position: relative;
 			border-radius: var(--radius);
 			&.active {

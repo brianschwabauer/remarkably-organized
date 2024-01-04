@@ -191,7 +191,6 @@
 		text-wrap: balance;
 		&.title {
 			font-size: 5rem;
-			font-family: var(--font);
 			font-weight: bold;
 		}
 		&.multi-year {

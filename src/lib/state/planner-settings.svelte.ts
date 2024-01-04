@@ -102,6 +102,11 @@ export class PlannerSettings {
 	readonly design = new (class DesignSettings {
 		aspectRatio = $state(0.75);
 		width = $state(702);
+		font = $state('Roboto');
+		fontDisplay = $state('Bebas Neue');
+		colorText = $state('#424242');
+		colorLines = $state('#e2e2e2');
+		colorDots = $state('#333333');
 	})();
 
 	/** Settings for changing the dates of the planner (like start & end dates) */
@@ -134,7 +139,6 @@ export class PlannerSettings {
 		disable = $state(false);
 		showCollectionLinks = $state(true);
 		width = $state(52);
-		font = $state('');
 	})();
 
 	/** Settings for changing the top navigation bar display */
@@ -142,7 +146,6 @@ export class PlannerSettings {
 		disable = $state(false);
 		showCollectionLinks = $state(true);
 		height = $state(45);
-		font = $state('');
 	})();
 
 	/** Settings for changing the cover page display */
@@ -153,7 +156,6 @@ export class PlannerSettings {
 		title = $state('');
 		showCollectionLinks = $state(true);
 		showCurrentDay = $state(false);
-		font = $state('');
 		darkBackground = $state(true);
 	})();
 
@@ -197,7 +199,7 @@ export class PlannerSettings {
 				| 'months',
 		);
 	})();
-	
+
 	/** Settings for changing how the daily pages should work */
 	readonly dayPage = new (class DayPageSettings {
 		disable = $state(false);
@@ -435,6 +437,11 @@ export class PlannerSettings {
 			design: {
 				aspectRatio: this.design.aspectRatio,
 				width: this.design.width,
+				font: this.design.font,
+				fontDisplay: this.design.fontDisplay,
+				colorText: this.design.colorText,
+				colorLines: this.design.colorLines,
+				colorDots: this.design.colorDots,
 			},
 			date: {
 				timezoneOffset: this.date.timezoneOffset,
@@ -447,19 +454,16 @@ export class PlannerSettings {
 				disable: this.sideNav.disable,
 				showCollectionLinks: this.sideNav.showCollectionLinks,
 				width: this.sideNav.width,
-				font: this.sideNav.font,
 			},
 			topNav: {
 				disable: this.topNav.disable,
 				showCollectionLinks: this.topNav.showCollectionLinks,
 				height: this.topNav.height,
-				font: this.topNav.font,
 			},
 			coverPage: {
 				disable: this.coverPage.disable,
 				title: this.coverPage.title,
 				showCollectionLinks: this.coverPage.showCollectionLinks,
-				font: this.coverPage.font,
 				darkBackground: this.coverPage.darkBackground,
 				showCurrentDay: this.coverPage.showCurrentDay,
 			},
@@ -509,6 +513,15 @@ export class PlannerSettings {
 		if (state?.design?.aspectRatio !== undefined)
 			this.design.aspectRatio = state.design.aspectRatio;
 		if (state?.design?.width !== undefined) this.design.width = state.design.width;
+		if (state?.design?.font !== undefined) this.design.font = state.design.font;
+		if (state?.design?.fontDisplay !== undefined)
+			this.design.fontDisplay = state.design.fontDisplay;
+		if (state?.design?.colorText !== undefined)
+			this.design.colorText = state.design.colorText;
+		if (state?.design?.colorLines !== undefined)
+			this.design.colorLines = state.design.colorLines;
+		if (state?.design?.colorDots !== undefined)
+			this.design.colorDots = state.design.colorDots;
 
 		// Date Settings
 		if (state?.date?.timezoneOffset !== undefined)
@@ -525,14 +538,12 @@ export class PlannerSettings {
 		if (state?.sideNav?.showCollectionLinks !== undefined)
 			this.sideNav.showCollectionLinks = state.sideNav.showCollectionLinks;
 		if (state?.sideNav?.width !== undefined) this.sideNav.width = state.sideNav.width;
-		if (state?.sideNav?.font !== undefined) this.sideNav.font = state.sideNav.font;
 
 		// Top Nav Settings
 		if (state?.topNav?.disable !== undefined) this.topNav.disable = state.topNav.disable;
 		if (state?.topNav?.showCollectionLinks !== undefined)
 			this.topNav.showCollectionLinks = state.topNav.showCollectionLinks;
 		if (state?.topNav?.height !== undefined) this.topNav.height = state.topNav.height;
-		if (state?.topNav?.font !== undefined) this.topNav.font = state.topNav.font;
 
 		// Cover Page Settings
 		if (state?.coverPage?.disable !== undefined)
@@ -541,7 +552,6 @@ export class PlannerSettings {
 			this.coverPage.title = state.coverPage.title;
 		if (state?.coverPage?.showCollectionLinks !== undefined)
 			this.coverPage.showCollectionLinks = state.coverPage.showCollectionLinks;
-		if (state?.coverPage?.font !== undefined) this.coverPage.font = state.coverPage.font;
 		if (state?.coverPage?.darkBackground !== undefined)
 			this.coverPage.darkBackground = state.coverPage.darkBackground;
 		if (state?.coverPage?.showCurrentDay !== undefined)

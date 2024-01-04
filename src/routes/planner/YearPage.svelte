@@ -41,6 +41,7 @@
 	h1 {
 		font-size: 3.5rem;
 		padding: 1.5rem 0 1rem;
+		font-family: var(--font-display);
 	}
 	.notes {
 		flex: 1;

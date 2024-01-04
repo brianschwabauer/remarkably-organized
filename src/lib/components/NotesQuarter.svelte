@@ -26,7 +26,7 @@
 			font-size: 1;
 			text-align: center;
 			font-size: .85rem;
-			font-weight: lighter;
+			font-weight: 300;
 			padding: 0.5rem 0;
 		}
 	}
@@ -36,6 +36,6 @@
 		align-items: start;
 		justify-content: center;
 		width: 100%;
-		border-top: solid 1px var(--outline-low);
+		border-top: solid 1px var(--outline);
 	}
 </style>

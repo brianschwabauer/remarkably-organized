@@ -31,7 +31,7 @@
 	}
 	.day {
 		font-size: 1.1rem;
-		border-top: solid 1px var(--outline-low);
+		border-top: solid 1px var(--outline);
 		text-align: center;
 		padding: 0.5rem 0 0;
 		&:nth-child(1),
@@ -39,7 +39,7 @@
 			border-top: none;
 		}
 		&:nth-child(2n) {
-			border-left: solid 1px var(--outline-low);
+			border-left: solid 1px var(--outline);
 		}
 		:global(.ordinal) {
 			font-size: 0.75em;

@@ -31,9 +31,24 @@
 
 {#if !settings.topNav.disable}
 	<nav>
-		<ol class="breadcrumbs">
+		<ol
+			class="breadcrumbs"
+			style:font-size={settings.design.fontDisplay === 'Bebas Neue'
+				? '1.35rem'
+				: settings.design.fontDisplay === 'Caveat'
+					? '1.35rem'
+					: null}>
 			{#if !settings.coverPage.disable}
-				<li><a href="#home"><HomeIcon style="margin-bottom: .15em" /></a></li>
+				<li>
+					<a href="#home" class="home">
+						<HomeIcon
+							width="1.35rem"
+							height="1.35rem"
+							style={settings.design.fontDisplay === 'Bebas Neue'
+								? 'margin-bottom:.2rem'
+								: null} />
+					</a>
+				</li>
 			{/if}
 			{#if showYearBreadcrumb}
 				<li><a href="#{timeframe.year}">{timeframe.year}</a></li>
@@ -177,7 +192,7 @@
 			margin: 0;
 			display: flex;
 			height: 100%;
-			font-size: 1.35rem;
+			font-size: 1.1rem;
 			li {
 				display: flex;
 				align-items: center;
@@ -185,7 +200,8 @@
 				&:not(:last-child)::after {
 					content: '/';
 					color: var(--text-low);
-					font-size: 0.65em;
+					font-size: 1rem;
+					opacity: 0.7;
 				}
 				&:first-child {
 					a {
@@ -195,30 +211,29 @@
 				&:last-child {
 					a {
 						color: var(--text-high);
-						font-size: 1.35rem;
+						// font-size: 1.1em;
 					}
 				}
 			}
 			a {
-				font-size: 1.35rem;
-				color: var(--text-low);
+				font-size: 1em;
+				color: var(--text);
 				padding: 0 0.35rem;
 				font-family: var(--font-display);
-				display: flex;
-				height: 100%;
-				align-items: center;
-				line-height: 100%;
-				:global(svg) {
-					font-size: 0.85em;
+				line-height: 1;
+				&.home {
+					display: flex;
+					height: 100%;
+					align-items: center;
+					color: var(--text-low);
 				}
-				:global(.value) {
-					margin-left: 0.25rem;
+				:global(svg) {
+					font-size: 1rem;
 				}
 				:global(.ordinal) {
 					color: currentColor;
-					padding: 0 0 0.35em 0.1em;
 					font-size: 0.75em;
-					margin-left: -0.1rem;
+					vertical-align: top;
 				}
 			}
 		}

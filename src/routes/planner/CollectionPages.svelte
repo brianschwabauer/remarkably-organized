@@ -101,10 +101,10 @@
 		width: 100%;
 		height: 100%;
 		padding: 0rem 2rem 1rem;
-		font-weight: lighter;
+		font-weight: 300;
 		.collection-item {
 			color: var(--text);
-			border-bottom: solid 1px var(--outline-low);
+			border-bottom: solid 1px var(--outline);
 			display: flex;
 			align-items: end;
 			svg {

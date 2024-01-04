@@ -85,9 +85,13 @@
 		--dot-size: 1px;
 		--minor-dot-size: 2px;
 		--major-dot-size: 2px;
-		--dot-color: rgba(0, 0, 0, 0.9);
+		--dot-color: var(--dots-color, rgba(0, 0, 0, 0.9));
 		--minor-dot-color: rgba(0, 0, 0, 0.35);
 		--major-dot-color: rgba(0, 0, 0, 0.65);
+		@supports (color: oklch(from var(--dot-color) calc(l - 15) c h)) {
+			--minor-dot-color: oklch(from var(--dot-color) max(0, calc(l + 35)) c h);
+			--major-dot-color: oklch(from var(--dot-color) max(0, calc(l + 12)) c h);
+		}
 	}
 	.dot {
 		width: 100%;
@@ -150,9 +154,13 @@
 		--line-size: 1px;
 		--minor-line-size: 1px;
 		--major-line-size: 1px;
-		--line-color: rgba(0, 0, 0, 0.05);
+		--line-color: var(--outline);
 		--minor-line-color: rgba(0, 0, 0, 0.08);
 		--major-line-color: rgba(0, 0, 0, 0.15);
+		@supports (color: oklch(from var(--outline) calc(l - 15) c h)) {
+			--minor-line-color: oklch(from var(--outline) max(0, calc(l - 4)) c h);
+			--major-line-color: oklch(from var(--outline) max(0, calc(l - 10)) c h);
+		}
 		.line {
 			width: 100%;
 			aspect-ratio: 1;
@@ -190,13 +198,13 @@
 		grid-template-rows: repeat(var(--lines), 1fr);
 		flex: 1;
 		width: 100%;
-		font-weight: lighter;
+		font-weight: 300;
 		height: 100%;
 		padding: 0 0 calc(100% / var(--lines));
 		gap: 0 1rem;
 		.line {
 			color: var(--text);
-			border-bottom: solid 1px var(--outline-low);
+			border-bottom: solid 1px var(--outline);
 			display: flex;
 			align-items: end;
 			font-size: 0.75rem;

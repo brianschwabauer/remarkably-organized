@@ -42,6 +42,42 @@
 		{ name: 'Habit Checkboxes - Grouped by Month', value: 'habit-year-by-month' },
 	];
 
+	const fonts = [
+		'Abril Fatface',
+		'Acme',
+		'Anton',
+		'Bebas Neue',
+		'Caveat',
+		'Dancing Script',
+		'DM Serif Display',
+		'Indie Flower',
+		'Lilita One',
+		'Lobster',
+		'Montserrat',
+		'Pacifico',
+		'Permanent Marker',
+		'Playfair Display',
+		'Poppins',
+		'PT Serif',
+		'Satisfy',
+		'Roboto',
+		'Roboto Condensed',
+		'Roboto Slab',
+		'Shadows Into Light',
+	];
+
+	const selectedFonts = $derived(
+		Array.from(new Set([settings.design.font, settings.design.fontDisplay])),
+	);
+	const selectedFontsQuery = $derived(
+		new URLSearchParams(
+			selectedFonts.map((font) => ['family', `${font}:wght@100;200;300;400;500;600;700`]),
+		).toString(),
+	);
+	const googleFontURL = $derived(
+		`https://fonts.googleapis.com/css2?display=swap&${selectedFontsQuery}`,
+	);
+
 	function getAvailablePageTemplates(
 		location: 'collection' | 'year' | 'month' | 'quarter' | 'week' | 'day',
 	) {
@@ -116,8 +152,10 @@
 
 <svelte:head>
 	<title>Planner Builder | Remarkably Organized</title>
+	{#if googleFontURL}
+		{@html `<style>@import url("${googleFontURL}")</style>`}
+	{/if}
 	<style>
-		@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 		@page {
 			size: 702px 936px;
 			margin: 0;
@@ -437,6 +475,48 @@
 					</fieldset>
 				{/if}
 
+				<h3>Design</h3>
+				<fieldset>
+					<label for="designFont">Font</label>
+					<select id="designFont" bind:value={settings.design.font}>
+						{#each fonts as font (font)}
+							<option value={font}>{font}</option>
+						{/each}
+					</select>
+				</fieldset>
+				<fieldset>
+					<label for="designFontDisplay">Display Font</label>
+					<select id="designFontDisplay" bind:value={settings.design.fontDisplay}>
+						{#each fonts as font (font)}
+							<option value={font}>{font}</option>
+						{/each}
+					</select>
+				</fieldset>
+				<fieldset>
+					<label for="start">Text Color</label>
+					<input
+						type="color"
+						placeholder="Text Color"
+						id="start"
+						bind:value={settings.design.colorText} />
+				</fieldset>
+				<fieldset>
+					<label for="start">Lines/Border Color</label>
+					<input
+						type="color"
+						placeholder="Lines/Border"
+						id="start"
+						bind:value={settings.design.colorLines} />
+				</fieldset>
+				<fieldset>
+					<label for="start">Dots Color</label>
+					<input
+						type="color"
+						placeholder="Lines/Border"
+						id="start"
+						bind:value={settings.design.colorDots} />
+				</fieldset>
+
 				<h3>Sidebar Navigation</h3>
 				<div class="checkbox">
 					<input
@@ -581,7 +661,12 @@
 	style:--doc-width="{702}px"
 	style:--doc-height="{702 * (1 / (settings.design.aspectRatio || 1))}px"
 	style:--sidenav-width="{settings.sideNav.disable ? 0 : settings.sideNav.width}px"
-	style:--topnav-height="{settings.topNav.disable ? 0 : settings.topNav.height}px">
+	style:--topnav-height="{settings.topNav.disable ? 0 : settings.topNav.height}px"
+	style:--font-display="'{settings.design.fontDisplay}'"
+	style:--font="'{settings.design.font}'"
+	style:--text={settings.design.colorText}
+	style:--outline={settings.design.colorLines}
+	style:--dots-color={settings.design.colorDots}>
 	{#if !loadPages}
 		<article
 			style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
@@ -625,6 +710,15 @@
 </main>
 
 <style lang="scss">
+	main {
+		font-family: var(--font);
+		@supports (color: oklch(from var(--text) calc(l - 15) c h)) {
+			--text-low: oklch(from var(--text) calc(l + 20) c h);
+			--text-high: oklch(from var(--text) calc(l - 15) c h);
+			--outline-low: oklch(from var(--outline) calc(l + 3) c h);
+			--outline-high: oklch(from var(--outline) max(0, calc(l - 10)) c h);
+		}
+	}
 	@media screen {
 		main {
 			overflow-y: auto;
@@ -662,6 +756,9 @@
 		&:hover {
 			color: black;
 		}
+		@include tablet {
+			right: 2rem;
+		}
 	}
 	.menu {
 		position: fixed;
@@ -677,6 +774,10 @@
 		padding: 0 2rem 1rem;
 		overflow-y: auto;
 		overflow-x: hidden;
+		@include tablet {
+			right: 2rem;
+		}
+
 		@include scrollbar;
 		&::-webkit-scrollbar-track-piece:start {
 			margin-top: var(--radius-5);
@@ -718,6 +819,9 @@
 				font-size: 0.75rem;
 				font-weight: 300;
 				margin: 0 0 0.1rem 0.25rem;
+			}
+			input {
+				width: 100%;
 			}
 		}
 	}
