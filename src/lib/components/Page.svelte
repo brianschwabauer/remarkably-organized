@@ -9,6 +9,8 @@
 	import NotesWeek from './NotesWeek.svelte';
 	import NotesDay from './NotesDay.svelte';
 	import HabitsYear from './HabitsYear.svelte';
+	import AgendaWeek from './AgendaWeek.svelte';
+	import AgendaDay from './AgendaDay.svelte';
 
 	let {
 		display = 'dotted' as Collection['type'],
@@ -54,6 +56,10 @@
 			)}
 			startWeekOnSunday={settings.date.startWeekOnSunday}
 			{settings} />
+	{:else if display === 'agenda-week'}
+		<AgendaWeek {timeframe} startWeekOnSunday={settings.date.startWeekOnSunday} />
+	{:else if display === 'agenda-day'}
+		<AgendaDay />
 	{:else if display === 'notes-quarter'}
 		<NotesQuarter
 			months={settings.months.filter(
@@ -67,7 +73,10 @@
 			showWeekLinks={!settings.weekPage.disable}
 			useWeekSinceYear={settings.weekPage.useWeekSinceYear} />
 	{:else if display === 'notes-week'}
-		<NotesWeek {timeframe} startWeekOnSunday={settings.date.startWeekOnSunday} />
+		<NotesWeek
+			{timeframe}
+			startWeekOnSunday={settings.date.startWeekOnSunday}
+			display="grid" />
 	{:else if display === 'notes-week-columns'}
 		<NotesWeek
 			{timeframe}
@@ -122,6 +131,9 @@
 		}
 		&.numbered {
 			padding: 0 2rem 1rem;
+		}
+		&.agenda {
+			padding: 0 0 1rem;
 		}
 	}
 </style>

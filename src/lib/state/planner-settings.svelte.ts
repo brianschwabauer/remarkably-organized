@@ -184,7 +184,7 @@ export class PlannerSettings {
 	/** Settings for changing how the weekly pages should work */
 	readonly weekPage = new (class WeekPageSettings {
 		disable = $state(false);
-		template = $state('notes-week-columns' as PageTemplate);
+		template = $state('agenda-week' as PageTemplate);
 		notePagesTemplate = $state('dotted' as PageTemplate);
 		notePagesAmount = $state(0);
 		useWeekSinceYear = $state(false);

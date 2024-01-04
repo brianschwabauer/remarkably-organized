@@ -23,6 +23,8 @@ export type PageTemplate =
 	| 'calendar-year'
 	| 'calendar-quarter'
 	| 'calendar-month'
+	| 'agenda-week'
+	| 'agenda-day'
 	| 'notes-year'
 	| 'notes-quarter'
 	| 'notes-month'

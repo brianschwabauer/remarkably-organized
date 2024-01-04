@@ -32,6 +32,8 @@
 		{ name: 'Numbered - Medium', value: 'numbered' },
 		{ name: 'Numbered - Large', value: 'numbered-large' },
 		{ name: 'Calendar', value: 'calendar-month' },
+		{ name: 'Agenda - Daily', value: 'agenda-day' },
+		{ name: 'Agenda - Weekly', value: 'agenda-week' },
 		{ name: 'Notes - Yearly', value: 'notes-year' },
 		{ name: 'Notes - Quarterly', value: 'notes-quarter' },
 		{ name: 'Notes - Weekly', value: 'notes-week' },
