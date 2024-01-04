@@ -8,7 +8,7 @@
 </script>
 
 <article id={day.id} use:intersect={{ rootMargin: '1000px 0px 1000px 0px' }}>
-	<SideNav tabs="day" {settings} timeframe={day}></SideNav>
+	<SideNav tabs={settings.dayPage.sideNavDisplay} {settings} timeframe={day}></SideNav>
 	<TopNav {settings} timeframe={day} />
 	<Page {settings} display={settings.dayPage.template} timeframe={day} />
 </article>
@@ -18,7 +18,7 @@
 		<article
 			id="{day.id}-pg{i + 2}"
 			use:intersect={{ rootMargin: '1000px 0px 1000px 0px' }}>
-			<SideNav {settings} tabs="day" timeframe={day} />
+			<SideNav {settings} tabs={settings.dayPage.sideNavDisplay} timeframe={day} />
 			<TopNav
 				{settings}
 				timeframe={day}

@@ -355,19 +355,32 @@
 							</select>
 						</fieldset>
 					{/if}
+					<fieldset>
+						<label for="sideNavDisplay">Sidebar Display</label>
+						<select id="sideNavDisplay" bind:value={settings.weekPage.sideNavDisplay}>
+							<option value="days-this-week">Days of the Week</option>
+							<option value="days-this-month">Days of the Month</option>
+							<option value="weeks-this-year">Weeks of the Year</option>
+							<option value="weeks-this-month">Weeks of the Month</option>
+							<option value="months">Months</option>
+							<option value="none">None</option>
+						</select>
+					</fieldset>
+					{#if settings.weekPage.sideNavDisplay === 'weeks-this-month' || settings.weekPage.sideNavDisplay === 'weeks-this-year'}
+						<div class="checkbox">
+							<input
+								type="checkbox"
+								bind:checked={settings.weekPage.useWeekNumbersInSideNav}
+								id="useWeekNumbersInSideNav" />
+							<label for="useWeekNumbersInSideNav">Show week numbers in side bar</label>
+						</div>
+					{/if}
 					<div class="checkbox">
 						<input
 							type="checkbox"
 							bind:checked={settings.weekPage.useWeekSinceYear}
 							id="useWeekSinceYear" />
 						<label for="useWeekSinceYear">Use week number from start of year</label>
-					</div>
-					<div class="checkbox">
-						<input
-							type="checkbox"
-							bind:checked={settings.weekPage.useWeekNumbersInSideNav}
-							id="useWeekNumbersInSideNav" />
-						<label for="useWeekNumbersInSideNav">Show week numbers in side bar</label>
 					</div>
 				{/if}
 
@@ -410,13 +423,18 @@
 							</select>
 						</fieldset>
 					{/if}
-					<div class="checkbox">
-						<input
-							type="checkbox"
-							bind:checked={settings.dayPage.showOnlyThisWeekInSideNav}
-							id="showOnlyThisWeekInSideNav" />
-						<label for="showOnlyThisWeekInSideNav">Show only this week in side bar</label>
-					</div>
+					<fieldset>
+						<label for="sideNavDisplay">Sidebar Display</label>
+						<select id="sideNavDisplay" bind:value={settings.dayPage.sideNavDisplay}>
+							<option value="days-this-week">Days of the Week</option>
+							<option value="days-this-month">Days of the Month</option>
+							<option value="days-this-year">Days of the Year</option>
+							<option value="weeks-this-year">Weeks of the Year</option>
+							<option value="weeks-this-month">Weeks of the Month</option>
+							<option value="months">Months</option>
+							<option value="none">None</option>
+						</select>
+					</fieldset>
 				{/if}
 
 				<h3>Sidebar Navigation</h3>
