@@ -28,10 +28,13 @@
 					settings.weeks[i - 1]?.weekSinceYear !== week.weekSinceYear),
 		),
 	);
+	const weekListActiveIndex = $derived(
+		weekList.findIndex((week) => week.weekSinceYear === timeframe.weekSinceYear),
+	);
 	const startWeek = $derived(
 		Math.min(
 			weekList.length - numWeeksInSideNav,
-			Math.ceil(Math.max(0, (timeframe.weekSinceYear || 0) - numWeeksInSideNav / 2)),
+			Math.ceil(Math.max(0, weekListActiveIndex - numWeeksInSideNav / 2)),
 		),
 	);
 	const weeks = $derived(weekList.slice(startWeek, startWeek + numWeeksInSideNav));
