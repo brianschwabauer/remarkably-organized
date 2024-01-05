@@ -390,6 +390,7 @@
 	li.separator {
 		margin: 0;
 		color: var(--text-low);
-		opacity: 0.6;
+		opacity: 0.8;
+		font-family: var(--font-display);
 	}
 </style>

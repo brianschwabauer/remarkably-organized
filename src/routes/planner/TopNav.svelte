@@ -155,9 +155,10 @@
 					content: '/';
 					color: var(--text-low);
 					font-size: 0.85rem;
+					font-family: var(--font-display);
 				}
 				&:last-child {
-					padding-right: 0.5rem;
+					padding-right: 0.75rem;
 				}
 			}
 			a {
@@ -165,21 +166,14 @@
 				color: var(--text-low);
 				padding: 0 0.35rem;
 				font-family: var(--font-display);
-				display: flex;
-				height: 100%;
-				align-items: center;
-				line-height: 100%;
+				line-height: 1;
 				:global(svg) {
 					font-size: 0.85em;
 				}
-				:global(.value) {
-					margin-left: 0.25rem;
-				}
 				:global(.ordinal) {
 					color: currentColor;
-					padding: 0 0 0.35em 0.1em;
 					font-size: 0.75em;
-					margin-left: -0.1rem;
+					vertical-align: top;
 				}
 			}
 		}
@@ -199,7 +193,8 @@
 					content: '/';
 					color: var(--text-low);
 					font-size: 1rem;
-					opacity: 0.7;
+					opacity: 0.8;
+					font-family: var(--font-display);
 				}
 				&:first-child {
 					a {
