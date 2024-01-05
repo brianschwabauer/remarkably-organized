@@ -135,6 +135,7 @@
 				:global(.ordinal) {
 					font-size: 0.45em;
 					vertical-align: super;
+					margin-left: .05rem;
 				}
 			}
 		}
