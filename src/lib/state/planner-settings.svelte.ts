@@ -251,7 +251,12 @@ export class PlannerSettings {
 				const start = i === 0 ? new Date(this.date.start.getTime()) : firstDayOfYear;
 				const end =
 					i === numYears - 1 ? new Date(this.date.end.getTime()) : lastDayOfYear;
-				const weekStart = new Date(getFirstDayOfWeek(start, this.date.startWeekOnSunday));
+				const weekStart = new Date(
+					getFirstDayOfWeek(
+						Date.UTC(start.getUTCFullYear()),
+						this.date.startWeekOnSunday,
+					),
+				);
 				return {
 					id: `${year}`,
 					year,
