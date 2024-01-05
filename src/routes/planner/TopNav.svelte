@@ -30,22 +30,23 @@
 
 	const font = $derived(settings.design.fontDisplay);
 	const fontAdjustments = new Map([
-		['Bebas Neue', '-.07em'],
-		['Acme', '-.05em'],
-		['Anton', '-.03em'],
-		['Indie Flower', '-.12em'],
-		['Just Another Hand', '-.12em'],
+		['Bebas Neue', '-.2em'],
+		['Acme', '-.15em'],
+		['Anton', '-.13em'],
+		['Indie Flower', '-.3em'],
+		['Just Another Hand', '-.2em'],
 		['Lilita One', '-.07em'],
 		['Lobster', '-.07em'],
-		['Montserrat', '-.07em'],
-		['Permanent Marker', '-.03em'],
+		['Montserrat', '-.09em'],
+		['Permanent Marker', '-.09em'],
 		['Playfair Display', '.03em'],
-		['Poppins', '-.06em'],
-		['Rancho', '-.02em'],
-		['Roboto', '-.06em'],
-		['Roboto Condensed', '-.06em'],
-		['Satisfy', '-.17em'],
-		['Shadows Into Light Two', '-.05em'],
+		['Poppins', '-.16em'],
+		['Rancho', '-.12em'],
+		['Roboto', '-.16em'],
+		['Roboto Condensed', '-.16em'],
+		['Roboto Slab', '-.1em'],
+		['Satisfy', '-.27em'],
+		['Shadows Into Light Two', '-.15em'],
 	]);
 </script>
 
@@ -58,7 +59,7 @@
 						width="1.35rem"
 						height="1.35rem"
 						style={fontAdjustments.get(font)
-							? `transform: translateY(${fontAdjustments.get(font)})`
+							? `margin-top: ${fontAdjustments.get(font)}`
 							: null} />
 				</a>
 			</li>
