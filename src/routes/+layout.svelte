@@ -4,7 +4,7 @@
 
 <svelte:head>
 	<title>Remarkably Organized</title>
-	<script
+	<!-- <script
 		data-name="BMC-Widget"
 		data-cfasync="false"
 		src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js"
@@ -14,7 +14,7 @@
 		data-color="#5F7FFF"
 		data-position="left"
 		data-x_margin="12"
-		data-y_margin="12"></script>
+		data-y_margin="12"></script> -->
 </svelte:head>
 
 <slot />
