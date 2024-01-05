@@ -30,7 +30,7 @@
 
 	const font = $derived(settings.design.fontDisplay);
 	const fontAdjustments = new Map([
-		['Bebas Neue', '-.2em'],
+		['Bebas Neue', '-.4rem'],
 		['Acme', '-.15em'],
 		['Anton', '-.13em'],
 		['Indie Flower', '-.3em'],
