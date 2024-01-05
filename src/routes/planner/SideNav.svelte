@@ -351,6 +351,40 @@
 	}
 	nav.right ol.tabs > li {
 		padding: 0 2px 0 0;
+		a.highlight {
+			border-top-right-radius: var(--radius);
+			border-bottom-right-radius: var(--radius);
+			border-top-left-radius: 0;
+			border-bottom-left-radius: 0;
+			&::before {
+				right: unset;
+				top: calc(-2 * var(--radius));
+				left: 0;
+				border-top-left-radius: 0;
+				border-top-right-radius: 0;
+				border-bottom-right-radius: 0;
+				border-bottom-left-radius: var(--radius);
+				box-shadow: var(--tab-background) 0px var(--radius) 0px 0px;
+			}
+			&::after {
+				right: unset;
+				left: 0;
+				bottom: calc(-2 * var(--radius));
+				border-top-right-radius: 0;
+				border-bottom-left-radius: 0;
+				border-bottom-right-radius: 0;
+				border-top-left-radius: var(--radius);
+				box-shadow: var(--tab-background) 0px calc(-1 * var(--radius)) 0px 0px;
+			}
+			&.highlight-start,
+			&.highlight-middle {
+				border-bottom-right-radius: 0;
+			}
+			&.highlight-end,
+			&.highlight-middle {
+				border-top-right-radius: 0;
+			}
+		}
 		a.active {
 			border-top-right-radius: var(--radius);
 			border-bottom-right-radius: var(--radius);
@@ -365,7 +399,7 @@
 				border-top-right-radius: 0;
 				border-bottom-right-radius: 0;
 				border-bottom-left-radius: var(--radius);
-				box-shadow: var(--bg) 0px var(--radius) 0px 0px;
+				box-shadow: var(--bg) -1px var(--radius) 0px 0px;
 			}
 			&::after {
 				right: unset;
@@ -375,7 +409,7 @@
 				border-bottom-left-radius: 0;
 				border-bottom-right-radius: 0;
 				border-top-left-radius: var(--radius);
-				box-shadow: var(--bg) 0px calc(-1 * var(--radius)) 0px 0px;
+				box-shadow: var(--bg) -1px calc(-1 * var(--radius)) 0px 0px;
 			}
 		}
 	}
