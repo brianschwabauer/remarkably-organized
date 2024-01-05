@@ -322,7 +322,10 @@ export class PlannerSettings {
 	/** The computed list of weeks within the start/end timeframe in this.date */
 	readonly weeks = $derived(
 		this.years.reduce((acc, year) => {
-			const firstWeekDayOfYear = year.weekStart.getTime();
+			const firstWeekDayOfYear = getFirstDayOfWeek(
+				getUTCDate(year.year),
+				this.date.startWeekOnSunday,
+			);
 			for (
 				let month = year.start.getUTCMonth() + 1;
 				month <= year.end.getUTCMonth() + 1;
