@@ -131,6 +131,9 @@
 {/if}
 
 <style lang="scss">
+	:global(main.side-nav-right) nav {
+		padding: 0 var(--sidenav-width) 0 0;
+	}
 	nav {
 		display: flex;
 		align-items: center;

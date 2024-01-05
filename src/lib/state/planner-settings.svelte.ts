@@ -139,6 +139,7 @@ export class PlannerSettings {
 		disable = $state(false);
 		showCollectionLinks = $state(true);
 		width = $state(52);
+		leftSide = $state(true);
 	})();
 
 	/** Settings for changing the top navigation bar display */
@@ -462,6 +463,7 @@ export class PlannerSettings {
 				disable: this.sideNav.disable,
 				showCollectionLinks: this.sideNav.showCollectionLinks,
 				width: this.sideNav.width,
+				leftSide: this.sideNav.leftSide,
 			},
 			topNav: {
 				disable: this.topNav.disable,
@@ -546,6 +548,8 @@ export class PlannerSettings {
 		if (state?.sideNav?.showCollectionLinks !== undefined)
 			this.sideNav.showCollectionLinks = state.sideNav.showCollectionLinks;
 		if (state?.sideNav?.width !== undefined) this.sideNav.width = state.sideNav.width;
+		if (state?.sideNav?.leftSide !== undefined)
+			this.sideNav.leftSide = state.sideNav.leftSide;
 
 		// Top Nav Settings
 		if (state?.topNav?.disable !== undefined) this.topNav.disable = state.topNav.disable;

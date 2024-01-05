@@ -70,7 +70,7 @@
 </script>
 
 {#if !settings.sideNav.disable}
-	<nav>
+	<nav class:right={!settings.sideNav.leftSide}>
 		{#if tabs !== 'none'}
 			<ol
 				class="tabs"
@@ -231,6 +231,10 @@
 		width: var(--sidenav-width);
 		padding: var(--sidenav-width) 0 0;
 		background-color: var(--nav-bg);
+		&.right {
+			left: auto;
+			right: 0;
+		}
 	}
 	.spacer {
 		flex: 1;
@@ -318,14 +322,14 @@
 				top: calc(-2 * var(--radius));
 				border-top-right-radius: 0;
 				border-bottom-right-radius: var(--radius);
-				box-shadow: var(--tab-background) 0px var(--radius) 0px 0px;
+				box-shadow: var(--tab-background) -1px var(--radius) 0px 0px;
 			}
 			&::after {
 				right: 0;
 				bottom: calc(-2 * var(--radius));
 				border-top-left-radius: 0;
 				border-top-right-radius: var(--radius);
-				box-shadow: var(--tab-background) 0px calc(-1 * var(--radius)) 0px 0px;
+				box-shadow: var(--tab-background) -1px calc(-1 * var(--radius)) 0px 0px;
 			}
 			&.highlight-start,
 			&.highlight-middle {
@@ -361,6 +365,48 @@
 				border-top-left-radius: 0;
 				border-top-right-radius: var(--radius);
 				box-shadow: var(--bg) 1px calc(-1 * var(--radius)) 0px 0px;
+			}
+		}
+	}
+	nav.right ol.tabs > li {
+		padding: 0 2px 0 0;
+		a.active {
+			border-top-right-radius: var(--radius);
+			border-bottom-right-radius: var(--radius);
+			border-top-left-radius: 0;
+			border-bottom-left-radius: 0;
+			box-shadow: -1px 0 var(--bg);
+			// &::before {
+			// 	top: 0;
+			// 	left: calc(-2 * var(--radius-4));
+			// 	border-top-right-radius: var(--radius-4);
+			// 	box-shadow: var(--bg) var(--radius-4) 0px 0px 0px;
+			// }
+			// &::after {
+			// 	top: 0;
+			// 	right: calc(-2 * var(--radius-4));
+			// 	border-top-left-radius: var(--radius-4);
+			// 	box-shadow: var(--bg) calc(-1 * var(--radius-4)) 0px 0px 0px;
+			// }
+			&::before {
+				right: unset;
+				top: calc(-2 * var(--radius));
+				left: 0;
+				border-top-left-radius: 0;
+				border-top-right-radius: 0;
+				border-bottom-right-radius: 0;
+				border-bottom-left-radius: var(--radius);
+				box-shadow: var(--bg) 0px var(--radius) 0px 0px;
+			}
+			&::after {
+				right: unset;
+				left: 0;
+				bottom: calc(-2 * var(--radius));
+				border-top-right-radius: 0;
+				border-bottom-left-radius: 0;
+				border-bottom-right-radius: 0;
+				border-top-left-radius: var(--radius);
+				box-shadow: var(--bg) 0px calc(-1 * var(--radius)) 0px 0px;
 			}
 		}
 	}

@@ -36,4 +36,8 @@
 		padding-left: var(--sidenav-width);
 		padding-top: var(--topnav-height);
 	}
+	:global(main.side-nav-right) article {
+		padding-right: var(--sidenav-width);
+		padding-left: 0;
+	}
 </style>

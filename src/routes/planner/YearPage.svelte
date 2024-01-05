@@ -42,6 +42,10 @@
 			padding-top: var(--topnav-height);
 		}
 	}
+	:global(main.side-nav-right) article {
+		padding-right: var(--sidenav-width);
+		padding-left: 0;
+	}
 
 	h1 {
 		font-size: 3.5rem;

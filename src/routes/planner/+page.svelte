@@ -531,6 +531,13 @@
 					<div class="checkbox">
 						<input
 							type="checkbox"
+							bind:checked={settings.sideNav.leftSide}
+							id="sideNavLeftSide" />
+						<label for="sideNavLeftSide">Show Sidebar on Left</label>
+					</div>
+					<div class="checkbox">
+						<input
+							type="checkbox"
 							bind:checked={settings.sideNav.showCollectionLinks}
 							id="sideNavShowCollectionLinks" />
 						<label for="sideNavShowCollectionLinks">Show Links to Collections</label>
@@ -668,7 +675,8 @@
 	style:--font="'{settings.design.font}'"
 	style:--text={settings.design.colorText}
 	style:--outline={settings.design.colorLines}
-	style:--dots-color={settings.design.colorDots}>
+	style:--dots-color={settings.design.colorDots}
+	class:side-nav-right={!settings.sideNav.leftSide}>
 	<div id="home"></div>
 	{#if !loadPages}
 		<article
