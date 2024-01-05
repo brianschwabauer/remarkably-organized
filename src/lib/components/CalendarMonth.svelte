@@ -82,11 +82,12 @@
 			justify-content: center;
 			font-size: 0.75rem;
 			color: rgba(0, 0, 0, 0.75);
-			background-color: rgba(0, 0, 0, 0.02);
 			border-top: solid 1px var(--outline);
 			border-left: solid 1px var(--outline-high);
+			margin-bottom: -1px;
 			&.last-week {
 				border-top: none;
+				margin-bottom: 0px;
 			}
 		}
 		.day {
