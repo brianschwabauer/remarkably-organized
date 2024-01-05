@@ -26,7 +26,9 @@
 		display.endsWith('large') ? 'large' : display.endsWith('small') ? 'small' : 'medium',
 	);
 	const cols = $derived(
-		display.startsWith('lined') || display.startsWith('numbered')
+		display.startsWith('lined') ||
+			display.startsWith('numbered') ||
+			display.startsWith('todo')
 			? columns ?? 1
 			: size === 'small'
 				? 30
@@ -103,6 +105,8 @@
 		<Grid {display} columns={cols} lines={numLines} {aspectRatio} />
 	{:else if display.startsWith('numbered')}
 		<Grid {display} columns={cols} lines={numLines} {aspectRatio} />
+	{:else if display.startsWith('todo')}
+		<Grid {display} columns={cols} lines={numLines} {aspectRatio} />
 	{:else if display.startsWith('grid')}
 		<Grid {display} {aspectRatio} />
 	{:else if display.startsWith('dotted')}
@@ -130,6 +134,9 @@
 			padding: 0 2rem 1rem;
 		}
 		&.numbered {
+			padding: 0 2rem 1rem;
+		}
+		&.todo {
 			padding: 0 2rem 1rem;
 		}
 		&.agenda {

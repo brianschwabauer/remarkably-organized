@@ -31,6 +31,9 @@
 		{ name: 'Numbered - Small', value: 'numbered-small' },
 		{ name: 'Numbered - Medium', value: 'numbered' },
 		{ name: 'Numbered - Large', value: 'numbered-large' },
+		{ name: 'To-do List - Small', value: 'todo-small' },
+		{ name: 'To-do List - Medium', value: 'todo' },
+		{ name: 'To-do List - Large', value: 'todo-large' },
 		{ name: 'Calendar', value: 'calendar-month' },
 		{ name: 'Agenda - Daily', value: 'agenda-day' },
 		{ name: 'Agenda - Weekly', value: 'agenda-week' },
@@ -613,7 +616,7 @@
 									step="1"
 									bind:value={collection.numPagesPerItem} />
 							</fieldset>
-							{#if collection.type.startsWith('numbered') || collection.type.startsWith('lined')}
+							{#if collection.type.startsWith('numbered') || collection.type.startsWith('lined') || collection.type.startsWith('todo')}
 								<fieldset style="margin-top: 1rem;">
 									<label for="collection-{collection.id}-columns">Columns</label>
 									<input

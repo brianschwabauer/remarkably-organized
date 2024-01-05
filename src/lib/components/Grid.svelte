@@ -11,7 +11,9 @@
 	} = $props();
 
 	const type = $derived(
-		display.startsWith('lined') || display.startsWith('numbered')
+		display.startsWith('lined') ||
+			display.startsWith('numbered') ||
+			display.startsWith('todo')
 			? 'lined'
 			: display.startsWith('dotted') || display.startsWith('grid')
 				? 'grid'
@@ -66,6 +68,8 @@
 		{#each new Array(Math.ceil(numLines * cols)) as _, i (i)}
 			{#if display.startsWith('numbered')}
 				<div class="line">{i + 1}&#41;</div>
+				{:else if display.startsWith('todo')}
+				<div class="line todo">☐</div>
 			{:else}
 				<div class="line"></div>
 			{/if}
@@ -195,6 +199,10 @@
 			align-items: end;
 			font-size: 0.75rem;
 			align-items: center;
+			&.todo {
+				font-size: 1.05rem;
+				line-height: 0.75rem;
+			}
 		}
 	}
 </style>
