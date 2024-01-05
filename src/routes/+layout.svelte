@@ -4,6 +4,17 @@
 
 <svelte:head>
 	<title>Remarkably Organized</title>
+	<script
+		data-name="BMC-Widget"
+		data-cfasync="false"
+		src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js"
+		data-id="brianschwabauer"
+		data-description="Support me on Buy me a coffee!"
+		data-message="Hi! If you like my work, consider buying me a coffee! I'd appreciate it!"
+		data-color="#5F7FFF"
+		data-position="left"
+		data-x_margin="12"
+		data-y_margin="12"></script>
 </svelte:head>
 
 <slot />
