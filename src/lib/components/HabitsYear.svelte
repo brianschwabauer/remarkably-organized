@@ -61,7 +61,7 @@
 	<div class="year-by-month">
 		{#each new Array(12) as _, month}
 			<div class="month" style:grid-column={month + 1}>
-				{new Date(2000, month).toLocaleString('default', {
+				{new Date(Date.UTC(2000, month)).toLocaleString('default', {
 					month: 'short',
 					timeZone: 'UTC',
 				})}
@@ -107,7 +107,7 @@
 			border-bottom: solid 1px var(--outline);
 			border-left: solid 1px var(--outline);
 			line-height: 1;
-			gap: .1rem 0;
+			gap: 0.1rem 0;
 
 			&.last-col {
 				border-right: solid 1px var(--outline);
