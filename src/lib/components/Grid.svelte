@@ -31,19 +31,16 @@
 </script>
 
 {#if display.startsWith('dotted')}
-	<div class="dots" style:--cols={cols}>
-		{#each new Array(Math.ceil(cols * cols * aspectRatio)) as _, i (i)}
-			<div
-				class="dot"
-				class:last-col={i % cols === cols - 1}
-				class:major-col={(i % cols) % majorSize === 0}
-				class:major-row={i % (cols * majorSize) < cols}
-				class:minor-col={(i % cols) % minorSize === 0}
-				class:minor-row={i % (cols * minorSize) < cols}
-				class:wrap-major={cols % majorSize === 0}
-				class:wrap-minor={cols % minorSize === 0}>
-			</div>
-		{/each}
+	<div
+		class="dots"
+		style:--dot-distance={size === 'small'
+			? '20px'
+			: size === 'medium'
+				? '24px'
+				: '30px'}>
+		<div class="dots-small"></div>
+		<div class="dots-medium"></div>
+		<div class="dots-large"></div>
 	</div>
 {/if}
 
@@ -78,72 +75,61 @@
 
 <style lang="scss">
 	.dots {
+		height: 100%;
 		width: 100%;
+		padding: 0 1rem;
+		--dot-position: 8px;
+		--dot-distance: 24px;
+		--dot-large-size: 1px;
+		--dot-medium-size: 1px;
+		--dot-small-size: 1px;
+		--dot-large-color: rgba(0, 0, 0, 0.35);
+		--dot-medium-color: rgba(0, 0, 0, 0.35);
+		--dot-small-color: var(--dots-color, rgba(0, 0, 0, 0.9));
+		@supports (color: oklch(from var(--dots-color) calc(l - 15) c h)) {
+			--dot-small-color: oklch(from var(--dots-color) min(90, max(0, calc(l + 20))) c h);
+			--dot-medium-color: oklch(from var(--dots-color) min(80, max(0, calc(l - 0))) c h);
+			--dot-large-color: oklch(from var(--dots-color) min(75, max(0, calc(l - 25))) c h);
+		}
 		display: grid;
-		grid-template-columns: repeat(var(--cols), 1fr);
-		padding: 0 calc(100% / var(--cols));
-		--dot-size: 1px;
-		--minor-dot-size: 2px;
-		--major-dot-size: 2px;
-		--dot-color: var(--dots-color, rgba(0, 0, 0, 0.9));
-		--minor-dot-color: rgba(0, 0, 0, 0.35);
-		--major-dot-color: rgba(0, 0, 0, 0.65);
-		@supports (color: oklch(from var(--dot-color) calc(l - 15) c h)) {
-			--minor-dot-color: oklch(from var(--dot-color) max(0, calc(l + 35)) c h);
-			--major-dot-color: oklch(from var(--dot-color) max(0, calc(l + 12)) c h);
+		.dots-small {
+			grid-column: 1 / 1;
+			grid-row: 1 / 1;
+			background-image: radial-gradient(
+				circle at 1px 1px,
+				var(--dot-small-color) var(--dot-small-size),
+				transparent var(--dot-small-size)
+			);
+			background-position: var(--dot-position) 0px;
+			background-size: var(--dot-distance) var(--dot-distance);
+			height: 100%;
+			width: 100%;
 		}
-	}
-	.dot {
-		width: 100%;
-		aspect-ratio: 1;
-		position: relative;
-		&::before {
-			display: block;
-			content: '';
-			border-radius: 100%;
-			width: var(--dot-size);
-			height: var(--dot-size);
-			background-color: var(--dot-color);
+		.dots-medium {
+			grid-column: 1 / 1;
+			grid-row: 1 / 1;
+			background-image: radial-gradient(
+				circle at 1px 1px,
+				var(--dot-medium-color) var(--dot-medium-size),
+				transparent var(--dot-large-size)
+			);
+			background-position: var(--dot-position) 0px;
+			background-size: calc(var(--dot-distance) * 5) calc(var(--dot-distance) * 5);
+			height: 100%;
+			width: 100%;
 		}
-		&.last-col {
-			&::after {
-				display: block;
-				content: '';
-				border-radius: 100%;
-				width: var(--dot-size);
-				height: var(--dot-size);
-				background-color: var(--dot-color);
-				position: absolute;
-				right: 0;
-			}
-			&.wrap-minor.minor-row {
-				&::after {
-					width: var(--minor-dot-size);
-					height: var(--minor-dot-size);
-					background-color: var(--minor-dot-color);
-				}
-			}
-			&.wrap-major.major-row {
-				&::after {
-					width: var(--major-dot-size);
-					height: var(--major-dot-size);
-					background-color: var(--major-dot-color);
-				}
-			}
-		}
-		&.minor-row.minor-col {
-			&::before {
-				width: var(--minor-dot-size);
-				height: var(--minor-dot-size);
-				background-color: var(--minor-dot-color);
-			}
-		}
-		&.major-row.major-col {
-			&::before {
-				width: var(--major-dot-size);
-				height: var(--major-dot-size);
-				background-color: var(--major-dot-color);
-			}
+		.dots-large {
+			grid-column: 1 / 1;
+			grid-row: 1 / 1;
+			background-image: radial-gradient(
+				circle at 1px 1px,
+				var(--dot-large-color) var(--dot-large-size),
+				transparent var(--dot-large-size)
+			);
+			background-position: var(--dot-position) 0px;
+			background-size: calc(var(--dot-distance) * 10) calc(var(--dot-distance) * 10);
+			height: 100%;
+			width: 100%;
 		}
 	}
 	.grid {

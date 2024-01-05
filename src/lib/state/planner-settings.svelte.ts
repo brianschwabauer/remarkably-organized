@@ -106,7 +106,7 @@ export class PlannerSettings {
 		fontDisplay = $state('Bebas Neue');
 		colorText = $state('#424242');
 		colorLines = $state('#e2e2e2');
-		colorDots = $state('#333333');
+		colorDots = $state('#6e6e6e');
 	})();
 
 	/** Settings for changing the dates of the planner (like start & end dates) */
