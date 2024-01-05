@@ -53,9 +53,9 @@
 		padding: 0 2rem 2rem;
 		h2 {
 			text-align: center;
-			font-size: 0.85rem;
+			font-size: 1em;
 			padding: 0.5rem 0 0.5rem;
-			font-weight: 300;
+			font-weight: var(--font-weight-light);
 		}
 	}
 	.month {

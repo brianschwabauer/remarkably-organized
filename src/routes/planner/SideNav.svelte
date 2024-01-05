@@ -72,22 +72,7 @@
 {#if !settings.sideNav.disable}
 	<nav class:right={!settings.sideNav.leftSide}>
 		{#if tabs !== 'none'}
-			<ol
-				class="tabs"
-				class:decrease-font-size={[
-					'Lilita One',
-					'Abril Fatface',
-					'Acme',
-					'Anton',
-					'DM Serif Display',
-					'Montserrat',
-					'Pacifico',
-					'Permanent Marker',
-					'Poppins',
-					'PT Serif',
-					'Roboto',
-					'Roboto Slab',
-				].includes(settings.design.fontDisplay)}>
+			<ol class="tabs">
 				{#if tabs === 'years' && settings.years.length > 1}
 					{#each settings.years as year (year.id)}
 						<li class="year">
@@ -231,6 +216,8 @@
 		width: var(--sidenav-width);
 		padding: var(--sidenav-width) 0 0;
 		background-color: var(--nav-bg);
+		font-family: var(--font-display);
+		font-size: var(--font-display-size);
 		&.right {
 			left: auto;
 			right: 0;
@@ -244,11 +231,6 @@
 		padding: 0;
 		width: 100%;
 		margin: 0;
-		&.tabs.decrease-font-size {
-			> li {
-				font-size: 0.85rem;
-			}
-		}
 	}
 	ol.tabs > li {
 		padding: 0;
@@ -258,31 +240,31 @@
 		&.quarter {
 			a {
 				font-size: 1.3em;
-				line-height: 100%;
+				line-height: 1.3rem;
 			}
 		}
 		&.week {
 			a {
-				font-size: 1.3em;
-				line-height: 1.2em;
+				font-size: 1.25em;
+				line-height: 1.3rem;
 			}
 			small {
 				color: currentColor;
-				line-height: 100%;
-				font-size: 0.65em;
+				line-height: 1.3rem;
+				font-size: 0.6em;
 				margin-right: 0.15em;
 			}
 		}
 		&.day {
 			.weekday {
-				line-height: 100%;
+				line-height: 1.3rem;
 				font-size: 0.55em;
 				margin-right: 0.25em;
 				opacity: 0.7;
 			}
 			a {
-				font-size: 1.35em;
-				line-height: 1.2em;
+				font-size: 1.25em;
+				line-height: 1.3rem;
 			}
 		}
 		a {
@@ -295,9 +277,8 @@
 			justify-content: center;
 			padding: 0.75rem 0;
 			color: var(--text-low);
-			font-family: var(--font-display);
 			font-size: 1.1em;
-			line-height: 1.5em;
+			line-height: 1.5rem;
 			position: relative;
 			border-radius: var(--radius);
 			&.active {
@@ -376,18 +357,6 @@
 			border-top-left-radius: 0;
 			border-bottom-left-radius: 0;
 			box-shadow: -1px 0 var(--bg);
-			// &::before {
-			// 	top: 0;
-			// 	left: calc(-2 * var(--radius-4));
-			// 	border-top-right-radius: var(--radius-4);
-			// 	box-shadow: var(--bg) var(--radius-4) 0px 0px 0px;
-			// }
-			// &::after {
-			// 	top: 0;
-			// 	right: calc(-2 * var(--radius-4));
-			// 	border-top-left-radius: var(--radius-4);
-			// 	box-shadow: var(--bg) calc(-1 * var(--radius-4)) 0px 0px 0px;
-			// }
 			&::before {
 				right: unset;
 				top: calc(-2 * var(--radius));
@@ -417,7 +386,6 @@
 		transform: rotate(180deg);
 		line-height: var(--sidenav-width);
 		a {
-			font-family: var(--font-display);
 			text-decoration: none;
 			color: var(--text-low);
 			display: block;
@@ -440,6 +408,5 @@
 		margin: 0;
 		color: var(--text-low);
 		opacity: 0.8;
-		font-family: var(--font-display);
 	}
 </style>

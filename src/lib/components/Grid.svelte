@@ -188,7 +188,7 @@
 		grid-template-rows: repeat(var(--lines), 1fr);
 		flex: 1;
 		width: 100%;
-		font-weight: 300;
+		font-weight: var(--font-weight-light);
 		height: 100%;
 		padding: 0 0 calc(100% / var(--lines));
 		gap: 0 1rem;
@@ -197,10 +197,10 @@
 			border-bottom: solid 1px var(--outline);
 			display: flex;
 			align-items: end;
-			font-size: 0.75rem;
+			font-size: 0.75em;
 			align-items: center;
 			&.todo {
-				font-size: 1.05rem;
+				font-size: 1.05em;
 				line-height: 0.75rem;
 			}
 		}

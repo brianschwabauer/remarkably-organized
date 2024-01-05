@@ -33,8 +33,8 @@
 	.hour-label {
 		text-align: center;
 		grid-column: 1;
-		font-weight: 300;
-		font-size: 0.7rem;
+		font-weight: var(--font-weight-light);
+		font-size: 0.7em;
 		color: var(--text-low);
 		margin-top: -0.5rem;
 		small {

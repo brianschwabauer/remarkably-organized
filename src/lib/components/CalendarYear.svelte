@@ -65,17 +65,17 @@
 		grid-template-columns: repeat(3, 1fr);
 		grid-template-rows: repeat(4, 1fr);
 		align-items: start;
-		gap: 0.5rem 1.5rem;
+		gap: 1rem 1.5rem;
 		flex: 1;
 		width: 100%;
 		height: 100%;
 		padding: 0 1.5rem 2.5rem;
 		h2 {
-			font-size: 1;
 			text-align: center;
-			font-size: 1.1rem;
-			font-weight: normal;
-			padding: 0 0 0.5rem;
+			font-size: 1.2em;
+			font-weight: var(--font-weight-normal);
+			padding: 0 0 0.25rem;
+			line-height: 1.2rem;
 		}
 	}
 	.days {
@@ -84,18 +84,19 @@
 		grid-template-rows: repeat(6, 1fr);
 		justify-items: center;
 		align-items: center;
-		grid-gap: 0.15rem 0.25rem;
+		gap: 0.15rem 0.25rem;
 		.label {
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			font-size: 0.65rem;
-			font-weight: bold;
+			font-size: 0.65em;
+			font-weight: var(--font-weight-bold);
 			color: var(--text-low);
 		}
 		.day {
-			font-size: 0.9rem;
-			font-weight: 300;
+			font-size: 1.1em;
+			font-weight: var(--font-weight-light);
+			line-height: 1.3rem;
 		}
 	}
 </style>

@@ -74,11 +74,11 @@
 		}
 	}
 	.day {
-		font-size: 0.9rem;
+		font-size: 0.9em;
 		border-top: solid 1px var(--outline);
 		text-align: center;
 		padding: 0.5rem 0 0;
-		font-weight: 300;
+		font-weight: var(--font-weight-light);
 
 		:global(.ordinal) {
 			font-size: 0.75em;

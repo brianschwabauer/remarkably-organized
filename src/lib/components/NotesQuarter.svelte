@@ -41,10 +41,9 @@
 		height: 100%;
 		padding: 0 3rem 0;
 		h2 {
-			font-size: 1;
 			text-align: center;
-			font-size: 0.85rem;
-			font-weight: 300;
+			font-size: 1em;
+			font-weight: var(--font-weight-light);
 			padding: 0.5rem 0;
 		}
 	}

@@ -80,7 +80,7 @@
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			font-size: 0.75rem;
+			font-size: 0.75em;
 			color: rgba(0, 0, 0, 0.75);
 			border-top: solid 1px var(--outline);
 			border-left: solid 1px var(--outline-high);
@@ -93,8 +93,8 @@
 		.day {
 			display: flex;
 			justify-content: end;
-			font-size: 1rem;
-			font-weight: 300;
+			font-size: 1em;
+			font-weight: var(--font-weight-light);
 			border-left: solid 1px var(--outline);
 			line-height: 1;
 			padding: 0.5rem;
@@ -102,7 +102,7 @@
 				border-top: solid 1px var(--outline);
 			}
 			small {
-				font-size: 0.65rem;
+				font-size: 0.65em;
 				opacity: 1;
 				color: currentColor;
 				margin: 0.2rem 0.2rem 0 0;

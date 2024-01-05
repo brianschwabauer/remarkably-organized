@@ -72,7 +72,7 @@
 			}
 			h2 {
 				margin: 0 0 1rem;
-				font-size: 2rem;
+				font-size: 2em;
 			}
 			p {
 				margin: 0.5rem 0;
@@ -87,7 +87,7 @@
 			button {
 				width: 100%;
 				padding: 1rem;
-				font-size: 1.5rem;
+				font-size: 1.5em;
 				background-color: #333333;
 				color: white;
 				border-radius: 999px;

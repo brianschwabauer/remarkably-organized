@@ -86,7 +86,7 @@
 			line-height: 1;
 			font-size: 1.5rem;
 			color: white;
-			opacity: .65;
+			opacity: 0.65;
 			@include tablet {
 				font-size: 2rem;
 			}
@@ -121,7 +121,7 @@
 	p {
 		max-width: 450px;
 		color: white;
-		opacity: .8;
+		opacity: 0.8;
 		text-align: center;
 		font-size: 1.2rem;
 		margin: 1rem auto 0;

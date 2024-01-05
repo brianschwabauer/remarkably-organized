@@ -55,9 +55,9 @@
 		padding: 0 1rem 0 0;
 	}
 	.day {
-		font-size: 0.9rem;
+		font-size: 0.9em;
 		text-align: center;
-		font-weight: 300;
+		font-weight: var(--font-weight-light);
 
 		:global(.ordinal) {
 			font-size: 0.75em;
@@ -104,8 +104,8 @@
 	.hour-label {
 		text-align: center;
 		grid-column: 1;
-		font-weight: 300;
-		font-size: 0.7rem;
+		font-weight: var(--font-weight-light);
+		font-size: 0.7em;
 		color: var(--text-low);
 		margin-top: -0.5rem;
 		small {

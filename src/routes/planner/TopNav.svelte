@@ -27,24 +27,38 @@
 			timeframe.month &&
 			timeframe.daySinceMonth,
 	);
+
+	const font = $derived(settings.design.fontDisplay);
+	const fontAdjustments = new Map([
+		['Bebas Neue', '-.07em'],
+		['Acme', '-.05em'],
+		['Anton', '-.03em'],
+		['Indie Flower', '-.12em'],
+		['Just Another Hand', '-.12em'],
+		['Lilita One', '-.07em'],
+		['Lobster', '-.07em'],
+		['Montserrat', '-.07em'],
+		['Permanent Marker', '-.03em'],
+		['Playfair Display', '.03em'],
+		['Poppins', '-.06em'],
+		['Rancho', '-.02em'],
+		['Roboto', '-.06em'],
+		['Roboto Condensed', '-.06em'],
+		['Satisfy', '-.17em'],
+		['Shadows Into Light Two', '-.05em'],
+	]);
 </script>
 
 {#if !settings.topNav.disable}
 	<nav>
-		<ol
-			class="breadcrumbs"
-			style:font-size={settings.design.fontDisplay === 'Bebas Neue'
-				? '1.35rem'
-				: settings.design.fontDisplay === 'Caveat'
-					? '1.35rem'
-					: null}>
+		<ol class="breadcrumbs">
 			<li>
 				<a href="#home" class="home">
 					<HomeIcon
 						width="1.35rem"
 						height="1.35rem"
-						style={settings.design.fontDisplay === 'Bebas Neue'
-							? 'margin-bottom:.2rem'
+						style={fontAdjustments.get(font)
+							? `transform: translateY(${fontAdjustments.get(font)})`
 							: null} />
 				</a>
 			</li>
@@ -143,6 +157,8 @@
 		right: 0;
 		height: var(--topnav-height);
 		padding: 0 0 0 var(--sidenav-width);
+		font-family: var(--font-display);
+		font-size: var(--font-display-size);
 		ol.links {
 			list-style: none;
 			list-style: none;
@@ -157,7 +173,7 @@
 				&:not(:last-child)::after {
 					content: '/';
 					color: var(--text-low);
-					font-size: 0.85rem;
+					font-size: 0.85em;
 					font-family: var(--font-display);
 				}
 				&:last-child {
@@ -165,9 +181,9 @@
 				}
 			}
 			a {
-				font-size: 1rem;
+				font-size: 1em;
 				color: var(--text-low);
-				padding: 0 0.35rem;
+				padding: 0 0.25rem;
 				font-family: var(--font-display);
 				line-height: 1;
 				:global(svg) {
@@ -187,7 +203,7 @@
 			margin: 0;
 			display: flex;
 			height: 100%;
-			font-size: 1.1rem;
+			font-size: 1.2em;
 			li {
 				display: flex;
 				align-items: center;
@@ -195,7 +211,7 @@
 				&:not(:last-child)::after {
 					content: '/';
 					color: var(--text-low);
-					font-size: 1rem;
+					font-size: .8em;
 					opacity: 0.8;
 					font-family: var(--font-display);
 				}
@@ -224,7 +240,7 @@
 					color: var(--text-low);
 				}
 				:global(svg) {
-					font-size: 1rem;
+					font-size: 1em;
 				}
 				:global(.ordinal) {
 					color: currentColor;

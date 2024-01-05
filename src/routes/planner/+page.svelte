@@ -14,6 +14,7 @@
 	import CollectionPages from './CollectionPages.svelte';
 	import HelpModal from './HelpModal.svelte';
 	import { browser } from '$app/environment';
+	import { fonts, getGoogleFontURL } from '../fonts/fonts';
 	let { data } = $props();
 	const { settings } = data;
 
@@ -47,40 +48,12 @@
 		{ name: 'Habit Checkboxes - Grouped by Month', value: 'habit-year-by-month' },
 	];
 
-	const fonts = [
-		'Abril Fatface',
-		'Acme',
-		'Anton',
-		'Bebas Neue',
-		'Caveat',
-		'Dancing Script',
-		'DM Serif Display',
-		'Indie Flower',
-		'Lilita One',
-		'Lobster',
-		'Montserrat',
-		'Pacifico',
-		'Permanent Marker',
-		'Playfair Display',
-		'Poppins',
-		'PT Serif',
-		'Satisfy',
-		'Roboto',
-		'Roboto Condensed',
-		'Roboto Slab',
-		'Shadows Into Light',
-	];
-
-	const selectedFonts = $derived(
-		Array.from(new Set([settings.design.font, settings.design.fontDisplay])),
+	const fontDisplay = $derived(
+		fonts.find((f) => f.name === settings.design.fontDisplay) ?? fonts[0],
 	);
-	const selectedFontsQuery = $derived(
-		new URLSearchParams(
-			selectedFonts.map((font) => ['family', `${font}:wght@100;200;300;400;500;600;700`]),
-		).toString(),
-	);
+	const font = $derived(fonts.find((f) => f.name === settings.design.font) ?? fonts[0]);
 	const googleFontURL = $derived(
-		`https://fonts.googleapis.com/css2?display=swap&${selectedFontsQuery}`,
+		getGoogleFontURL([settings.design.font, settings.design.fontDisplay]),
 	);
 
 	function getAvailablePageTemplates(
@@ -484,16 +457,16 @@
 				<fieldset>
 					<label for="designFont">Font</label>
 					<select id="designFont" bind:value={settings.design.font}>
-						{#each fonts as font (font)}
-							<option value={font}>{font}</option>
+						{#each fonts as font (font.name)}
+							<option value={font.name}>{font.name}</option>
 						{/each}
 					</select>
 				</fieldset>
 				<fieldset>
 					<label for="designFontDisplay">Display Font</label>
 					<select id="designFontDisplay" bind:value={settings.design.fontDisplay}>
-						{#each fonts as font (font)}
-							<option value={font}>{font}</option>
+						{#each fonts as font (font.name)}
+							<option value={font.name}>{font.name}</option>
 						{/each}
 					</select>
 				</fieldset>
@@ -674,11 +647,20 @@
 	style:--doc-height="{702 * (1 / (settings.design.aspectRatio || 1))}px"
 	style:--sidenav-width="{settings.sideNav.disable ? 0 : settings.sideNav.width}px"
 	style:--topnav-height="{settings.topNav.disable ? 0 : settings.topNav.height}px"
-	style:--font-display="'{settings.design.fontDisplay}'"
-	style:--font="'{settings.design.font}'"
+	style:--font-display="'{fontDisplay.name}'"
+	style:--font-display-size="{fontDisplay.size}rem"
+	style:--font-display-weight-bold={fontDisplay.boldWeight}
+	style:--font-display-weight-normal={fontDisplay.normalWeight}
+	style:--font-display-weight-light={fontDisplay.lightWeight}
+	style:--font="'{font.name}'"
+	style:--font-size="{font.size}rem"
+	style:--font-weight-bold={font.boldWeight}
+	style:--font-weight-normal={font.normalWeight}
+	style:--font-weight-light={font.lightWeight}
 	style:--text={settings.design.colorText}
 	style:--outline={settings.design.colorLines}
 	style:--dots-color={settings.design.colorDots}
+	style:font-size="{font.size}rem"
 	class:side-nav-right={!settings.sideNav.leftSide}>
 	<div id="home"></div>
 	{#if !loadPages}

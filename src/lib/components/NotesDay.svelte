@@ -30,7 +30,7 @@
 		align-items: stretch;
 	}
 	.day {
-		font-size: 1.1rem;
+		font-size: 1.1em;
 		border-top: solid 1px var(--outline);
 		text-align: center;
 		padding: 0.5rem 0 0;
@@ -70,11 +70,11 @@
 			span {
 				background-color: white;
 				padding: 0.5rem;
-				font-size: 0.7rem;
+				font-size: 0.7em;
 				z-index: 1;
 				display: block;
 				small {
-					font-size: 0.6rem;
+					font-size: 0.6em;
 				}
 			}
 		}

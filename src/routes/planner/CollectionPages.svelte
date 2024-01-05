@@ -105,7 +105,7 @@
 		width: 100%;
 		height: 100%;
 		padding: 0rem 2rem 1rem;
-		font-weight: 300;
+		font-weight: var(--font-weight-light);
 		.collection-item {
 			color: var(--text);
 			border-bottom: solid 1px var(--outline);

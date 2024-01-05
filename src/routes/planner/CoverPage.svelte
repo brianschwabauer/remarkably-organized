@@ -123,12 +123,14 @@
 		flex-direction: column;
 		justify-content: center;
 		width: 100%;
+		padding: 0 0 2rem 0;
 	}
 	article {
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		flex-direction: column;
+		font-size: var(--font-display-size);
 		&.dark {
 			background-color: #3d3d3d;
 			color: #ccc;
@@ -169,20 +171,22 @@
 		margin: 2rem auto 0;
 		flex-wrap: wrap;
 		max-width: 80%;
+		font-size: var(--font-size);
 		a {
 			display: flex;
 			border-radius: 10px;
 			text-decoration: none;
 			gap: 0 0.05rem;
 			padding: 1rem 0.75rem;
-			font-weight: bold;
-			margin: -.5rem 0;
+			font-weight: var(--font-weight-bold);
+			margin: -0.5rem 0;
+			font-size: 1.5em;
 		}
 	}
 	h1 {
 		font-family: var(--font-display);
-		font-size: 12rem;
-		font-weight: 400;
+		font-size: 12em;
+		font-weight: var(--font-display-weight-normal);
 		line-height: 1;
 		text-align: center;
 		margin: 0;
@@ -190,16 +194,16 @@
 		text-wrap: balance;
 		&.title {
 			font-size: 5rem;
-			font-weight: bold;
+			font-weight: var(--font-display-weight-bold);
 		}
 		&.multi-year {
 			display: flex;
-			font-size: 8rem;
-			line-height: 8rem;
+			font-size: calc(var(--font-display-size) * 7);
+			line-height: calc(var(--font-display-size) * 7);
 			align-items: end;
 			margin-bottom: 0.5rem;
+			justify-content: center;
 			.separator {
-				opacity: 0.5;
 				font-size: 5rem;
 				margin: 0 0.5rem;
 			}
@@ -209,9 +213,9 @@
 				flex-direction: column;
 			}
 			small {
-				line-height: 1rem;
-				font-size: 1rem;
-				font-family: var(--font);
+				line-height: calc(var(--font-display-size) * 1.5);
+				font-size: calc(var(--font-display-size) * 1.5);
+				// font-family: var(--font);
 			}
 		}
 	}

@@ -72,10 +72,9 @@
 		height: 100%;
 		padding: 0 2rem 0;
 		h2 {
-			font-size: 1;
 			text-align: center;
-			font-size: 0.85rem;
-			font-weight: normal;
+			font-size: 0.85em;
+			font-weight: var(--font-weight-normal);
 			padding: 0 0 0.5rem;
 		}
 	}
@@ -104,13 +103,13 @@
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			font-size: 0.65rem;
-			font-weight: bold;
+			font-size: 0.65em;
+			font-weight: var(--font-weight-bold);
 			color: var(--text-low);
 		}
 		.day {
-			font-size: 0.9rem;
-			font-weight: 300;
+			font-size: 0.9em;
+			font-weight: var(--font-weight-light);
 		}
 	}
 </style>

@@ -94,14 +94,14 @@
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			font-size: 0.7rem;
-			font-weight: bold;
+			font-size: 0.7em;
+			font-weight: var(--font-weight-bold);
 			opacity: 0.65;
 		}
 		.day {
 			display: flex;
 			flex-direction: column;
-			font-weight: 300;
+			font-weight: var(--font-weight-light);
 			align-items: center;
 			justify-content: center;
 			border-bottom: solid 1px var(--outline);
@@ -123,17 +123,17 @@
 			}
 
 			.month {
-				font-size: 0.45rem;
+				font-size: 0.45em;
 				opacity: 1;
-				font-weight: normal;
+				font-weight: var(--font-weight-normal);
 			}
 			.date {
-				font-size: 0.8rem;
-				font-weight: normal;
+				font-size: 1em;
+				font-weight: var(--font-weight-normal);
 				opacity: 0.9;
 				line-height: 0.7rem;
 				:global(.ordinal) {
-					font-size: 0.45rem;
+					font-size: 0.45em;
 					vertical-align: super;
 				}
 			}
@@ -151,39 +151,39 @@
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			font-size: 0.7rem;
-			font-weight: bold;
+			font-size: 0.7em;
+			font-weight: var(--font-weight-bold);
 			opacity: 0.65;
 			grid-row: 1;
 			border-bottom: solid 1px var(--outline);
 		}
 		.day {
 			display: flex;
-			font-weight: 300;
+			font-weight: var(--font-weight-light);
 			align-items: center;
 			justify-content: center;
 			border-left: solid 1px var(--outline);
 			border-right: solid 1px var(--outline);
 			border-bottom: solid 1px var(--outline);
 			line-height: 1;
-			gap: 0 0.15rem;
+			gap: 0 0.2rem;
 
 			&.first-row {
 				grid-row: 2;
 			}
 
 			.weekday {
-				font-size: 0.5rem;
+				font-size: 0.5em;
 				opacity: 1;
-				font-weight: normal;
+				font-weight: var(--font-weight-normal);
 			}
 			.date {
-				font-size: 0.8rem;
-				font-weight: normal;
+				font-size: 1em;
+				font-weight: var(--font-weight-normal);
 				opacity: 0.9;
-				line-height: 0.7rem;
+				line-height: 0.7em;
 				:global(.ordinal) {
-					font-size: 0.45rem;
+					font-size: 0.45em;
 					vertical-align: super;
 				}
 			}
