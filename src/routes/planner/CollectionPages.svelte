@@ -112,8 +112,8 @@
 			display: flex;
 			align-items: end;
 			svg {
-				height: 50%;
-				max-height: 2rem;
+				height: 70%;
+				max-height: 1.5rem;
 				min-height: 0.9rem;
 			}
 		}
