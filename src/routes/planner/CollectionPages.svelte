@@ -36,7 +36,7 @@
 							href="#{collection.id}-{i + 1 + indexPage * total}"
 							class="collection-item">
 							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 20">
-								<text y="12" font-size="16px">
+								<text y="12" font-size="var(--font-size)">
 									{i + 1 + indexPage * total}&#41;
 								</text>
 							</svg>
