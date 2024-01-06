@@ -48,12 +48,14 @@
 		{ name: 'Habit Checkboxes - Grouped by Month', value: 'habit-year-by-month' },
 	];
 
-	const fontDisplay = $derived(
-		fonts.find((f) => f.name === settings.design.fontDisplay) ?? fonts[0],
-	);
 	const font = $derived(fonts.find((f) => f.name === settings.design.font) ?? fonts[0]);
 	const googleFontURL = $derived(
-		getGoogleFontURL([settings.design.font, settings.design.fontDisplay]),
+		getGoogleFontURL([
+			settings.design.font,
+			settings.coverPage.font,
+			settings.topNav.font,
+			settings.sideNav.font,
+		]),
 	);
 
 	function getAvailablePageTemplates(
@@ -208,6 +210,14 @@
 							placeholder="Contact Email/Phone"
 							id="email"
 							bind:value={settings.coverPage.email} />
+					</fieldset>
+					<fieldset>
+						<label for="coverPageFont">Font</label>
+						<select id="coverPageFont" bind:value={settings.coverPage.font}>
+							{#each fonts as font (font.name)}
+								<option value={font.name}>{font.name}</option>
+							{/each}
+						</select>
 					</fieldset>
 					<div class="checkbox">
 						<input
@@ -463,14 +473,6 @@
 					</select>
 				</fieldset>
 				<fieldset>
-					<label for="designFontDisplay">Display Font</label>
-					<select id="designFontDisplay" bind:value={settings.design.fontDisplay}>
-						{#each fonts as font (font.name)}
-							<option value={font.name}>{font.name}</option>
-						{/each}
-					</select>
-				</fieldset>
-				<fieldset>
 					<label for="start">Text Color</label>
 					<input
 						type="color"
@@ -518,6 +520,14 @@
 							id="sideNavShowCollectionLinks" />
 						<label for="sideNavShowCollectionLinks">Show Links to Collections</label>
 					</div>
+					<fieldset>
+						<label for="sideNavFont">Font</label>
+						<select id="sideNavFont" bind:value={settings.sideNav.font}>
+							{#each fonts as font (font.name)}
+								<option value={font.name}>{font.name}</option>
+							{/each}
+						</select>
+					</fieldset>
 				{/if}
 
 				<h3>Topbar Navigation</h3>
@@ -536,6 +546,14 @@
 							id="topNavShowCollectionLinks" />
 						<label for="topNavShowCollectionLinks">Show Links to Collections</label>
 					</div>
+					<fieldset>
+						<label for="topNavFont">Font</label>
+						<select id="topNavFont" bind:value={settings.topNav.font}>
+							{#each fonts as font (font.name)}
+								<option value={font.name}>{font.name}</option>
+							{/each}
+						</select>
+					</fieldset>
 				{/if}
 
 				<h3>Collections</h3>
@@ -647,11 +665,6 @@
 	style:--doc-height="{702 * (1 / (settings.design.aspectRatio || 1))}px"
 	style:--sidenav-width="{settings.sideNav.disable ? 0 : settings.sideNav.width}px"
 	style:--topnav-height="{settings.topNav.disable ? 0 : settings.topNav.height}px"
-	style:--font-display="'{fontDisplay.name}'"
-	style:--font-display-size="{fontDisplay.size}rem"
-	style:--font-display-weight-bold={fontDisplay.boldWeight}
-	style:--font-display-weight-normal={fontDisplay.normalWeight}
-	style:--font-display-weight-light={fontDisplay.lightWeight}
 	style:--font="'{font.name}'"
 	style:--font-size="{font.size}rem"
 	style:--font-weight-bold={font.boldWeight}

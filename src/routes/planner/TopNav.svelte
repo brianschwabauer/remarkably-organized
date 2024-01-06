@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { formatToString, PlannerSettings, type Timeframe } from '$lib';
 	import HomeIcon from '~icons/material-symbols-light/home-rounded';
+	import { getFontInfo } from '../fonts/fonts';
 
 	let {
 		timeframe = {} as Timeframe,
@@ -28,7 +29,7 @@
 			timeframe.daySinceMonth,
 	);
 
-	const font = $derived(settings.design.fontDisplay);
+	const font = $derived(settings.topNav.font);
 	const fontAdjustments = new Map([
 		['Bebas Neue', '-.4rem'],
 		['Acme', '-.15em'],
@@ -51,7 +52,7 @@
 </script>
 
 {#if !settings.topNav.disable}
-	<nav>
+	<nav style:font-family="'{font}'" style:font-size="{getFontInfo(font)?.size || 1}rem">
 		<ol class="breadcrumbs">
 			<li>
 				<a href="#home" class="home">
@@ -158,8 +159,6 @@
 		right: 0;
 		height: var(--topnav-height);
 		padding: 0 0 0 var(--sidenav-width);
-		font-family: var(--font-display);
-		font-size: var(--font-display-size);
 		ol.links {
 			list-style: none;
 			list-style: none;
@@ -175,7 +174,6 @@
 					content: '/';
 					color: var(--text-low);
 					font-size: 0.85em;
-					font-family: var(--font-display);
 				}
 				&:last-child {
 					padding-right: 0.75rem;
@@ -185,7 +183,6 @@
 				font-size: 1em;
 				color: var(--text-low);
 				padding: 0 0.25rem;
-				font-family: var(--font-display);
 				line-height: 1;
 				:global(svg) {
 					font-size: 0.85em;
@@ -212,9 +209,8 @@
 				&:not(:last-child)::after {
 					content: '/';
 					color: var(--text-low);
-					font-size: .8em;
+					font-size: 0.8em;
 					opacity: 0.8;
-					font-family: var(--font-display);
 				}
 				&:first-child {
 					a {
@@ -232,7 +228,6 @@
 				font-size: 1em;
 				color: var(--text);
 				padding: 0 0.35rem;
-				font-family: var(--font-display);
 				line-height: 1;
 				&.home {
 					display: flex;

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { intersect, type PlannerSettings } from '$lib';
+	import { getFontInfo } from '../fonts/fonts';
 
 	let { settings = {} as PlannerSettings } = $props();
 
@@ -23,9 +24,19 @@
 	use:intersect={{ rootMargin: '1000px 0px 1000px 0px' }}>
 	<header>
 		{#if settings.coverPage.title}
-			<h1 class="title">{settings.coverPage.title}</h1>
+			<h1
+				class="title"
+				style:font-family="'{settings.coverPage.font}'"
+				style:font-size="{(getFontInfo(settings.coverPage.font)?.size || 1) * 5}rem"
+				style:font-weight={getFontInfo(settings.coverPage.font)?.boldWeight || 400}>
+				{settings.coverPage.title}
+			</h1>
 		{:else if settings.years.length > 1}
-			<h1 class="multi-year">
+			<h1
+				class="multi-year"
+				style:font-family="'{settings.coverPage.font}'"
+				style:font-size="{(getFontInfo(settings.coverPage.font)?.size || 1) * 7}rem"
+				style:font-weight={getFontInfo(settings.coverPage.font)?.boldWeight || 400}>
 				<div class="start">
 					<small>
 						{settings.years[0].start.toLocaleString('default', {
@@ -47,7 +58,12 @@
 				</div>
 			</h1>
 		{:else}
-			<h1>{settings.years[0].year}</h1>
+			<h1
+				style:font-family="'{settings.coverPage.font}'"
+				style:font-size="{(getFontInfo(settings.coverPage.font)?.size || 1) * 12}rem"
+				style:font-weight={getFontInfo(settings.coverPage.font)?.boldWeight || 400}>
+				{settings.years[0].year}
+			</h1>
 		{/if}
 		{#if settings.date.today && settings.coverPage.showCurrentDay}
 			{@const quarter = Math.floor(settings.date.today.getUTCMonth() / 3) + 1}
@@ -130,7 +146,6 @@
 		align-items: center;
 		justify-content: center;
 		flex-direction: column;
-		font-size: var(--font-display-size);
 		&.dark {
 			background-color: #3d3d3d;
 			color: #ccc;
@@ -171,7 +186,6 @@
 		margin: 2rem auto 0;
 		flex-wrap: wrap;
 		max-width: 80%;
-		font-size: var(--font-size);
 		a {
 			display: flex;
 			border-radius: 10px;
@@ -184,22 +198,13 @@
 		}
 	}
 	h1 {
-		font-family: var(--font-display);
-		font-size: 12em;
-		font-weight: var(--font-display-weight-normal);
-		line-height: 1;
+		line-height: 100%;
 		text-align: center;
 		margin: 0;
 		padding: 0 2rem;
 		text-wrap: balance;
-		&.title {
-			font-size: 5rem;
-			font-weight: var(--font-display-weight-bold);
-		}
 		&.multi-year {
 			display: flex;
-			font-size: calc(var(--font-display-size) * 7);
-			line-height: calc(var(--font-display-size) * 7);
 			align-items: end;
 			margin-bottom: 0.5rem;
 			justify-content: center;
@@ -213,9 +218,8 @@
 				flex-direction: column;
 			}
 			small {
-				line-height: calc(var(--font-display-size) * 1.5);
-				font-size: calc(var(--font-display-size) * 1.5);
-				// font-family: var(--font);
+				line-height: 100%;
+				font-size: 0.25em;
 			}
 		}
 	}
@@ -226,5 +230,10 @@
 		justify-content: center;
 		flex-direction: column;
 		gap: 0.25rem;
+		font-size: 1.4em;
+		small {
+			opacity: 0.8;
+			color: currentColor;
+		}
 	}
 </style>

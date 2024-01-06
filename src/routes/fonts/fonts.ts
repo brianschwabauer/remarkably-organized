@@ -129,3 +129,7 @@ export function getGoogleFontURL(fonts: string[]) {
 		),
 	).toString()}`;
 }
+
+export function getFontInfo(fontName: string) {
+	return fonts.find((font) => font.name === fontName);
+}

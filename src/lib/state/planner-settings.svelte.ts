@@ -140,6 +140,7 @@ export class PlannerSettings {
 		showCollectionLinks = $state(true);
 		width = $state(52);
 		leftSide = $state(true);
+		font = $state('Bebas Neue');
 	})();
 
 	/** Settings for changing the top navigation bar display */
@@ -147,6 +148,7 @@ export class PlannerSettings {
 		disable = $state(false);
 		showCollectionLinks = $state(true);
 		height = $state(45);
+		font = $state('Bebas Neue');
 	})();
 
 	/** Settings for changing the cover page display */
@@ -158,6 +160,7 @@ export class PlannerSettings {
 		showCollectionLinks = $state(true);
 		showCurrentDay = $state(false);
 		darkBackground = $state(true);
+		font = $state('Bebas Neue');
 	})();
 
 	/** Settings for changing how the year pages should work */
@@ -464,11 +467,13 @@ export class PlannerSettings {
 				showCollectionLinks: this.sideNav.showCollectionLinks,
 				width: this.sideNav.width,
 				leftSide: this.sideNav.leftSide,
+				font: this.sideNav.font,
 			},
 			topNav: {
 				disable: this.topNav.disable,
 				showCollectionLinks: this.topNav.showCollectionLinks,
 				height: this.topNav.height,
+				font: this.topNav.font,
 			},
 			coverPage: {
 				disable: this.coverPage.disable,
@@ -476,6 +481,7 @@ export class PlannerSettings {
 				showCollectionLinks: this.coverPage.showCollectionLinks,
 				darkBackground: this.coverPage.darkBackground,
 				showCurrentDay: this.coverPage.showCurrentDay,
+				font: this.coverPage.font,
 			},
 			yearPage: {
 				disable: this.yearPage.disable,
@@ -550,12 +556,18 @@ export class PlannerSettings {
 		if (state?.sideNav?.width !== undefined) this.sideNav.width = state.sideNav.width;
 		if (state?.sideNav?.leftSide !== undefined)
 			this.sideNav.leftSide = state.sideNav.leftSide;
+		if (state?.sideNav?.font !== undefined) this.sideNav.font = state.sideNav.font;
+		if (!state?.sideNav?.font && state?.design?.fontDisplay)
+			this.sideNav.font = state.design.fontDisplay;
 
 		// Top Nav Settings
 		if (state?.topNav?.disable !== undefined) this.topNav.disable = state.topNav.disable;
 		if (state?.topNav?.showCollectionLinks !== undefined)
 			this.topNav.showCollectionLinks = state.topNav.showCollectionLinks;
 		if (state?.topNav?.height !== undefined) this.topNav.height = state.topNav.height;
+		if (state?.topNav?.font !== undefined) this.topNav.font = state.topNav.font;
+		if (!state?.topNav?.font && state?.design?.fontDisplay)
+			this.topNav.font = state.design.fontDisplay;
 
 		// Cover Page Settings
 		if (state?.coverPage?.disable !== undefined)
@@ -568,6 +580,9 @@ export class PlannerSettings {
 			this.coverPage.darkBackground = state.coverPage.darkBackground;
 		if (state?.coverPage?.showCurrentDay !== undefined)
 			this.coverPage.showCurrentDay = state.coverPage.showCurrentDay;
+		if (state?.coverPage?.font !== undefined) this.coverPage.font = state.coverPage.font;
+		if (!state?.coverPage?.font && state?.design?.fontDisplay)
+			this.coverPage.font = state.design.fontDisplay;
 
 		// Year Page Settings
 		if (state?.yearPage?.disable !== undefined)

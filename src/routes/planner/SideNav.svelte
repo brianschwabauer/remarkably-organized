@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { PlannerSettings, type Timeframe } from '$lib';
+	import { getFontInfo } from '../fonts/fonts';
 
 	let {
 		timeframe = {} as Timeframe,
@@ -70,7 +71,10 @@
 </script>
 
 {#if !settings.sideNav.disable}
-	<nav class:right={!settings.sideNav.leftSide}>
+	<nav
+		class:right={!settings.sideNav.leftSide}
+		style:font-family="'{settings.sideNav.font}'"
+		style:font-size="{getFontInfo(settings.sideNav.font)?.size || 1}rem">
 		{#if tabs !== 'none'}
 			<ol class="tabs">
 				{#if tabs === 'years' && settings.years.length > 1}
@@ -216,8 +220,6 @@
 		width: var(--sidenav-width);
 		padding: var(--sidenav-width) 0 0;
 		background-color: var(--nav-bg);
-		font-family: var(--font-display);
-		font-size: var(--font-display-size);
 		&.right {
 			left: auto;
 			right: 0;
