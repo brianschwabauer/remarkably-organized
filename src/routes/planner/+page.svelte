@@ -80,6 +80,7 @@
 	let showHelp = $state($page.url.searchParams.get('help') !== '0');
 	let showMenu = $state(true);
 	let showAdvancedSettings = $state(false);
+	let enableHighResolution = $state($page.url.searchParams.has('highres'));
 	let loadPages = $state(
 		$page.url.searchParams.get('help') === '0' &&
 			(browser || $page.url.searchParams.get('load') === '1'),
@@ -96,6 +97,16 @@
 			replaceState(url, {});
 		}
 		settingsUrlInitialized = true;
+	});
+	$effect(() => {
+		const url = new URL(untrack(() => $page.url));
+		if (enableHighResolution) {
+			url.searchParams.set('highres', '');
+			replaceState(url, {});
+		} else {
+			url.searchParams.delete('highres');
+			replaceState(url, {});
+		}
 	});
 
 	function onStartDateChange(e: Event) {
@@ -128,6 +139,19 @@
 		replaceState(url, {});
 		setTimeout(() => (loadPages = true), 180);
 	}
+
+	// Update the page printing resolution
+	$effect(() => {
+		let element = document.getElementById('page-resolution-style');
+		if (!element) {
+			element = document.createElement('style');
+			element.id = 'page-resolution-style';
+			document.head.appendChild(element);
+		}
+		element.innerHTML = `@page {${
+			enableHighResolution ? 'size: 1404px 1872px;' : 'size: 702px 936px;'
+		}margin: 0;}`;
+	});
 </script>
 
 <svelte:head>
@@ -135,12 +159,6 @@
 	{#if googleFontURL}
 		{@html `<style>@import url("${googleFontURL}")</style>`}
 	{/if}
-	<style>
-		@page {
-			size: 1404px 1872px;
-			margin: 0;
-		}
-	</style>
 </svelte:head>
 
 {#if showHelp}<HelpModal onClose={onHelpClose} />{/if}
@@ -175,6 +193,13 @@
 					bind:checked={settings.date.startWeekOnSunday}
 					id="startWeekOnSunday" />
 				<label for="startWeekOnSunday">Start Week on Sunday</label>
+			</div>
+			<div class="checkbox">
+				<input
+					type="checkbox"
+					bind:checked={enableHighResolution}
+					id="enableHighResolution" />
+				<label for="enableHighResolution">Print in high resolution (bigger file)</label>
 			</div>
 
 			{#if showAdvancedSettings}
@@ -674,7 +699,8 @@
 	style:--outline={settings.design.colorLines}
 	style:--dots-color={settings.design.colorDots}
 	style:font-size="{font.size}rem"
-	class:side-nav-right={!settings.sideNav.leftSide}>
+	class:side-nav-right={!settings.sideNav.leftSide}
+	class:high-res={enableHighResolution}>
 	<div id="home"></div>
 	{#if !loadPages}
 		<article
@@ -746,11 +772,11 @@
 		contain-intrinsic-size: 1px var(--doc-height);
 	}
 	@media print {
-		:global(main > article) {
+		:global(main.high-res > article) {
 			transform: scale(2);
 			transform-origin: top left;
 		}
-		:global(main > article:not(:nth-child(2))) {
+		:global(main.high-res > article:not(:nth-child(2))) {
 			margin-top: calc(var(--doc-height) * 2);
 		}
 	}
