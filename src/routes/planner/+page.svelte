@@ -36,6 +36,7 @@
 		{ name: 'To-do List - Medium', value: 'todo' },
 		{ name: 'To-do List - Large', value: 'todo-large' },
 		{ name: 'Calendar', value: 'calendar-month' },
+		{ name: 'Calendar - With Notes', value: 'calendar-month-with-notes' },
 		{ name: 'Agenda - Daily', value: 'agenda-day' },
 		{ name: 'Agenda - Weekly', value: 'agenda-week' },
 		{ name: 'Notes - Yearly', value: 'notes-year' },
@@ -70,7 +71,12 @@
 				return true;
 			}
 			if (location === 'collection') {
-				return !['notes-quarter', 'notes-month', 'calendar-month'].includes(t.value);
+				return ![
+					'notes-quarter',
+					'notes-month',
+					'calendar-month',
+					'calendar-month-with-notes',
+				].includes(t.value);
 			}
 			const timeframe = t.value.split('-')[1];
 			return location === timeframe;

@@ -1,11 +1,13 @@
 <script lang="ts">
 	import { getFirstDayOfWeek, type Timeframe } from '$lib';
+	import Grid from './Grid.svelte';
 
 	let {
 		timeframe = {} as Timeframe,
 		startWeekOnSunday = false,
 		showWeekLinks = false,
 		useWeekSinceYear = false,
+		showNotes = true,
 	} = $props();
 
 	const yearStart = $derived(
@@ -17,7 +19,7 @@
 </script>
 
 {#if timeframe?.month}
-	<div class="month" class:with-weeks={showWeekLinks}>
+	<div class="month" class:with-weeks={showWeekLinks} class:with-notes={showNotes}>
 		{#if showWeekLinks}
 			{@const numWeeks =
 				Math.floor(
@@ -56,6 +58,12 @@
 			<div class="day border-top"></div>
 		{/each}
 	</div>
+	{#if showNotes}
+		<div class="notes">
+			<h3>Notes</h3>
+			<Grid display="dotted" />
+		</div>
+	{/if}
 {/if}
 
 <style lang="scss">
@@ -72,6 +80,10 @@
 		align-items: stretch;
 		grid-gap: 0px;
 		padding: 0 1rem 1rem;
+		&.with-notes {
+			height: 50%;
+			padding: 0 1rem 0;
+		}
 		.week {
 			grid-column: 1;
 			writing-mode: vertical-lr;
@@ -80,7 +92,7 @@
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			font-size: 0.75em;
+			font-size: 0.8em;
 			color: rgba(0, 0, 0, 0.75);
 			border-top: solid 1px var(--outline);
 			border-left: solid 1px var(--outline-high);
@@ -93,7 +105,7 @@
 		.day {
 			display: flex;
 			justify-content: end;
-			font-size: 1em;
+			font-size: 1.05em;
 			font-weight: var(--font-weight-light);
 			border-left: solid 1px var(--outline);
 			line-height: 1;
@@ -114,6 +126,18 @@
 					border-left: none;
 				}
 			}
+		}
+	}
+	.notes {
+		text-align: center;
+		border-top: solid 1px var(--outline);
+		width: 100%;
+		height: 50%;
+		padding: 0;
+		h3 {
+			font-size: 0.9em;
+			font-weight: var(--font-weight-light);
+			margin: 0.55rem 0 0.55rem;
 		}
 	}
 </style>
