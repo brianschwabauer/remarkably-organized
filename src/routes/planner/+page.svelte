@@ -135,7 +135,7 @@
 	{/if}
 	<style>
 		@page {
-			size: 702px 936px;
+			size: 1404px 1872px;
 			margin: 0;
 		}
 	</style>
@@ -731,6 +731,15 @@
 		height: var(--doc-height);
 		content-visibility: auto;
 		contain-intrinsic-size: 1px var(--doc-height);
+	}
+	@media print {
+		:global(main > article) {
+			transform: scale(2);
+			transform-origin: top left;
+		}
+		:global(main > article:not(:nth-child(2))) {
+			margin-top: calc(var(--doc-height) * 2);
+		}
 	}
 
 	.menu-trigger {
