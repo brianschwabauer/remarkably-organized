@@ -601,6 +601,18 @@
 									{/each}
 								</select>
 							</fieldset>
+							{#if collection.type.startsWith('numbered') || collection.type.startsWith('lined') || collection.type.startsWith('todo')}
+								<fieldset style="margin-top: 1rem;">
+									<label for="collection-{collection.id}-columns">Columns</label>
+									<input
+										type="number"
+										placeholder="Columns"
+										id="collection-{collection.id}-columns"
+										min="1"
+										step="1"
+										bind:value={collection.columns} />
+								</fieldset>
+							{/if}
 							<fieldset style="margin-top: 1rem;">
 								<label for="collection-{collection.id}-numIndexPages">
 									Number of Index Pages
@@ -638,18 +650,6 @@
 									step="1"
 									bind:value={collection.numPagesPerItem} />
 							</fieldset>
-							{#if collection.type.startsWith('numbered') || collection.type.startsWith('lined') || collection.type.startsWith('todo')}
-								<fieldset style="margin-top: 1rem;">
-									<label for="collection-{collection.id}-columns">Columns</label>
-									<input
-										type="number"
-										placeholder="Columns"
-										id="collection-{collection.id}-columns"
-										min="1"
-										step="1"
-										bind:value={collection.columns} />
-								</fieldset>
-							{/if}
 							<button
 								type="button"
 								on:click={() => settings.collections.splice(i, 1)}
