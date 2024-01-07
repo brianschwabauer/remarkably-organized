@@ -1,9 +1,10 @@
 <script lang="ts">
-	import { getFirstDayOfWeek, type Timeframe } from '$lib';
+	import { getFirstDayOfWeek, type CalendarEvent, type Timeframe } from '$lib';
 	import Grid from './Grid.svelte';
 
 	let {
 		timeframe = {} as Timeframe,
+		events = [] as CalendarEvent[],
 		startWeekOnSunday = false,
 		showWeekLinks = false,
 		useWeekSinceYear = false,
@@ -40,18 +41,34 @@
 			<div class="day"></div>
 		{/each}
 		{#each new Array(timeframe.end.getUTCDate()) as _, day (day)}
+			{@const dayEvents = events.filter(
+				(event) =>
+					!event.duration &&
+					event.start * 1000 === timeframe.start.getTime() + day * 86400000,
+			)}
 			<a
 				href="#{timeframe.year}-{timeframe.month}-{day + 1}"
 				class="day"
 				class:border-top={day >
 					(6 - timeframe.start.getUTCDay() + 7 + (startWeekOnSunday ? 0 : 1)) % 7}>
-				<small>
-					{new Date(timeframe.start.getTime() + day * 86400000).toLocaleString(
-						'default',
-						{ weekday: 'short', timeZone: 'UTC' },
-					)}
-				</small>
-				{day + 1}
+				<div class="date">
+					<small>
+						{new Date(timeframe.start.getTime() + day * 86400000).toLocaleString(
+							'default',
+							{ weekday: 'short', timeZone: 'UTC' },
+						)}
+					</small>
+					{day + 1}
+				</div>
+				{#if dayEvents.length}
+					<div class="events">
+						{#each dayEvents as event, i (`${event.start}-${event.name}-${i}`)}
+							<div class="event">
+								{event.name}
+							</div>
+						{/each}
+					</div>
+				{/if}
 			</a>
 		{/each}
 		{#each new Array((6 - timeframe.end.getUTCDay() + 7 + (startWeekOnSunday ? 0 : 1)) % 7) as _, i (i)}
@@ -70,6 +87,7 @@
 	.month {
 		display: grid;
 		grid-template-columns: repeat(7, 1fr);
+		grid-auto-rows: 1fr;
 		grid-auto-flow: dense;
 		&.with-weeks {
 			grid-template-columns: 2rem repeat(7, 1fr);
@@ -104,12 +122,12 @@
 		}
 		.day {
 			display: flex;
-			justify-content: end;
+			flex-direction: column;
+			justify-content: start;
 			font-size: 1.05em;
 			font-weight: var(--font-weight-light);
 			border-left: solid 1px var(--outline);
 			line-height: 1;
-			padding: 0.5rem;
 			&.border-top {
 				border-top: solid 1px var(--outline);
 			}
@@ -117,7 +135,26 @@
 				font-size: 0.65em;
 				opacity: 1;
 				color: currentColor;
-				margin: 0.2rem 0.2rem 0 0;
+				margin: 0.1rem 0.2rem 0 0;
+			}
+			.date {
+				margin: 0.5rem 0.5rem -.25rem 0;
+				display: flex;
+				justify-content: end;
+				align-items: start;
+			}
+		}
+		.events {
+			display: flex;
+			flex-direction: column;
+			gap: 0.35rem;
+			justify-content: space-evenly;
+			flex: 1;
+			.event {
+				font-size: 0.5em;
+				text-align: center;
+				padding: 0 0.25rem;
+				text-wrap: balance;
 			}
 		}
 		&:not(.with-weeks) {

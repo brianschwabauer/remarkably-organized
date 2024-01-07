@@ -1,4 +1,12 @@
-import { getFirstDayOfWeek, getUTCDate, objectDiff, type Collection } from '$lib';
+import { browser } from '$app/environment';
+import {
+	getFirstDayOfWeek,
+	getUTCDate,
+	objectDiff,
+	type Collection,
+	type CalendarEvent,
+} from '$lib';
+import { toast } from '$lib/components/toast.state.svelte';
 import type { PageTemplate } from './collection';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -241,6 +249,17 @@ export class PlannerSettings {
 		},
 	] as Collection[]);
 
+	/** The list of extra note/goals collections in addition to the planner pages */
+	calendars = $state([
+		{
+			url: `https://calendar.google.com/calendar/ical/en.usa%23holiday%40group.v.calendar.google.com/public/basic.ics`,
+			events: [] as CalendarEvent[],
+			updating: false,
+			lastUpdated: 0,
+			name: 'Public Holidays',
+		},
+	]);
+
 	/** The computed list of years within the start/end timeframe in this.date */
 	readonly years = $derived(
 		// eslint-disable-next-line @typescript-eslint/no-array-constructor
@@ -423,6 +442,14 @@ export class PlannerSettings {
 		}, [] as Day[]),
 	);
 
+	/** The list of events imported from the calendars ics urls */
+	readonly events = $derived(
+		this.calendars
+			.map((calendar) => [...calendar.events])
+			.flatMap((event) => ({...event}))
+			.sort((a, b) => a.start - b.start),
+	);
+
 	/** A computed diff object of the settings that have been changed by the user */
 	readonly edits = $derived(
 		!this.initialSettings
@@ -441,6 +468,38 @@ export class PlannerSettings {
 	) {
 		this.initialSettings = this.serialize();
 		this.deserialize(initialState);
+	}
+
+	/** Starts importing the events for the calendar at the given index */
+	async importEvents(calendarIndex: number) {
+		if (!this.calendars[calendarIndex]) return;
+		const calendar = this.calendars[calendarIndex];
+		if (calendar.updating) return;
+		if (!calendar.url) {
+			toast.error(`Calendar URL not provided`);
+			return;
+		}
+		calendar.updating = true;
+		const searchParams = new URLSearchParams({
+			start: `${this.date.start.getTime()}`,
+			end: `${this.date.end.getTime()}`,
+			url: calendar.url,
+		});
+		const response = await fetch(`/api/calendar?${searchParams.toString()}`);
+		if (!response.ok) {
+			toast.error(`Couldn't fetch calendar events. Unkonwn error.`);
+			calendar.updating = false;
+			return;
+		}
+		const { events } = await response.json();
+		if (!events?.length) {
+			toast(`Fetched calendar, but couldn't find any events`);
+		} else {
+			toast(`Successfully imported ${events.length} events!`);
+			calendar.events = events;
+		}
+		calendar.updating = false;
+		calendar.lastUpdated = Date.now();
 	}
 
 	/** Serializes the data into a valid JSON format */
@@ -518,6 +577,10 @@ export class PlannerSettings {
 			collections: this.collections.map((collection) => ({
 				...collection,
 			})),
+			calendars: this.calendars.map((calendar) => {
+				const { updating, ...rest } = calendar;
+				return rest;
+			}),
 		};
 	}
 
@@ -637,6 +700,21 @@ export class PlannerSettings {
 			this.dayPage.sideNavDisplay = state.dayPage.sideNavDisplay;
 		if (state?.dayPage?.template !== undefined)
 			this.dayPage.template = state.dayPage.template;
+
+		// Calendars
+		if (state?.calendars !== undefined) {
+			this.calendars = state.calendars.filter(Boolean).map((calendar) => ({
+				name: calendar?.name || ``,
+				url: calendar?.url || '',
+				events: (calendar?.events || []).filter(Boolean).map((event) => ({
+					name: event?.name || 'Event',
+					start: event?.start || 0,
+					duration: event?.duration,
+				})),
+				lastUpdated: calendar?.lastUpdated || 0,
+				updating: false,
+			}));
+		}
 
 		// Collections
 		if (state?.collections !== undefined) {

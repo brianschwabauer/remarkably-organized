@@ -33,6 +33,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"ical.js": "^1.5.0",
 		"unplugin-icons": "^0.18.1"
 	}
 }

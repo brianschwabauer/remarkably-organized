@@ -15,6 +15,7 @@
 	import HelpModal from './HelpModal.svelte';
 	import { browser } from '$app/environment';
 	import { fonts, getGoogleFontURL } from '../fonts/fonts';
+	import Toast from '$lib/components/Toast.svelte';
 	let { data } = $props();
 	const { settings } = data;
 
@@ -673,6 +674,57 @@
 						Add New Collection
 					</button>
 				</div>
+
+				<!-- <h3>Calendar Events</h3>
+				{#each settings.calendars as calendar, i (calendar.url)}
+					<h4 style="margin-top: 1rem;">
+						{calendar.name || 'Custom Calendar'} ({calendar.events.length} Events)
+						{#if calendar.lastUpdated}
+							<p
+								style="display: block; font-weight: normal; font-size: .8rem; opacity: .8">
+								Last Updated: {new Date(calendar.lastUpdated).toLocaleString()}
+							</p>
+						{/if}
+					</h4>
+					<fieldset>
+						<label for="calendar-{i}-url">Calendar URL (ICS file)</label>
+						<input
+							type="text"
+							placeholder="Calendar URL (ICS file)"
+							id="calendar-{i}-url"
+							bind:value={calendar.url} />
+					</fieldset>
+					<div style="display: flex;">
+						<button
+							type="button"
+							style="flex: 1"
+							disabled={settings.calendars.some((calendar) => calendar.updating)}
+							on:click={() => settings.importEvents(i)}>
+							{calendar.updating ? `Importing...` : `Import Events`}
+						</button>
+						<button
+							type="button"
+							style="flex: 1"
+							disabled={settings.calendars.some((calendar) => calendar.updating)}
+							on:click={() => settings.calendars.splice(i, 1)}
+							style:color="var(--error)">
+							Remove Calendar
+						</button>
+					</div>
+				{/each}
+				<button
+					type="button"
+					disabled={settings.calendars.some((calendar) => calendar.updating)}
+					on:click={() =>
+						settings.calendars.push({
+							events: [],
+							lastUpdated: 0,
+							name: '',
+							updating: false,
+							url: '',
+						})}>
+					Add New Calendar
+				</button> -->
 			{:else}
 				<button
 					type="button"
@@ -690,6 +742,7 @@
 <button on:click={() => (showMenu = !showMenu)} class="menu-trigger">
 	<SettingsIcon />
 </button>
+<Toast />
 
 <main
 	style:--doc-width="{702}px"

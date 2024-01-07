@@ -71,6 +71,7 @@
 	{:else if display === 'notes-month' || display === 'calendar-month' || display === 'calendar-month-with-notes'}
 		<CalendarMonth
 			{timeframe}
+			events={settings.events}
 			startWeekOnSunday={settings.date.startWeekOnSunday}
 			showWeekLinks={!settings.weekPage.disable}
 			useWeekSinceYear={settings.weekPage.useWeekSinceYear}
