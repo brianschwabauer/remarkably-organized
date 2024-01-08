@@ -12,7 +12,7 @@
 		if (!settings.monthPage.disable) return month.id;
 		if (!settings.weekPage.disable) {
 			const week = settings.weeks.find(
-				(week) => week.year === month.year && week.month === month.month,
+				(week) => week.start >= month.weekStart && week.start <= month.end,
 			);
 			return week ? week.id : '';
 		}
