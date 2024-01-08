@@ -41,11 +41,6 @@
 			<div class="day"></div>
 		{/each}
 		{#each new Array(timeframe.end.getUTCDate()) as _, day (day)}
-			{@const dayEvents = events.filter(
-				(event) =>
-					!event.duration &&
-					event.start * 1000 === timeframe.start.getTime() + day * 86400000,
-			)}
 			<a
 				href="#{timeframe.year}-{timeframe.month}-{day + 1}"
 				class="day"
@@ -60,15 +55,13 @@
 					</small>
 					{day + 1}
 				</div>
-				{#if dayEvents.length}
-					<div class="events">
-						{#each dayEvents as event, i (`${event.start}-${event.name}-${i}`)}
-							<div class="event">
-								{event.name}
-							</div>
-						{/each}
-					</div>
-				{/if}
+				<div class="events">
+					{#each events.filter((event) => !event.duration && event.start * 1000 === timeframe.start.getTime() + day * 86400000) as event}
+						<div class="event">
+							{event.name}
+						</div>
+					{/each}
+				</div>
 			</a>
 		{/each}
 		{#each new Array((6 - timeframe.end.getUTCDay() + 7 + (startWeekOnSunday ? 0 : 1)) % 7) as _, i (i)}
@@ -138,7 +131,7 @@
 				margin: 0.1rem 0.2rem 0 0;
 			}
 			.date {
-				margin: 0.5rem 0.5rem -.25rem 0;
+				margin: 0.5rem 0.5rem -0.25rem 0;
 				display: flex;
 				justify-content: end;
 				align-items: start;

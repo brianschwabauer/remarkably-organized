@@ -675,7 +675,7 @@
 					</button>
 				</div>
 
-				<!-- <h3>Calendar Events</h3>
+				<h3>Calendar Events</h3>
 				{#each settings.calendars as calendar, i (calendar.url)}
 					<h4 style="margin-top: 1rem;">
 						{calendar.name || 'Custom Calendar'} ({calendar.events.length} Events)
@@ -724,7 +724,7 @@
 							url: '',
 						})}>
 					Add New Calendar
-				</button> -->
+				</button>
 			{:else}
 				<button
 					type="button"

@@ -443,10 +443,10 @@ export class PlannerSettings {
 	);
 
 	/** The list of events imported from the calendars ics urls */
-	readonly events = $derived(
+	events = $derived(
 		this.calendars
 			.map((calendar) => [...calendar.events])
-			.flatMap((event) => ({...event}))
+			.flat()
 			.sort((a, b) => a.start - b.start),
 	);
 
@@ -578,8 +578,12 @@ export class PlannerSettings {
 				...collection,
 			})),
 			calendars: this.calendars.map((calendar) => {
-				const { updating, ...rest } = calendar;
-				return rest;
+				return {
+					events: calendar.events,
+					url: calendar.url,
+					lastUpdated: calendar.lastUpdated,
+					name: calendar.name,
+				};
 			}),
 		};
 	}
