@@ -48,7 +48,7 @@
 	}
 	.grid {
 		position: absolute;
-		top: 0;
+		top: .5rem;
 		left: 0;
 		right: 0;
 		bottom: 0;

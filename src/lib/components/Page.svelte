@@ -127,10 +127,10 @@
 			padding-top: 0.5rem;
 		}
 		&.dotted {
-			height: calc(100% - 2rem);
+			height: calc(100% - 1rem);
 		}
 		&.grid {
-			height: calc(100% - 2rem);
+			height: calc(100% - 1rem);
 		}
 		&.lined {
 			padding: 0 2rem 1rem;
