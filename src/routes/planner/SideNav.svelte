@@ -20,6 +20,28 @@
 		disableActiveIndicator = false,
 	} = $props();
 
+	const isFinalMonth = $derived(
+		settings.months.findIndex(
+			(m) =>
+				m.year === timeframe.start.getUTCFullYear() &&
+				m.month === timeframe.start.getUTCMonth() + 1,
+		) ===
+			settings.months.length - 1,
+	);
+	const isFinalWeek = $derived(
+		settings.weeks.findIndex((m) => m.start.getTime() === timeframe.start.getTime()) ===
+			settings.months.length - 1,
+	);
+	const year = $derived(
+		isFinalMonth || isFinalWeek || !timeframe.year
+			? timeframe.start.getUTCFullYear()
+			: timeframe.year,
+	);
+	const month = $derived(
+		isFinalMonth || isFinalWeek || !timeframe.month
+			? timeframe.start.getUTCMonth() + 1
+			: timeframe.month,
+	);
 	const weekList = $derived(
 		settings.weeks.filter(
 			(week, i) =>
@@ -46,8 +68,8 @@
 				? day.weekYear === (timeframe.weekYear || timeframe.year) &&
 					day.weekSinceYear === timeframe.weekSinceYear
 				: tabs === 'days-this-month'
-					? day.year === timeframe.year && timeframe.month === day.month
-					: day.year === timeframe.year,
+					? day.year === year && month === day.month
+					: day.year === year,
 		),
 	);
 	const startDay = $derived(
