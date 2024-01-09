@@ -84,6 +84,7 @@
 		});
 	}
 
+	let customTimeframe = $state(false);
 	let showHelp = $state($page.url.searchParams.get('help') !== '0');
 	let showMenu = $state(true);
 	let showAdvancedSettings = $state(false);
@@ -116,13 +117,25 @@
 		}
 	});
 
+	const debounces = new Map<string, number>();
+	function debounce(key: string, wait: number, func: () => void) {
+		const later = () => {
+			debounces.set(key, 0);
+			func();
+		};
+		clearTimeout(debounces.get(key));
+		debounces.set(key, setTimeout(later, wait));
+	}
+
 	function onStartDateChange(e: Event) {
 		const target = e.target as HTMLInputElement;
 		if (!target.value) return;
 		try {
 			const date = new Date(target.value);
-			date.setUTCHours(0, 0, 0, 0);
-			if (date.getTime()) settings.date.start = date;
+			debounce('onStartDateChange', 1000, () => {
+				date.setUTCHours(0, 0, 0, 0);
+				if (date.getTime()) settings.date.start = date;
+			});
 		} catch (error) {
 			// ignore
 		}
@@ -132,8 +145,10 @@
 		if (!target.value) return;
 		try {
 			const date = new Date(target.value);
-			date.setUTCHours(0, 0, 0, 0);
-			if (date.getTime()) settings.date.end = date;
+			debounce('onEndDateChange', 1000, () => {
+				date.setUTCHours(0, 0, 0, 0);
+				if (date.getTime()) settings.date.end = date;
+			});
 		} catch (error) {
 			// ignore
 		}
@@ -145,6 +160,26 @@
 		url.searchParams.set('help', '0');
 		replaceState(url, {});
 		setTimeout(() => (loadPages = true), 180);
+	}
+
+	function onTimeframeSelection(e: Event) {
+		const target = e.target as HTMLSelectElement;
+		if (!target.value) return;
+		const startTime = +target.value;
+		if (!startTime) {
+			customTimeframe = true;
+			return;
+		}
+		const newStart = new Date(startTime);
+		const newEnd = new Date(Date.UTC(newStart.getUTCFullYear(), 11, 31));
+		if (
+			newStart.getTime() !== settings.date.start.getTime() ||
+			newEnd.getTime() !== settings.date.end.getTime()
+		) {
+			settings.date.start = newStart;
+			settings.date.end = newEnd;
+		}
+		customTimeframe = false;
 	}
 
 	// Update the page printing resolution
@@ -175,25 +210,48 @@
 		<h2>Settings</h2>
 		<form>
 			<fieldset>
-				<label for="start">Start Date</label>
-				<input
-					type="date"
-					placeholder="Start Date"
-					id="start"
-					max={settings.date.end.toISOString().slice(0, 10)}
-					value={settings.date.start.toISOString().slice(0, 10)}
-					on:change={onStartDateChange} />
+				<label for="timeframeBasedOnYear">Year</label>
+				<select
+					id="timeframeBasedOnYear"
+					value={settings.date.start.getUTCMonth() === 0 &&
+					settings.date.start.getUTCDate() === 1 &&
+					settings.date.end.getUTCMonth() === 11 &&
+					settings.date.end.getUTCDate() === 31 &&
+					!customTimeframe
+						? settings.date.start.getTime()
+						: 0}
+					on:change={onTimeframeSelection}>
+					{#each new Array(7) as _, i (i)}
+						{@const date = new Date(Date.UTC(new Date().getFullYear() - 1 + i))}
+						<option value={date.getTime()}>
+							{date.getUTCFullYear()}
+						</option>
+					{/each}
+					<option value={0}>Custom Date Range</option>
+				</select>
 			</fieldset>
-			<fieldset>
-				<label for="end">End Date</label>
-				<input
-					type="date"
-					placeholder="End Date"
-					id="end"
-					min={settings.date.start.toISOString().slice(0, 10)}
-					value={settings.date.end.toISOString().slice(0, 10)}
-					on:change={onEndDateChange} />
-			</fieldset>
+			{#if customTimeframe || settings.date.start.getUTCMonth() !== 0 || settings.date.start.getUTCDate() !== 1 || settings.date.end.getUTCMonth() !== 11 || settings.date.end.getUTCDate() !== 31}
+				<fieldset>
+					<label for="start">Start Date</label>
+					<input
+						type="date"
+						placeholder="Start Date"
+						id="start"
+						max={settings.date.end.toISOString().slice(0, 10)}
+						value={settings.date.start.toISOString().slice(0, 10)}
+						on:change={onStartDateChange} />
+				</fieldset>
+				<fieldset>
+					<label for="end">End Date</label>
+					<input
+						type="date"
+						placeholder="End Date"
+						id="end"
+						min={settings.date.start.toISOString().slice(0, 10)}
+						value={settings.date.end.toISOString().slice(0, 10)}
+						on:change={onEndDateChange} />
+				</fieldset>
+			{/if}
 			<div class="checkbox">
 				<input
 					type="checkbox"

@@ -138,21 +138,9 @@ export class PlannerSettings {
 	/** Settings for changing the dates of the planner (like start & end dates) */
 	readonly date = new (class DateSettings {
 		private defaultStart = new Date(
-			new Date(
-				new Date().setUTCFullYear(
-					new Date().getUTCFullYear() + (new Date().getUTCMonth() > 6 ? 1 : 0),
-					0,
-					1,
-				),
-			).setUTCHours(0, 0, 0, 0),
+			Date.UTC(new Date().getUTCFullYear() + (new Date().getUTCMonth() > 6 ? 1 : 0)),
 		);
-		private defaultEnd = new Date(
-			new Date(this.defaultStart).setUTCFullYear(
-				this.defaultStart.getUTCFullYear() + 1,
-				0,
-				0,
-			),
-		);
+		private defaultEnd = new Date(Date.UTC(this.defaultStart.getUTCFullYear() + 1, 0, 0));
 		timezoneOffset = $state(new Date().getTimezoneOffset() / 60);
 		start = $state(this.defaultStart);
 		end = $state(this.defaultEnd);
