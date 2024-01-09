@@ -41,14 +41,13 @@
 	const weeks = $derived(weekList.slice(startWeek, startWeek + numWeeksInSideNav));
 
 	const dayList = $derived(
-		settings.days.filter(
-			(day) =>
-				day.year === timeframe.year &&
-				(tabs === 'days-this-week'
-					? day.weekSinceYear === timeframe.weekSinceYear
-					: tabs === 'days-this-month'
-						? timeframe.month === day.month
-						: true),
+		settings.days.filter((day) =>
+			tabs === 'days-this-week'
+				? day.weekYear === timeframe.weekYear &&
+					day.weekSinceYear === timeframe.weekSinceYear
+				: tabs === 'days-this-month'
+					? day.year === timeframe.year && timeframe.month === day.month
+					: day.year === timeframe.year,
 		),
 	);
 	const startDay = $derived(
@@ -161,34 +160,30 @@
 				{/if}
 				{#if tabs === 'days-this-year' || tabs === 'days-this-month' || tabs === 'days-this-week'}
 					{#each days as day, i (day.id)}
-						{#if day.year === timeframe.year}
-							{@const isActive =
-								!disableActiveIndicator && timeframe.daySinceYear === day.daySinceYear}
-							{@const isSaturday = day.start.getUTCDay() === 6}
-							{@const isSunday = day.start.getUTCDay() === 0}
-							{@const isWeekend = isSaturday || isSunday}
-							{@const shouldHighlight =
-								!isActive && isWeekend && tabs !== 'days-this-week'}
-							{@const highlightStart =
-								shouldHighlight && isSaturday && i < days.length - 1}
-							{@const highlighEnd = shouldHighlight && isSunday && i > 0}
-							<li class="day">
-								<a
-									href="#{day.id}"
-									class:active={isActive}
-									class:highlight={shouldHighlight}
-									class:highlight-start={highlightStart}
-									class:highlight-end={highlighEnd}>
-									<span class="weekday">
-										{day.start.toLocaleString('default', {
-											weekday: 'short',
-											timeZone: 'UTC',
-										})}
-									</span>
-									{day.daySinceMonth}
-								</a>
-							</li>
-						{/if}
+						{@const isActive =
+							!disableActiveIndicator && timeframe.daySinceYear === day.daySinceYear}
+						{@const isSaturday = day.start.getUTCDay() === 6}
+						{@const isSunday = day.start.getUTCDay() === 0}
+						{@const isWeekend = isSaturday || isSunday}
+						{@const shouldHighlight = !isActive && isWeekend && tabs !== 'days-this-week'}
+						{@const highlightStart = shouldHighlight && isSaturday && i < days.length - 1}
+						{@const highlighEnd = shouldHighlight && isSunday && i > 0}
+						<li class="day">
+							<a
+								href="#{day.id}"
+								class:active={isActive}
+								class:highlight={shouldHighlight}
+								class:highlight-start={highlightStart}
+								class:highlight-end={highlighEnd}>
+								<span class="weekday">
+									{day.start.toLocaleString('default', {
+										weekday: 'short',
+										timeZone: 'UTC',
+									})}
+								</span>
+								{day.daySinceMonth}
+							</a>
+						</li>
 					{/each}
 				{/if}
 			</ol>

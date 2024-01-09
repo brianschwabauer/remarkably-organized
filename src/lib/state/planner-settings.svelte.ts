@@ -1,10 +1,10 @@
-import { browser } from '$app/environment';
 import {
 	getFirstDayOfWeek,
 	getUTCDate,
 	objectDiff,
 	type Collection,
 	type CalendarEvent,
+	getWeek,
 } from '$lib';
 import { toast } from '$lib/components/toast.state.svelte';
 import type { PageTemplate } from './collection';
@@ -56,6 +56,15 @@ export interface Timeframe {
 
 	/** The 1-indexed week from the start of the week (1-7) */
 	daySinceWeek?: number;
+
+	/** The year that this day's week should be considered a part of */
+	weekYear?: number;
+
+	/** The month that this day's week should be considered a part of */
+	weekMonth?: number;
+
+	/** The month that this day's week should be considered a part of */
+	weekQuarter?: number;
 }
 
 export interface Year
@@ -100,6 +109,15 @@ export interface Day extends Week {
 
 	/** The 1-indexed week from the start of the week (1-7) */
 	daySinceWeek: number;
+
+	/** The year that this day's week should be considered a part of */
+	weekYear: number;
+
+	/** The month that this day's week should be considered a part of */
+	weekMonth: number;
+
+	/** The month that this day's week should be considered a part of */
+	weekQuarter: number;
 }
 
 export class PlannerSettings {
@@ -350,44 +368,24 @@ export class PlannerSettings {
 	/** The computed list of weeks within the start/end timeframe in this.date */
 	readonly weeks = $derived(
 		this.years.reduce((acc, year) => {
-			const firstWeekDayOfYear = getFirstDayOfWeek(
-				getUTCDate(year.year),
+			const firstWeekDayOfTimeframe = getFirstDayOfWeek(
+				year.start,
 				this.date.startWeekOnSunday,
 			);
-			for (
-				let month = year.start.getUTCMonth() + 1;
-				month <= year.end.getUTCMonth() + 1;
-				month++
-			) {
-				const quarter = Math.floor((month - 1) / 3) + 1;
-				const firstWeekDayOfMonth = new Date(
-					getFirstDayOfWeek(
-						getUTCDate(year.year, month - 1),
-						this.date.startWeekOnSunday,
-					),
+			const numWeeks =
+				Math.floor((year.end.getTime() - firstWeekDayOfTimeframe) / 604800000) + 1;
+			for (let i = 0; i < numWeeks; i++) {
+				const week = getWeek(
+					firstWeekDayOfTimeframe + i * 604800000,
+					this.date.startWeekOnSunday,
 				);
-				const lastDayOfMonth = getUTCDate(year.year, month, 0);
-				const firstDay = firstWeekDayOfMonth.getTime();
-				const numWeeks =
-					Math.floor((lastDayOfMonth.getTime() - firstDay) / 604800000) + 1;
-				for (let week = 1; week <= numWeeks; week++) {
-					const start = new Date(firstDay + (week - 1) * 604800000);
-					const end = new Date(start.getTime() + 86400000 * 6);
-					const weekSinceYear =
-						Math.floor((start.getTime() - firstWeekDayOfYear) / 604800000) + 1;
-					acc.push({
-						id: `${year.year}-${month}-wk${week}`,
-						year: year.year,
-						quarter,
-						month,
-						weekSinceYear,
-						weekSinceMonth: week,
-						start,
-						end,
-						weekStart: start,
-						nameShort: `WK${week}`,
-						nameLong: `Week ${week}`,
-					});
+				const prevWeek = acc[acc.length - 1];
+				if (
+					!prevWeek ||
+					prevWeek.year !== week.year ||
+					prevWeek.weekSinceYear !== week.weekSinceYear
+				) {
+					acc.push(week);
 				}
 			}
 			return acc;
@@ -403,21 +401,14 @@ export class PlannerSettings {
 				const start = new Date(firstDay + (day - 1) * 86400000);
 				const month = start.getUTCMonth() + 1;
 				const quarter = Math.floor((month - 1) / 3) + 1;
-				const firstWeekDayOfMonth = new Date(
-					getFirstDayOfWeek(
-						getUTCDate(year.year, month - 1),
-						this.date.startWeekOnSunday,
-					),
-				);
+				const week = getWeek(start, this.date.startWeekOnSunday);
 				acc.push({
 					id: `${year.year}-${month}-${start.getUTCDate()}`,
 					year: year.year,
 					quarter,
 					month,
-					weekSinceYear:
-						Math.floor((start.getTime() - year.weekStart.getTime()) / 604800000) + 1,
-					weekSinceMonth:
-						Math.floor((start.getTime() - firstWeekDayOfMonth.getTime()) / 604800000) + 1,
+					weekSinceYear: week.weekSinceYear,
+					weekSinceMonth: week.weekSinceMonth,
 					daySinceYear: (start.getTime() - year.start.getTime()) / 86400000 + 1,
 					daySinceMonth: start.getUTCDate(),
 					daySinceWeek:
@@ -425,6 +416,9 @@ export class PlannerSettings {
 					start,
 					end: start,
 					weekStart: start,
+					weekYear: week.year,
+					weekMonth: week.month,
+					weekQuarter: week.quarter,
 					nameShort: start.toLocaleDateString('default', {
 						timeZone: 'UTC',
 						month: 'short',

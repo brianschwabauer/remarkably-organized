@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { formatToString, PlannerSettings, type Timeframe } from '$lib';
+	import { formatToString, getWeek, PlannerSettings, type Timeframe } from '$lib';
 	import HomeIcon from '~icons/material-symbols-light/home-rounded';
 	import { getFontInfo } from '../fonts/fonts';
 
@@ -100,31 +100,28 @@
 				</li>
 			{/if}
 			{#if showMonthBreadcrumb}
+				{@const adjustedTimeframe =
+					!showWeekBreadcrumb || settings.weekPage.useWeekSinceYear || showDayBreadcrumb
+						? timeframe
+						: getWeek(timeframe.start, settings.date.startWeekOnSunday)}
 				<li>
-					<a href="#{timeframe.year}-{timeframe.month}">
-						{timeframe.start.toLocaleString('default', {
+					<a href="#{adjustedTimeframe.year}-{adjustedTimeframe.month}">
+						{new Date(adjustedTimeframe.year!, adjustedTimeframe.month! - 1).toLocaleString('default', {
 							month: !showWeekBreadcrumb && !showDayBreadcrumb ? 'long' : 'short',
-							timeZone: 'UTC',
 						})}
 					</a>
 				</li>
 			{/if}
 			{#if showWeekBreadcrumb}
 				<li>
-					<a href="#{timeframe.year}-{timeframe.month}-wk{timeframe.weekSinceMonth}">
+					<a href="#{timeframe.weekYear}-wk{timeframe.weekSinceYear}">
 						{#if settings.weekPage.useWeekSinceYear}
-							{#if !showYearBreadcrumb && !showMonthBreadcrumb}
-								{timeframe.year}
+							{#if (!showYearBreadcrumb && !showMonthBreadcrumb) || timeframe.weekYear !== timeframe.year}
+								{timeframe.weekYear}
 							{/if}
-						{:else if !showDayBreadcrumb && !showMonthBreadcrumb}
-							{timeframe.start.toLocaleString('default', {
-								month: 'long',
-								timeZone: 'UTC',
-							})}
-						{:else if !showMonthBreadcrumb}
-							{timeframe.start.toLocaleString('default', {
-								month: 'short',
-								timeZone: 'UTC',
+						{:else if !showMonthBreadcrumb || (timeframe.weekMonth && timeframe.weekYear && timeframe.weekMonth !== timeframe.month)}
+							{new Date(timeframe.weekYear || timeframe.year!, (timeframe.weekMonth || timeframe.month!) - 1).toLocaleString('default', {
+								month: !showDayBreadcrumb && (!timeframe.weekMonth || timeframe.weekMonth === timeframe.month)  ? 'long' : 'short',
 							})}
 						{/if}
 						{#if !showDayBreadcrumb}Week{:else}WK{/if}

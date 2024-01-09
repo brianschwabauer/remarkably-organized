@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getFirstDayOfWeek, type CalendarEvent, type Timeframe } from '$lib';
+	import { type CalendarEvent, type Timeframe, getWeek } from '$lib';
 	import Grid from './Grid.svelte';
 
 	let {
@@ -10,35 +10,38 @@
 		useWeekSinceYear = false,
 		showNotes = true,
 	} = $props();
-
-	const yearStart = $derived(
-		getFirstDayOfWeek(
-			Date.UTC(timeframe.year || new Date().getFullYear(), 0, 1),
-			startWeekOnSunday,
-		),
-	);
 </script>
 
 {#if timeframe?.month}
+	{@const numDaysBeforeStart =
+		(timeframe.start.getUTCDay() + 7 - (startWeekOnSunday ? 0 : 1)) % 7}
 	<div class="month" class:with-weeks={showWeekLinks} class:with-notes={showNotes}>
 		{#if showWeekLinks}
 			{@const numWeeks =
 				Math.floor(
 					(timeframe.end.getTime() - timeframe.weekStart.getTime()) / 604800000,
 				) + 1}
-			{@const weekSinceYear =
-				Math.floor((timeframe.weekStart.getTime() - yearStart) / 604800000) + 1}
 			{#each new Array(numWeeks) as _, i (i)}
-				<a
-					href="#{timeframe.year}-{timeframe.month}-wk{i + 1}"
-					class="week"
-					class:last-week={i === numWeeks - 1}>
-					Week {useWeekSinceYear ? weekSinceYear + i : i + 1}
+				{@const date = new Date(timeframe.weekStart.getTime() + i * 604800000)}
+				{@const week = getWeek(date, startWeekOnSunday)}
+				<a href="#{week.id}" class="week" class:last-week={i === numWeeks - 1}>
+					{#if !useWeekSinceYear && week.year && week.month && week.month !== timeframe.month}
+						{new Date(Date.UTC(week.year, week.month)).toLocaleString('default', {
+							month: 'short',
+						})}
+					{/if}
+					Week {useWeekSinceYear ? week.weekSinceYear : week.weekSinceMonth}
 				</a>
 			{/each}
 		{/if}
-		{#each new Array((timeframe.start.getUTCDay() + 7 - (startWeekOnSunday ? 0 : 1)) % 7) as _, i (i)}
-			<div class="day"></div>
+		{#each new Array(numDaysBeforeStart) as _, i (i)}
+			{@const date = new Date(
+				timeframe.start.getTime() + (i - numDaysBeforeStart) * 86400000,
+			)}
+			<a
+				class="day"
+				href="#{date.getUTCFullYear()}-{date.getUTCMonth() + 1}-{date.getUTCDate()}">
+			</a>
 		{/each}
 		{#each new Array(timeframe.end.getUTCDate()) as _, day (day)}
 			<a
@@ -65,7 +68,11 @@
 			</a>
 		{/each}
 		{#each new Array((6 - timeframe.end.getUTCDay() + 7 + (startWeekOnSunday ? 0 : 1)) % 7) as _, i (i)}
-			<div class="day border-top"></div>
+			{@const date = new Date(timeframe.end.getTime() + (i + 1) * 86400000)}
+			<a
+				class="day border-top"
+				href="#{date.getUTCFullYear()}-{date.getUTCMonth() + 1}-{date.getUTCDate()}">
+			</a>
 		{/each}
 	</div>
 	{#if showNotes}
