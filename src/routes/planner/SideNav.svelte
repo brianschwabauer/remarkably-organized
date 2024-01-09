@@ -43,7 +43,7 @@
 	const dayList = $derived(
 		settings.days.filter((day) =>
 			tabs === 'days-this-week'
-				? day.weekYear === timeframe.weekYear &&
+				? day.weekYear === (timeframe.weekYear || timeframe.year) &&
 					day.weekSinceYear === timeframe.weekSinceYear
 				: tabs === 'days-this-month'
 					? day.year === timeframe.year && timeframe.month === day.month
