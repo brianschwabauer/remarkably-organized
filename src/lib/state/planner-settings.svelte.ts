@@ -217,7 +217,7 @@ export class PlannerSettings {
 		template = $state('agenda-week' as PageTemplate);
 		notePagesTemplate = $state('dotted' as PageTemplate);
 		notePagesAmount = $state(0);
-		useWeekSinceYear = $state(false);
+		useWeekSinceYear = $state(true);
 		useWeekNumbersInSideNav = $state(false);
 		sideNavDisplay = $state(
 			'weeks-this-month' as
