@@ -22,7 +22,7 @@
 			<TopNav
 				{settings}
 				timeframe={month}
-				breadcrumbs={[{ href: `#${month.id}-${i + 2}`, name: `Page ${i + 2}` }]} />
+				breadcrumbs={[{ href: `#${month.id}-pg${i + 2}`, name: `Page ${i + 2}` }]} />
 			<Page display={settings.monthPage.notePagesTemplate} {settings} timeframe={month} />
 		</article>
 	{/each}

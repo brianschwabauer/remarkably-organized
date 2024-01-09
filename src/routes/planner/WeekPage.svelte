@@ -22,7 +22,7 @@
 			<TopNav
 				{settings}
 				timeframe={week}
-				breadcrumbs={[{ href: `#${week.id}-${i + 2}`, name: `Page ${i + 2}` }]} />
+				breadcrumbs={[{ href: `#${week.id}-pg${i + 2}`, name: `Page ${i + 2}` }]} />
 			<Page display={settings.weekPage.notePagesTemplate} {settings} timeframe={week} />
 		</article>
 	{/each}

@@ -22,7 +22,7 @@
 			<TopNav
 				{settings}
 				timeframe={quarter}
-				breadcrumbs={[{ href: `#${quarter.id}-${i + 2}`, name: `Page ${i + 2}` }]} />
+				breadcrumbs={[{ href: `#${quarter.id}-pg${i + 2}`, name: `Page ${i + 2}` }]} />
 			<Page
 				display={settings.quarterPage.notePagesTemplate}
 				{settings}
