@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { formatToString, getWeek, PlannerSettings, type Timeframe } from '$lib';
+	import { formatToString, PlannerSettings, type Timeframe } from '$lib';
 	import HomeIcon from '~icons/material-symbols-light/home-rounded';
 	import { getFontInfo } from '../fonts/fonts';
 
@@ -28,6 +28,29 @@
 			timeframe.month &&
 			timeframe.daySinceMonth,
 	);
+	const isFinalMonth = $derived(
+		settings.months.findIndex(
+			(m) =>
+				m.year === timeframe.start.getUTCFullYear() &&
+				m.month === timeframe.start.getUTCMonth() + 1,
+		) ===
+			settings.months.length - 1,
+	);
+	const isFinalWeek = $derived(
+		settings.weeks.findIndex((m) => m.start.getTime() === timeframe.start.getTime()) ===
+			settings.months.length - 1,
+	);
+	const year = $derived(
+		isFinalMonth || isFinalWeek || !timeframe.year
+			? timeframe.start.getUTCFullYear()
+			: timeframe.year,
+	);
+	const month = $derived(
+		isFinalMonth || isFinalWeek || !timeframe.month
+			? timeframe.start.getUTCMonth() + 1
+			: timeframe.month,
+	);
+	const quarter = $derived(Math.floor((month - 1) / 3) + 1);
 
 	const font = $derived(settings.topNav.font);
 	const homeIconAdjustments = new Map([
@@ -88,25 +111,21 @@
 				</a>
 			</li>
 			{#if showYearBreadcrumb}
-				<li><a href="#{timeframe.year}">{timeframe.year}</a></li>
+				<li><a href="#{year}">{year}</a></li>
 			{/if}
 			{#if showQuarterBreadcrumb}
 				<li>
-					<a href="#{timeframe.year}-q{timeframe.quarter}">
+					<a href="#{year}-q{quarter}">
 						{!showWeekBreadcrumb && !showMonthBreadcrumb && !showDayBreadcrumb
 							? 'Quarter '
-							: 'Q'}{timeframe.quarter}
+							: 'Q'}{quarter}
 					</a>
 				</li>
 			{/if}
 			{#if showMonthBreadcrumb}
-				{@const adjustedTimeframe =
-					!showWeekBreadcrumb || settings.weekPage.useWeekSinceYear || showDayBreadcrumb
-						? timeframe
-						: getWeek(timeframe.start, settings.date.startWeekOnSunday)}
 				<li>
-					<a href="#{adjustedTimeframe.year}-{adjustedTimeframe.month}">
-						{new Date(adjustedTimeframe.year!, adjustedTimeframe.month! - 1).toLocaleString('default', {
+					<a href="#{year}-{month}">
+						{new Date(year, month - 1).toLocaleString('default', {
 							month: !showWeekBreadcrumb && !showDayBreadcrumb ? 'long' : 'short',
 						})}
 					</a>
@@ -116,12 +135,12 @@
 				<li>
 					<a href="#{timeframe.weekYear}-wk{timeframe.weekSinceYear}">
 						{#if settings.weekPage.useWeekSinceYear}
-							{#if (!showYearBreadcrumb && !showMonthBreadcrumb) || timeframe.weekYear !== timeframe.year}
-								{timeframe.weekYear}
+							{#if (!showYearBreadcrumb && !showMonthBreadcrumb) || (timeframe.weekYear && timeframe.weekYear !== year) || timeframe.year !== year}
+								{timeframe.weekYear || timeframe.year || year}
 							{/if}
-						{:else if !showMonthBreadcrumb || (timeframe.weekMonth && timeframe.weekYear && timeframe.weekMonth !== timeframe.month)}
+						{:else if !showMonthBreadcrumb || (timeframe.weekMonth && timeframe.weekYear && timeframe.weekMonth !== timeframe.month) || timeframe.month !== month}
 							{new Date(timeframe.weekYear || timeframe.year!, (timeframe.weekMonth || timeframe.month!) - 1).toLocaleString('default', {
-								month: !showDayBreadcrumb && (!timeframe.weekMonth || timeframe.weekMonth === timeframe.month)  ? 'long' : 'short',
+								month: !showDayBreadcrumb && (!timeframe.weekMonth || timeframe.weekMonth === timeframe.month) && (!showMonthBreadcrumb || timeframe.month === month)  ? 'long' : 'short',
 							})}
 						{/if}
 						{#if !showDayBreadcrumb}Week{:else}WK{/if}
