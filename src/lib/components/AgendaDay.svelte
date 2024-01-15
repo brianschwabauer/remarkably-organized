@@ -3,7 +3,7 @@
 		<div class="hour-label">
 			{#if i > 0}
 				{i === 12 ? 12 : i % 12}
-				<small>{i < 11 ? 'AM' : 'PM'}</small>
+				<small>{i < 12 ? 'AM' : 'PM'}</small>
 			{:else}
 				12
 				<small>AM</small>
