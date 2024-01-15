@@ -9,7 +9,7 @@
 			<div class="hour">
 				<span>
 					{hour % 12 === 0 ? 12 : hour % 12}
-					<small>{hour < 12 ? 'am' : 'pm'}</small>
+					<small>{hour < 12 ? 'AM' : 'PM'}</small>
 				</span>
 			</div>
 		{/each}
@@ -55,7 +55,7 @@
 	}
 	.hours {
 		position: absolute;
-		top: 32px;
+		top: 41px;
 		right: 0;
 		bottom: 0;
 		height: 100%;
