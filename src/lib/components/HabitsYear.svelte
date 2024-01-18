@@ -8,13 +8,16 @@
 	} = $props();
 
 	const yearStart = $derived(
-		timeframe.weekStart ||
-			new Date(
-				getFirstDayOfWeek(
-					Date.UTC(timeframe?.year || new Date().getUTCFullYear()),
-					startWeekOnSunday,
-				),
-			),
+		groupBy === 'month'
+			? timeframe.start ||
+					new Date(Date.UTC(timeframe?.year || new Date().getUTCFullYear()))
+			: timeframe.weekStart ||
+					new Date(
+						getFirstDayOfWeek(
+							Date.UTC(timeframe?.year || new Date().getUTCFullYear()),
+							startWeekOnSunday,
+						),
+					),
 	);
 	const yearEnd = $derived(
 		timeframe.end ||
@@ -135,7 +138,7 @@
 				:global(.ordinal) {
 					font-size: 0.45em;
 					vertical-align: super;
-					margin-left: .05rem;
+					margin-left: 0.05rem;
 				}
 			}
 		}
