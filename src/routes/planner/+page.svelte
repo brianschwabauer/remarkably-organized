@@ -864,11 +864,11 @@
 <style lang="scss">
 	main {
 		font-family: var(--font);
-		@supports (color: oklch(from var(--text) calc(l - 15) c h)) {
-			--text-low: oklch(from var(--text) calc(l + 20) c h);
-			--text-high: oklch(from var(--text) calc(l - 15) c h);
-			--outline-low: oklch(from var(--outline) calc(l + 3) c h);
-			--outline-high: oklch(from var(--outline) max(0, calc(l - 10)) c h);
+		@supports (color: oklch(from var(--text) calc(l - .15) c h)) {
+			--text-low: oklch(from var(--text) calc(l + .20) c h);
+			--text-high: oklch(from var(--text) calc(l - .15) c h);
+			--outline-low: oklch(from var(--outline) calc(l + .03) c h);
+			--outline-high: oklch(from var(--outline) max(0, calc(l - .10)) c h);
 		}
 	}
 	@media screen {

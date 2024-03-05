@@ -90,10 +90,10 @@
 		--dot-large-color: rgba(0, 0, 0, 0.35);
 		--dot-medium-color: rgba(0, 0, 0, 0.35);
 		--dot-small-color: var(--dots-color, rgba(0, 0, 0, 0.9));
-		@supports (color: oklch(from var(--dots-color) calc(l - 15) c h)) {
-			--dot-small-color: oklch(from var(--dots-color) min(90, max(0, calc(l + 25))) c h);
-			--dot-medium-color: oklch(from var(--dots-color) min(80, max(0, calc(l - 3))) c h);
-			--dot-large-color: oklch(from var(--dots-color) min(75, max(0, calc(l - 20))) c h);
+		@supports (color: oklch(from var(--dots-color) calc(l - .15) c h)) {
+			--dot-small-color: oklch(from var(--dots-color) min(.90, max(0, calc(l + .25))) c h);
+			--dot-medium-color: oklch(from var(--dots-color) min(.80, max(0, calc(l - .03))) c h);
+			--dot-large-color: oklch(from var(--dots-color) min(.75, max(0, calc(l - .20))) c h);
 		}
 		display: grid;
 		.dots-small {
@@ -147,9 +147,9 @@
 		--line-color: var(--outline);
 		--minor-line-color: rgba(0, 0, 0, 0.08);
 		--major-line-color: rgba(0, 0, 0, 0.15);
-		@supports (color: oklch(from var(--outline) calc(l - 15) c h)) {
-			--minor-line-color: oklch(from var(--outline) max(0, calc(l - 4)) c h);
-			--major-line-color: oklch(from var(--outline) max(0, calc(l - 10)) c h);
+		@supports (color: oklch(from var(--outline) calc(l - .15) c h)) {
+			--minor-line-color: oklch(from var(--outline) max(0, calc(l - .04)) c h);
+			--major-line-color: oklch(from var(--outline) max(0, calc(l - .10)) c h);
 		}
 		.line {
 			width: 100%;
