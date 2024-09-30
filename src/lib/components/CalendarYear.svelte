@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Month, PlannerSettings } from '$lib';
+	import { formatToString } from '$lib';
 
 	let {
 		settings = {} as PlannerSettings,
@@ -24,6 +25,28 @@
 		}
 		return month.id;
 	}
+
+	function capitalizeFirstLetter(string: string) {
+		if (!string) return '';
+		return string.charAt(0).toUpperCase() + string.slice(1);
+	}
+
+	function getDayShortName(offset = 0) {
+		const day = capitalizeFirstLetter(
+			formatToString(
+				new Date().setDate(new Date().getDate() - new Date().getDay() + offset),
+				{ type: 'date', weekday: 'short' },
+			),
+		);
+		if (day === 'Mon') return 'Mo';
+		if (day === 'Tue') return 'Tu';
+		if (day === 'Wed') return 'We';
+		if (day === 'Thu') return 'Th';
+		if (day === 'Fri') return 'Fr';
+		if (day === 'Sat') return 'Sa';
+		if (day === 'Sun') return 'Su';
+		return day;
+	}
 </script>
 
 {#if months.length}
@@ -33,16 +56,16 @@
 				<h2>{month.nameLong}</h2>
 				<div class="days">
 					{#if startWeekOnSunday}
-						<div class="label">Su</div>
+						<div class="label">{getDayShortName(0)}</div>
 					{/if}
-					<div class="label">Mo</div>
-					<div class="label">Tu</div>
-					<div class="label">We</div>
-					<div class="label">Th</div>
-					<div class="label">Fr</div>
-					<div class="label">Sa</div>
+					<div class="label">{getDayShortName(1)}</div>
+					<div class="label">{getDayShortName(2)}</div>
+					<div class="label">{getDayShortName(3)}</div>
+					<div class="label">{getDayShortName(4)}</div>
+					<div class="label">{getDayShortName(5)}</div>
+					<div class="label">{getDayShortName(6)}</div>
 					{#if !startWeekOnSunday}
-						<div class="label">Su</div>
+						<div class="label">{getDayShortName(0)}</div>
 					{/if}
 					{#each new Array(month.end.getUTCDate()) as _, day}
 						<div
