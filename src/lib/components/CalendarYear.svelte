@@ -39,31 +39,31 @@
 	  	return days;
 	}
 
-	func monday() {
+	function monday() {
 	   	return capitalizeFirstLetter(getShortWeekdayNames("default")[0])
         }
 
-	func tuesday() {
+	function tuesday() {
 	   	return capitalizeFirstLetter(getShortWeekdayNames("default")[1])
         }
 
-	func wednesday() {
+	function wednesday() {
 	   	return capitalizeFirstLetter(getShortWeekdayNames("default")[2])
         }
 
-	func thursday() {
+	function thursday() {
 	   	return capitalizeFirstLetter(getShortWeekdayNames("default")[3])
         }
 
-	func friday() {
+	function friday() {
 	   	return capitalizeFirstLetter(getShortWeekdayNames("default")[4])
         }
 
-	func saturday() {
+	function saturday() {
 	   	return capitalizeFirstLetter(getShortWeekdayNames("default")[5])
         }
 
-	func sunday() {
+	function sunday() {
 	   	return capitalizeFirstLetter(getShortWeekdayNames("default")[6])
         }
 </script>
