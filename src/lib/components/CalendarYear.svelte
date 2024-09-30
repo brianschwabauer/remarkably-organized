@@ -24,6 +24,48 @@
 		}
 		return month.id;
 	}
+
+
+	function capitalizeFirstLetter(string) {
+		return string.charAt(0).toUpperCase() + string.slice(1);
+	}
+	
+	function getShortWeekdayNames(lang) {
+		let days = [];
+	  	for (let d = new Date(2023,5,12), i=7; i; --i) {
+	    		days.push(d.toLocaleString(lang, {weekday:'short'}));
+	    		d.setDate(d.getDate() + 1);
+	  	}
+	  	return days;
+	}
+
+	func monday() {
+	   	return capitalizeFirstLetter(getShortWeekdayNames("default")[0])
+        }
+
+	func tuesday() {
+	   	return capitalizeFirstLetter(getShortWeekdayNames("default")[1])
+        }
+
+	func wednesday() {
+	   	return capitalizeFirstLetter(getShortWeekdayNames("default")[2])
+        }
+
+	func thursday() {
+	   	return capitalizeFirstLetter(getShortWeekdayNames("default")[3])
+        }
+
+	func friday() {
+	   	return capitalizeFirstLetter(getShortWeekdayNames("default")[4])
+        }
+
+	func saturday() {
+	   	return capitalizeFirstLetter(getShortWeekdayNames("default")[5])
+        }
+
+	func sunday() {
+	   	return capitalizeFirstLetter(getShortWeekdayNames("default")[6])
+        }
 </script>
 
 {#if months.length}
@@ -33,16 +75,16 @@
 				<h2>{month.nameLong}</h2>
 				<div class="days">
 					{#if startWeekOnSunday}
-						<div class="label">Su</div>
+						<div class="label">{ sunday() }</div>
 					{/if}
-					<div class="label">Mo</div>
-					<div class="label">Tu</div>
-					<div class="label">We</div>
-					<div class="label">Th</div>
-					<div class="label">Fr</div>
-					<div class="label">Sa</div>
+					<div class="label">{ monday() }</div>
+					<div class="label">{ tuesday() }</div>
+					<div class="label">{ wednesday() }</div>
+					<div class="label">{ thursday() }</div>
+					<div class="label">{ friday() }</div>
+					<div class="label">{ saturday() }</div>
 					{#if !startWeekOnSunday}
-						<div class="label">Su</div>
+						<div class="label">{ sunday() }</div>
 					{/if}
 					{#each new Array(month.end.getUTCDate()) as _, day}
 						<div
