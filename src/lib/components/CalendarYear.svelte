@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Month, PlannerSettings } from '$lib';
+	import { formatToString } from '$lib';
 
 	let {
 		settings = {} as PlannerSettings,
@@ -25,47 +26,27 @@
 		return month.id;
 	}
 
-
-	function capitalizeFirstLetter(string) {
+	function capitalizeFirstLetter(string: string) {
+		if (!string) return '';
 		return string.charAt(0).toUpperCase() + string.slice(1);
 	}
-	
-	function getShortWeekdayNames(lang) {
-		let days = [];
-	  	for (let d = new Date(2023,5,12), i=7; i; --i) {
-	    		days.push(d.toLocaleString(lang, {weekday:'short'}));
-	    		d.setDate(d.getDate() + 1);
-	  	}
-	  	return days;
+
+	function getDayShortName(offset = 0) {
+		const day = capitalizeFirstLetter(
+			formatToString(
+				new Date().setDate(new Date().getDate() - new Date().getDay() + offset),
+				{ type: 'date', weekday: 'short' },
+			),
+		);
+		if (day === 'Mon') return 'Mo';
+		if (day === 'Tue') return 'Tu';
+		if (day === 'Wed') return 'We';
+		if (day === 'Thu') return 'Th';
+		if (day === 'Fri') return 'Fr';
+		if (day === 'Sat') return 'Sa';
+		if (day === 'Sun') return 'Su';
+		return day;
 	}
-
-	function monday() {
-	   	return capitalizeFirstLetter(getShortWeekdayNames("default")[0])
-        }
-
-	function tuesday() {
-	   	return capitalizeFirstLetter(getShortWeekdayNames("default")[1])
-        }
-
-	function wednesday() {
-	   	return capitalizeFirstLetter(getShortWeekdayNames("default")[2])
-        }
-
-	function thursday() {
-	   	return capitalizeFirstLetter(getShortWeekdayNames("default")[3])
-        }
-
-	function friday() {
-	   	return capitalizeFirstLetter(getShortWeekdayNames("default")[4])
-        }
-
-	function saturday() {
-	   	return capitalizeFirstLetter(getShortWeekdayNames("default")[5])
-        }
-
-	function sunday() {
-	   	return capitalizeFirstLetter(getShortWeekdayNames("default")[6])
-        }
 </script>
 
 {#if months.length}
@@ -75,16 +56,16 @@
 				<h2>{month.nameLong}</h2>
 				<div class="days">
 					{#if startWeekOnSunday}
-						<div class="label">{ sunday() }</div>
+						<div class="label">{getDayShortName(0)}</div>
 					{/if}
-					<div class="label">{ monday() }</div>
-					<div class="label">{ tuesday() }</div>
-					<div class="label">{ wednesday() }</div>
-					<div class="label">{ thursday() }</div>
-					<div class="label">{ friday() }</div>
-					<div class="label">{ saturday() }</div>
+					<div class="label">{getDayShortName(1)}</div>
+					<div class="label">{getDayShortName(2)}</div>
+					<div class="label">{getDayShortName(3)}</div>
+					<div class="label">{getDayShortName(4)}</div>
+					<div class="label">{getDayShortName(5)}</div>
+					<div class="label">{getDayShortName(6)}</div>
 					{#if !startWeekOnSunday}
-						<div class="label">{ sunday() }</div>
+						<div class="label">{getDayShortName(0)}</div>
 					{/if}
 					{#each new Array(month.end.getUTCDate()) as _, day}
 						<div
