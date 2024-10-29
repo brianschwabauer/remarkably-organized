@@ -23,6 +23,7 @@ export type PageTemplate =
 	| 'todo'
 	| 'todo-small'
 	| 'todo-large'
+	| 'tasklist-progress'
 	| 'calendar-year'
 	| 'calendar-quarter'
 	| 'calendar-month'

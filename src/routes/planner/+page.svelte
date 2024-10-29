@@ -36,6 +36,7 @@
 		{ name: 'To-do List - Small', value: 'todo-small' },
 		{ name: 'To-do List - Medium', value: 'todo' },
 		{ name: 'To-do List - Large', value: 'todo-large' },
+		{ name: 'Task List - Progress', value: 'tasklist-progress' },
 		{ name: 'Calendar', value: 'calendar-month' },
 		{ name: 'Calendar - With Notes', value: 'calendar-month-with-notes' },
 		{ name: 'Agenda - Daily', value: 'agenda-day' },
@@ -864,11 +865,11 @@
 <style lang="scss">
 	main {
 		font-family: var(--font);
-		@supports (color: oklch(from var(--text) calc(l - .15) c h)) {
-			--text-low: oklch(from var(--text) calc(l + .20) c h);
-			--text-high: oklch(from var(--text) calc(l - .15) c h);
-			--outline-low: oklch(from var(--outline) calc(l + .03) c h);
-			--outline-high: oklch(from var(--outline) max(0, calc(l - .10)) c h);
+		@supports (color: oklch(from var(--text) calc(l - 0.15) c h)) {
+			--text-low: oklch(from var(--text) calc(l + 0.2) c h);
+			--text-high: oklch(from var(--text) calc(l - 0.15) c h);
+			--outline-low: oklch(from var(--outline) calc(l + 0.03) c h);
+			--outline-high: oklch(from var(--outline) max(0, calc(l - 0.1)) c h);
 		}
 	}
 	@media screen {
