@@ -11,6 +11,7 @@
 	import HabitsYear from './HabitsYear.svelte';
 	import AgendaWeek from './AgendaWeek.svelte';
 	import AgendaDay from './AgendaDay.svelte';
+	import TaskProgress from './TaskProgress.svelte';
 
 	let {
 		display = 'dotted' as Collection['type'],
@@ -46,6 +47,8 @@
 		<NotesYear
 			months={settings.months.filter((m) => m.year === timeframe.year)}
 			{settings} />
+	{:else if display === 'tasklist-progress'}
+		<TaskProgress {timeframe} {settings} />
 	{:else if display === 'calendar-year'}
 		<CalendarYear
 			months={settings.months.filter((m) => m.year === timeframe.year)}
