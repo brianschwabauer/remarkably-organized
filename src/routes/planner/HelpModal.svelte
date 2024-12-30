@@ -22,7 +22,7 @@
 		</p>
 		<p>
 			You can change the start and end dates of the planner. For example, you can create a
-			planner that starts in August 2024 and ends in July 2025.
+			planner that starts in August 2025 and ends in July 2026.
 		</p>
 		<p>
 			You can also add "collections" to the planner. Think of a collection as a group of
@@ -35,7 +35,7 @@
 			dialog. Make sure to select "Save as PDF" as the destination.
 		</p>
 		<div class="actions">
-			<button on:click={onClose}>Get Started</button>
+			<button onclick={onClose}>Get Started</button>
 		</div>
 	</div>
 	<div class="help-bg" transition:fade={{ duration: 150 }}></div>

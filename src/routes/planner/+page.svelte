@@ -1,10 +1,9 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { replaceState } from '$app/navigation';
 	import { slide } from 'svelte/transition';
 	import SettingsIcon from '~icons/fa/cog';
 	import LoadingIcon from '~icons/eos-icons/bubble-loading';
-	import { untrack } from 'svelte';
 	import CoverPage from './CoverPage.svelte';
 	import MonthPage from './MonthPage.svelte';
 	import YearPage from './YearPage.svelte';
@@ -59,6 +58,9 @@
 			settings.sideNav.font,
 		]),
 	);
+	const googleFontImport = $derived(
+		googleFontURL ? `@import url("${googleFontURL}");` : '',
+	);
 
 	function getAvailablePageTemplates(
 		location: 'collection' | 'year' | 'month' | 'quarter' | 'week' | 'day',
@@ -85,18 +87,18 @@
 	}
 
 	let customTimeframe = $state(false);
-	let showHelp = $state($page.url.searchParams.get('help') !== '0');
+	let showHelp = $state(page.url.searchParams.get('help') !== '0');
 	let showMenu = $state(true);
 	let showAdvancedSettings = $state(false);
-	let enableHighResolution = $state($page.url.searchParams.has('highres'));
+	let enableHighResolution = $state(page.url.searchParams.has('highres'));
 	let loadPages = $state(
-		$page.url.searchParams.get('help') === '0' &&
-			(browser || $page.url.searchParams.get('load') === '1'),
+		page.url.searchParams.get('help') === '0' &&
+			(browser || page.url.searchParams.get('load') === '1'),
 	);
 
 	let settingsUrlInitialized = false;
 	$effect(() => {
-		const url = new URL(untrack(() => $page.url));
+		const url = new URL(document.location.href);
 		if (settings.edits) {
 			url.searchParams.set('settings', JSON.stringify(settings.edits));
 			replaceState(url, {});
@@ -107,11 +109,12 @@
 		settingsUrlInitialized = true;
 	});
 	$effect(() => {
-		const url = new URL(untrack(() => $page.url));
-		if (enableHighResolution) {
+		const url = new URL(document.location.href);
+		if (enableHighResolution && !url.searchParams.has('highres')) {
 			url.searchParams.set('highres', '');
 			replaceState(url, {});
-		} else {
+		}
+		if (!enableHighResolution && url.searchParams.has('highres')) {
 			url.searchParams.delete('highres');
 			replaceState(url, {});
 		}
@@ -156,7 +159,7 @@
 
 	function onHelpClose() {
 		showHelp = false;
-		const url = new URL($page.url);
+		const url = new URL(document.location.href);
 		url.searchParams.set('help', '0');
 		replaceState(url, {});
 		setTimeout(() => (loadPages = true), 180);
@@ -198,8 +201,8 @@
 
 <svelte:head>
 	<title>Planner Builder | Remarkably Organized</title>
-	{#if googleFontURL}
-		{@html `<style>@import url("${googleFontURL}")</style>`}
+	{#if googleFontImport}
+		{@html `<style type="text/css">${googleFontImport}</style>`}
 	{/if}
 </svelte:head>
 
@@ -220,7 +223,7 @@
 					!customTimeframe
 						? settings.date.start.getTime()
 						: 0}
-					on:change={onTimeframeSelection}>
+					onchange={onTimeframeSelection}>
 					{#each new Array(7) as _, i (i)}
 						{@const date = new Date(Date.UTC(new Date().getFullYear() - 1 + i))}
 						<option value={date.getTime()}>
@@ -239,7 +242,7 @@
 						id="start"
 						max={settings.date.end.toISOString().slice(0, 10)}
 						value={settings.date.start.toISOString().slice(0, 10)}
-						on:change={onStartDateChange} />
+						onchange={onStartDateChange} />
 				</fieldset>
 				<fieldset>
 					<label for="end">End Date</label>
@@ -249,7 +252,7 @@
 						id="end"
 						min={settings.date.start.toISOString().slice(0, 10)}
 						value={settings.date.end.toISOString().slice(0, 10)}
-						on:change={onEndDateChange} />
+						onchange={onEndDateChange} />
 				</fieldset>
 			{/if}
 			<div class="checkbox">
@@ -711,7 +714,7 @@
 							</fieldset>
 							<button
 								type="button"
-								on:click={() => settings.collections.splice(i, 1)}
+								onclick={() => settings.collections.splice(i, 1)}
 								style:color="var(--error)">
 								Remove Collection
 							</button>
@@ -719,7 +722,7 @@
 					{/each}
 					<button
 						type="button"
-						on:click={() =>
+						onclick={() =>
 							settings.collections.push({
 								name: 'Notes',
 								id: `${Date.now()}`,
@@ -757,14 +760,14 @@
 							type="button"
 							style="flex: 1"
 							disabled={settings.calendars.some((calendar) => calendar.updating)}
-							on:click={() => settings.importEvents(i)}>
+							onclick={() => settings.importEvents(i)}>
 							{calendar.updating ? `Importing...` : `Import Events`}
 						</button>
 						<button
 							type="button"
 							style="flex: 1"
 							disabled={settings.calendars.some((calendar) => calendar.updating)}
-							on:click={() => settings.calendars.splice(i, 1)}
+							onclick={() => settings.calendars.splice(i, 1)}
 							style:color="var(--error)">
 							Remove Calendar
 						</button>
@@ -773,7 +776,7 @@
 				<button
 					type="button"
 					disabled={settings.calendars.some((calendar) => calendar.updating)}
-					on:click={() =>
+					onclick={() =>
 						settings.calendars.push({
 							events: [],
 							lastUpdated: 0,
@@ -787,17 +790,17 @@
 				<button
 					type="button"
 					style="margin: 1rem 0;"
-					on:click={() => (showAdvancedSettings = true)}>
+					onclick={() => (showAdvancedSettings = true)}>
 					Advanced Settings
 				</button>
 			{/if}
 		</form>
 		<div class="actions">
-			<button class="export" on:click={() => window.print()}>Print to PDF</button>
+			<button class="export" onclick={() => window.print()}>Print to PDF</button>
 		</div>
 	</div>
 {/if}
-<button on:click={() => (showMenu = !showMenu)} class="menu-trigger">
+<button onclick={() => (showMenu = !showMenu)} class="menu-trigger">
 	<SettingsIcon />
 </button>
 <Toast />
@@ -864,11 +867,11 @@
 <style lang="scss">
 	main {
 		font-family: var(--font);
-		@supports (color: oklch(from var(--text) calc(l - .15) c h)) {
-			--text-low: oklch(from var(--text) calc(l + .20) c h);
-			--text-high: oklch(from var(--text) calc(l - .15) c h);
-			--outline-low: oklch(from var(--outline) calc(l + .03) c h);
-			--outline-high: oklch(from var(--outline) max(0, calc(l - .10)) c h);
+		@supports (color: oklch(from var(--text) calc(l - 0.15) c h)) {
+			--text-low: oklch(from var(--text) calc(l + 0.2) c h);
+			--text-high: oklch(from var(--text) calc(l - 0.15) c h);
+			--outline-low: oklch(from var(--outline) calc(l + 0.03) c h);
+			--outline-high: oklch(from var(--outline) max(0, calc(l - 0.1)) c h);
 		}
 	}
 	@media screen {

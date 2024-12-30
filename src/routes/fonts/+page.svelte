@@ -9,11 +9,14 @@
 	const googleFontURL = $derived(
 		`https://fonts.googleapis.com/css2?display=swap&${selectedFontsQuery}`,
 	);
+	const googleFontImport = $derived(
+		googleFontURL ? `@import url("${googleFontURL}");` : '',
+	);
 </script>
 
 <svelte:head>
-	{#if googleFontURL}
-		{@html `<style>@import url("${googleFontURL}")</style>`}
+	{#if googleFontImport}
+		{@html `<style type="text/css">${googleFontImport}</style>`}
 	{/if}
 </svelte:head>
 

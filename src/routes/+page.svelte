@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 </script>
 
 <main>
@@ -11,7 +11,7 @@
 		<p>
 			Create a custom planner & organizer for the e-ink tablets like the Remarkable 2.
 		</p>
-		<a href="/planner{$page.url.search}">Start Creating</a>
+		<a href="/planner{page.url.search}">Start Creating</a>
 	</section>
 	<section>
 		<img
