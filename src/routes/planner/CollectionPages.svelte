@@ -75,6 +75,7 @@
 					<Page
 						display={collection.type}
 						{settings}
+						timeframe={year}
 						columns={collection.columns}
 						lines={collection.lines} />
 				</article>
