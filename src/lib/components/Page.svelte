@@ -30,7 +30,7 @@
 		display.startsWith('lined') ||
 			display.startsWith('numbered') ||
 			display.startsWith('todo')
-			? columns ?? 1
+			? (columns ?? 1)
 			: size === 'small'
 				? 30
 				: size === 'medium'
@@ -48,7 +48,7 @@
 			months={settings.months.filter((m) => m.year === timeframe.year)}
 			{settings} />
 	{:else if display === 'tasklist-progress'}
-		<TaskProgress {timeframe} {settings} />
+		<TaskProgress />
 	{:else if display === 'calendar-year'}
 		<CalendarYear
 			months={settings.months.filter((m) => m.year === timeframe.year)}
