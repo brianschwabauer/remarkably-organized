@@ -35,6 +35,7 @@
 		{ name: 'To-do List - Small', value: 'todo-small' },
 		{ name: 'To-do List - Medium', value: 'todo' },
 		{ name: 'To-do List - Large', value: 'todo-large' },
+		{ name: 'Task List - Progress', value: 'tasklist-progress' },
 		{ name: 'Calendar', value: 'calendar-month' },
 		{ name: 'Calendar - With Notes', value: 'calendar-month-with-notes' },
 		{ name: 'Agenda - Daily', value: 'agenda-day' },
