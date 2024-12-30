@@ -1,19 +1,9 @@
 import adapter from '@sveltejs/adapter-auto';
-import preprocess from 'svelte-preprocess';
-import { fileURLToPath } from 'url';
-const stylesPath = fileURLToPath(
-	new URL('./src/lib/styles/_variables.scss', import.meta.url),
-);
+import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-	preprocess: preprocess({
-		scss: {
-			outputStyle: 'compressed',
-			renderSync: true,
-			prependData: `@import '${stylesPath.replace(/\\/g, '/')}';`,
-		},
-	}),
+	preprocess: vitePreprocess({ script: true }),
 	vitePlugin: {
 		inspector: {
 			showToggleButton: 'active',

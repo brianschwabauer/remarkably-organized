@@ -1,3 +1,6 @@
+@use 'include-media' as *;
+@forward 'include-media';
+
 $breakpoints: (
 	'phone': 400px,
 	'tablet': 768px,
@@ -39,8 +42,6 @@ $media-expressions: (
   * @include media(">desktop", "<=1150px") {}
   * @include media(">tablet", "motionOK", "stylus", "screen") {}
   */
-@import 'include-media';
-
 @mixin phone {
 	@include media('<tablet') {
 		@content;
@@ -98,8 +99,8 @@ $media-expressions: (
 }
 
 @mixin scrollbar($width: 0.5rem, $color: var(--fg), $hover-color: var(--text-low)) {
-	scrollbar-color: $color transparent;
-	scrollbar-width: thin;
+	// scrollbar-color: $color transparent;
+	// scrollbar-width: thin;
 	&::-webkit-scrollbar {
 		width: $width;
 		height: 100%;

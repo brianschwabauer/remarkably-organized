@@ -1,4 +1,4 @@
-@import './variables';
+@use './variables' as *;
 
 html {
 	--contrast-rgb-low: 255 255 255; // The min contrast color. Used to add transparent colors using rgb(var(--contrast-rgb-low) / 0.5))
@@ -433,6 +433,6 @@ select {
 input[type='color'] {
 	width: 100%;
 	height: 2.5rem;
-	padding: 0.25rem .5rem;
+	padding: 0.25rem 0.5rem;
 	cursor: pointer;
 }
