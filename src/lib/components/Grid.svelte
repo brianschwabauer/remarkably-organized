@@ -68,7 +68,7 @@
 		{#each new Array(Math.ceil(numLines * cols)) as _, i (i)}
 			{#if display.startsWith('numbered')}
 				<div class="line">{i + 1}&#41;</div>
-				{:else if display.startsWith('todo')}
+			{:else if display.startsWith('todo')}
 				<div class="line todo">☐</div>
 			{:else}
 				<div class="line"></div>
@@ -79,6 +79,7 @@
 
 <style lang="scss">
 	.dots {
+		display: grid;
 		height: 100%;
 		width: 100%;
 		padding: 0 1rem;
@@ -90,12 +91,17 @@
 		--dot-large-color: rgba(0, 0, 0, 0.35);
 		--dot-medium-color: rgba(0, 0, 0, 0.35);
 		--dot-small-color: var(--dots-color, rgba(0, 0, 0, 0.9));
-		@supports (color: oklch(from var(--dots-color) calc(l - .15) c h)) {
-			--dot-small-color: oklch(from var(--dots-color) min(.90, max(0, calc(l + .25))) c h);
-			--dot-medium-color: oklch(from var(--dots-color) min(.80, max(0, calc(l - .03))) c h);
-			--dot-large-color: oklch(from var(--dots-color) min(.75, max(0, calc(l - .20))) c h);
+		@supports (color: oklch(from var(--dots-color) calc(l - 0.15) c h)) {
+			--dot-small-color: oklch(
+				from var(--dots-color) min(0.9, max(0, calc(l + 0.25))) c h
+			);
+			--dot-medium-color: oklch(
+				from var(--dots-color) min(0.8, max(0, calc(l - 0.03))) c h
+			);
+			--dot-large-color: oklch(
+				from var(--dots-color) min(0.75, max(0, calc(l - 0.2))) c h
+			);
 		}
-		display: grid;
 		.dots-small {
 			grid-column: 1 / 1;
 			grid-row: 1 / 1;
@@ -147,9 +153,9 @@
 		--line-color: var(--outline);
 		--minor-line-color: rgba(0, 0, 0, 0.08);
 		--major-line-color: rgba(0, 0, 0, 0.15);
-		@supports (color: oklch(from var(--outline) calc(l - .15) c h)) {
-			--minor-line-color: oklch(from var(--outline) max(0, calc(l - .04)) c h);
-			--major-line-color: oklch(from var(--outline) max(0, calc(l - .10)) c h);
+		@supports (color: oklch(from var(--outline) calc(l - 0.15) c h)) {
+			--minor-line-color: oklch(from var(--outline) max(0, calc(l - 0.04)) c h);
+			--major-line-color: oklch(from var(--outline) max(0, calc(l - 0.1)) c h);
 		}
 		.line {
 			width: 100%;

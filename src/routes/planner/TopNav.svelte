@@ -139,8 +139,16 @@
 								{timeframe.weekYear || timeframe.year || year}
 							{/if}
 						{:else if !showMonthBreadcrumb || (timeframe.weekMonth && timeframe.weekYear && timeframe.weekMonth !== timeframe.month) || timeframe.month !== month}
-							{new Date(timeframe.weekYear || timeframe.year!, (timeframe.weekMonth || timeframe.month!) - 1).toLocaleString('default', {
-								month: !showDayBreadcrumb && (!timeframe.weekMonth || timeframe.weekMonth === timeframe.month) && (!showMonthBreadcrumb || timeframe.month === month)  ? 'long' : 'short',
+							{new Date(
+								timeframe.weekYear || timeframe.year!,
+								(timeframe.weekMonth || timeframe.month!) - 1,
+							).toLocaleString('default', {
+								month:
+									!showDayBreadcrumb &&
+									(!timeframe.weekMonth || timeframe.weekMonth === timeframe.month) &&
+									(!showMonthBreadcrumb || timeframe.month === month)
+										? 'long'
+										: 'short',
 							})}
 						{/if}
 						{#if !showDayBreadcrumb}Week{:else}WK{/if}
@@ -174,7 +182,7 @@
 				{/each}
 			{/if}
 		</ol>
-		<div style="flex: 1" />
+		<div style="flex: 1"></div>
 		{#if settings.topNav.showCollectionLinks && settings.collections?.length}
 			<ol class="links">
 				{#each settings.collections as collection, i (collection.id)}

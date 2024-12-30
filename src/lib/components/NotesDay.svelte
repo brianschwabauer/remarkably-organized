@@ -20,15 +20,6 @@
 </div>
 
 <style lang="scss">
-	.week {
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		grid-template-rows: repeat(4, 1fr);
-		width: 100%;
-		height: 100%;
-		justify-items: stretch;
-		align-items: stretch;
-	}
 	.day {
 		font-size: 1.1em;
 		border-top: solid 1px var(--outline);
@@ -48,7 +39,7 @@
 	}
 	.grid {
 		position: absolute;
-		top: .5rem;
+		top: 0.5rem;
 		left: 0;
 		right: 0;
 		bottom: 0;

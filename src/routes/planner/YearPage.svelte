@@ -51,7 +51,4 @@
 		padding: 1.5rem 0 1rem;
 		font-size: 3.5em;
 	}
-	.notes {
-		flex: 1;
-	}
 </style>

@@ -38,6 +38,7 @@
 			{@const date = new Date(
 				timeframe.start.getTime() + (i - numDaysBeforeStart) * 86400000,
 			)}
+			<!-- svelte-ignore a11y_consider_explicit_label -->
 			<a
 				class="day"
 				href="#{date.getUTCFullYear()}-{date.getUTCMonth() + 1}-{date.getUTCDate()}">
@@ -69,6 +70,7 @@
 		{/each}
 		{#each new Array((6 - timeframe.end.getUTCDay() + 7 + (startWeekOnSunday ? 0 : 1)) % 7) as _, i (i)}
 			{@const date = new Date(timeframe.end.getTime() + (i + 1) * 86400000)}
+			<!-- svelte-ignore a11y_consider_explicit_label -->
 			<a
 				class="day border-top"
 				href="#{date.getUTCFullYear()}-{date.getUTCMonth() + 1}-{date.getUTCDate()}">
