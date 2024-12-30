@@ -23,14 +23,13 @@ If the selected settings makes a very large PDF, you might have to use a powerfu
 
 The web app is built using the Svelte framework.
 Knowledge of web technologies is required to run this app.
-If you don't know what npm is, you probably won't understand the code.
+If you don't know what pnpm is, you probably won't understand the code.
 
-Install npm, and run the following:
+Install pnpm, and run the following:
 ```bash
-npm i
-npm run dev
+pnpm i
+pnpm run dev
 ```
-NOTE - You might have to use `npm i --force` because of the conflicting peer dependencies (this is using a bleeding edge version of Svelte as of Jan 2024).
 
 This will open up locahost:5173 where the actions can be viewed and tested.
 
@@ -39,7 +38,7 @@ It uses Svelte & Vite under the hood for automatic HMR.
 To build the code run,
 
 ```bash
-npm run build
+pnpm run build
 ```
 
 ## Future Ideas
